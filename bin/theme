@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../lib/shopify_theme',__FILE__)
+require File.expand_path('../../lib/shopify_theme/cli',__FILE__)
+ShopifyTheme::Cli.start(ARGV)

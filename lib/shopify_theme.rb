@@ -1,0 +1,3 @@
+module ShopifyTheme
+  # Your code goes here...
+end
