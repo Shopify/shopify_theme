@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["John Duff"]
   s.email       = ["john.duff@shopify.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/Shopify/shopify_theme"
   s.summary     = %q{Command line tool for developing themes}
   s.description = %q{Command line tool to help with developing Shopify themes. Provides simple commands to download, upload and delete files from a theme. Also includes the watch command to watch a directory and upload files as they change.}
 
