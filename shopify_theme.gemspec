@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["john.duff@shopify.com"]
   s.homepage    = ""
   s.summary     = %q{Command line tool for developing themes}
-  s.description = %q{Command line tool to help with developing Shopify themes. Provides simple commands to download and upload a theme, as well as watch a directory and upload files as they change.}
+  s.description = %q{Command line tool to help with developing Shopify themes. Provides simple commands to download, upload and delete files from a theme. Also includes the watch command to watch a directory and upload files as they change.}
 
   s.rubyforge_project = "shopify_theme"
   s.add_dependency("thor", [">= 0.14.4"])

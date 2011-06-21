@@ -1,4 +1,24 @@
 #!/usr/bin/env ruby
-require File.expand_path('../../lib/shopify_theme',__FILE__)
-require File.expand_path('../../lib/shopify_theme/cli',__FILE__)
+
+# This allows shopify_them to run easily from a git checkout without install.
+# Hat tip to chriseppstein of Compass fame for the code for this
+def fallback_load_path(path)
+  retried = false
+  begin
+    yield
+  rescue LoadError
+    unless retried
+      $: << path
+      retried = true
+      retry
+    end
+    raise
+  end
+end
+
+fallback_load_path(File.join(File.dirname(__FILE__), '..', 'lib')) do
+  require 'shopify_theme'
+  require 'shopify_theme/cli'
+end
+
 ShopifyTheme::Cli.start(ARGV)

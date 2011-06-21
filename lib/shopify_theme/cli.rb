@@ -1,8 +1,6 @@
-require 'rubygems'
 require 'thor'
 require 'yaml'
 require 'abbrev'
-require 'httparty'
 require 'base64'
 require 'ftools'
 require 'json'
@@ -24,41 +22,44 @@ module ShopifyTheme
       create_file('config.yml', config.to_yaml)
     end
 
-    desc "download", "download the shops current theme"
-    def download
-      setup
-      asset_list.each do |a|
-        asset = get_asset(a)
+    desc "download FILE", "download the shops current theme assets"
+    method_option :quiet, :type => :boolean, :default => false
+    def download(*keys)
+      assets = keys.empty? ? ShopifyParty.asset_list : keys
 
-        if asset['value']
-          content = asset['value'].gsub("\r", "")
-        elsif asset['attachment']
-          content = Base64.decode64(asset['attachment'])
+      assets.each do |asset|
+        download_asset(asset)
+        puts "Downloaded: #{asset}" unless options['quiet']
+      end
+      puts "\nDone." unless options['quiet']
+    end
+
+    desc "upload FILE", "upload all theme assets to shop"
+    method_option :quiet, :type => :boolean, :default => false
+    def upload(*keys)
+      assets = keys.empty? ? local_assets_list : keys
+      assets.each do |a|
+        send_asset(a, options['quiet'])
+      end
+      puts "Done." unless options['quiet']
+    end
+
+    desc "remove FILE", "remove theme asset"
+    method_option :quiet, :type => :boolean, :default => false
+    def remove(*keys)
+      keys.each do |key|
+        if ShopifyParty.delete_asset(key).success?
+          puts "Removed: #{key}" unless options['quiet']
+        else
+          puts "Error: Could not remove #{key} from #{@config['store']}"
         end
-
-        File.makedirs(File.dirname(a))
-        File.open(a, "w") {|f| f.write content} if content
-        print "."
-        $stdout.flush
       end
-      puts "\nDone."
+      puts "Done." unless options['quiet']
     end
 
-    desc "upload", "upload all theme files to shop"
-    def upload
-      setup
-
-      local_assets_list.each do |a|
-        send_asset(a)
-      end
-      puts "Done."
-    end
-
-    desc "watch", "upload individual files as they change"
+    desc "watch", "upload individual theme assets as they change"
     method_option :quiet, :type => :boolean, :default => false
     def watch
-      setup
-
       loop do
         modified_files.each do |a|
           send_asset(a, options['quiet'])
@@ -70,27 +71,22 @@ module ShopifyTheme
     end
 
     private
-    def setup
-      @config = YAML.load(File.read('config.yml'))
-      @default_options = {:basic_auth => {:username => @config[:api_key], :password => @config[:password]}}
-      @base_uri = "http://#{@config[:store]}"
-    end
-
-    def asset_list
-      response = HTTParty.get("#{@base_uri}/admin/assets.json", @default_options)
-      assets = JSON.parse(response.body)["assets"].collect {|a| a['key'] }
-      # Remove any .css files if a .css.liquid file exists
-      assets.reject{|a| assets.include?("#{a}.liquid") }
-    end
-
-    def get_asset(asset)
-      response = HTTParty.get("#{@base_uri}/admin/assets.json", @default_options.merge(:query =>{:asset => {:key => asset}}))
-      # HTTParty json parsing is broken?
-      JSON.parse(response.body)["asset"]
-    end
 
     def local_assets_list
       Dir.glob(File.join("**", "*")).reject{ |p| File.directory?(p) || IGNORE.include?(p)}
+    end
+
+    def download_asset(key)
+      asset = ShopifyParty.get_asset(key)
+      if asset['value']
+        # For CRLF line endings
+        content = asset['value'].gsub("\r", "")
+      elsif asset['attachment']
+        content = Base64.decode64(asset['attachment'])
+      end
+
+      File.makedirs(File.dirname(key))
+      File.open(key, "w") {|f| f.write content} if content
     end
 
     def send_asset(asset, quiet=false)
@@ -101,9 +97,7 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      response = HTTParty.put("#{@base_uri}/admin/assets.json", @default_options.merge(:body =>{:asset => data}))
-
-      if response.success?
+      if ShopifyParty.send_asset(data).success?
         puts "Uploaded: #{asset}" unless quiet
       else
         puts "Error: Could not upload #{asset} to #{@config['store']}"
