@@ -1,4 +1,10 @@
-# Useage
+# Installation
+
+````
+gem install shopify_theme
+````
+
+# Usage
 
 Generate the config file
 
