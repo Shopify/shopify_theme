@@ -4,6 +4,7 @@ require 'abbrev'
 require 'base64'
 require 'ftools'
 require 'json'
+require 'fssm'
 
 module ShopifyTheme
   class Cli < Thor
@@ -60,14 +61,14 @@ module ShopifyTheme
     desc "watch", "upload individual theme assets as they change"
     method_option :quiet, :type => :boolean, :default => false
     def watch
-      loop do
-        modified_files.each do |a|
-          send_asset(a, options['quiet'])
+      FSSM.monitor '.' do |m|
+        m.update do |base, relative|
+          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
         end
-        sleep(1)
+        m.create do |base, relative|
+          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+        end
       end
-    rescue Interrupt
-      puts ""
     end
 
     private
@@ -102,17 +103,6 @@ module ShopifyTheme
       else
         puts "Error: Could not upload #{asset} to #{@config['store']}"
       end
-    end
-
-    def modified_files
-      @reference_time ||= Time.now
-      checked = Time.now
-
-      files = local_assets_list.select do |asset|
-        File.mtime(asset) > @reference_time
-      end
-      @reference_time = checked unless files.empty?
-      files
     end
   end
 end
