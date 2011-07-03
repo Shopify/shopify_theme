@@ -26,7 +26,7 @@ module ShopifyTheme
     desc "download FILE", "download the shops current theme assets"
     method_option :quiet, :type => :boolean, :default => false
     def download(*keys)
-      assets = keys.empty? ? ShopifyParty.asset_list : keys
+      assets = keys.empty? ? ShopifyTheme.asset_list : keys
 
       assets.each do |asset|
         download_asset(asset)
@@ -50,7 +50,7 @@ module ShopifyTheme
     def replace(*keys)
 	    say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
 	    if ask("Continue? (Y/N): ") == "Y"
-		    remote_assets = keys.empty? ? ShopifyParty.asset_list : keys
+		    remote_assets = keys.empty? ? ShopifyTheme.asset_list : keys
 	      remote_assets.each do |asset|
 	        delete_asset(asset, options['quiet'])
 	      end
@@ -97,7 +97,7 @@ module ShopifyTheme
     end
 
     def download_asset(key)
-      asset = ShopifyParty.get_asset(key)
+      asset = ShopifyTheme.get_asset(key)
       if asset['value']
         # For CRLF line endings
         content = asset['value'].gsub("\r", "")
@@ -117,18 +117,18 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      if ShopifyParty.send_asset(data).success?
+      if ShopifyTheme.send_asset(data).success?
         say("Uploaded: #{asset}", :green) unless quiet
       else
-        say("Error: Could not upload #{asset}", :red)
+        say("Error: Could not upload #{asset} to #{ShopifyTheme.config[:store]}", :red)
       end
     end
     
     def delete_asset(key, quiet=false)
-			if ShopifyParty.delete_asset(key).success?
+			if ShopifyTheme.delete_asset(key).success?
         say("Removed: #{key}", :green) unless quiet
       else
-        say("Error: Could not remove #{key}", :red)
+        say("Error: Could not remove #{key} from #{ShopifyTheme.config[:store]}", :red)
       end
     end    
   end
