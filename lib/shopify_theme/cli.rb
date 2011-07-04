@@ -19,7 +19,7 @@ module ShopifyTheme
 
     desc "configure API_KEY PASSWORD STORE", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil)
-      config = {:api_key => api_key, :password => password, :store => store}
+      config = {:api_key => api_key, :password => password, :store => store, :ignore_files => []}
       create_file('config.yml', config.to_yaml)
     end
 
@@ -93,7 +93,11 @@ module ShopifyTheme
     private
 
     def local_assets_list
-      Dir.glob(File.join("**", "*")).reject{ |p| File.directory?(p) || IGNORE.include?(p)}
+      Dir.glob(File.join("**", "*")).reject do |p|
+        File.directory?(p) || IGNORE.include?(p) || ShopifyTheme.ignore_files.any? do |i|
+          i =~ p
+        end
+      end
     end
 
     def download_asset(key)

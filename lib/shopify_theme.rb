@@ -27,6 +27,10 @@ module ShopifyTheme
     @config ||= YAML.load(File.read('config.yml'))
   end
 
+  def self.ignore_files
+    @ignore_files ||= (config[:ignore_files] || []).compact.collect { |r| Regexp.new(r) }
+  end
+
   private
   def self.shopify
     basic_auth config[:api_key], config[:password]
