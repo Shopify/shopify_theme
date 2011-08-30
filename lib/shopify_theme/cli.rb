@@ -2,7 +2,7 @@ require 'thor'
 require 'yaml'
 require 'abbrev'
 require 'base64'
-require 'ftools'
+require 'fileutils'
 require 'json'
 require 'fssm'
 
@@ -86,7 +86,7 @@ module ShopifyTheme
         content = Base64.decode64(asset['attachment'])
       end
 
-      File.makedirs(File.dirname(key))
+      FileUtils.mkdir_p(File.dirname(key))
       File.open(key, "w") {|f| f.write content} if content
     end
 
