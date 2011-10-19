@@ -30,36 +30,52 @@ module ShopifyTheme
 
       assets.each do |asset|
         download_asset(asset)
-        puts "Downloaded: #{asset}" unless options['quiet']
+        say("Downloaded: #{asset}", :green) unless options['quiet']
       end
-      puts "\nDone." unless options['quiet']
+      say("Done.", :green) unless options['quiet']
     end
 
     desc "upload FILE", "upload all theme assets to shop"
     method_option :quiet, :type => :boolean, :default => false
     def upload(*keys)
       assets = keys.empty? ? local_assets_list : keys
-      assets.each do |a|
-        send_asset(a, options['quiet'])
+      assets.each do |asset|
+        send_asset(asset, options['quiet'])
       end
-      puts "Done." unless options['quiet']
+      say("Done.", :green) unless options['quiet']
+    end
+    
+    desc "replace FILE", "completely replace shop theme assets with local theme assets"
+    method_option :quiet, :type => :boolean, :default => false
+    def replace(*keys)
+	    puts @config
+	    say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
+	    answer = ask("Continue? (Y/N): ");
+	    if answer == "Y"
+		    remote_assets = keys.empty? ? ShopifyParty.asset_list : keys
+	      remote_assets.each do |asset|
+	        delete_asset(asset, options['quiet'])
+	      end
+	      local_assets = keys.empty? ? local_assets_list : keys
+	      local_assets.each do |asset|
+	        send_asset(asset, options['quiet'])
+	      end
+	      say("Done.", :green) unless options['quiet']
+		  end
     end
 
     desc "remove FILE", "remove theme asset"
     method_option :quiet, :type => :boolean, :default => false
     def remove(*keys)
       keys.each do |key|
-        if ShopifyParty.delete_asset(key).success?
-          puts "Removed: #{key}" unless options['quiet']
-        else
-          puts "Error: Could not remove #{key} from #{@config['store']}"
-        end
+				delete_asset(key, options['quiet'])
       end
-      puts "Done." unless options['quiet']
+      say("Done.", :green) unless options['quiet']
     end
 
-    desc "watch", "upload individual theme assets as they change"
+    desc "watch", "upload and delete individual theme assets as they change, use the --keep_files flag to disable remote file deletion"
     method_option :quiet, :type => :boolean, :default => false
+    method_option :keep_files, :type => :boolean, :default => false
     def watch
       FSSM.monitor '.' do |m|
         m.update do |base, relative|
@@ -68,6 +84,11 @@ module ShopifyTheme
         m.create do |base, relative|
           send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
         end
+        if !options['keep_files']
+	        m.delete do |base, relative|
+						delete_asset(relative, options['quiet'])					
+		      end
+	      end
       end
     end
 
@@ -99,10 +120,18 @@ module ShopifyTheme
       end
 
       if ShopifyParty.send_asset(data).success?
-        puts "Uploaded: #{asset}" unless quiet
+        say("Uploaded: #{asset}", :green) unless quiet
       else
-        puts "Error: Could not upload #{asset} to #{@config['store']}"
+        say("Error: Could not upload #{asset}", :red)
       end
     end
+    
+    def delete_asset(key, quiet=false)
+			if ShopifyParty.delete_asset(key).success?
+        say("Removed: #{key}", :green) unless quiet
+      else
+        say("Error: Could not remove #{key}", :red)
+      end
+    end    
   end
 end
