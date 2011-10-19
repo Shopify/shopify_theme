@@ -48,10 +48,8 @@ module ShopifyTheme
     desc "replace FILE", "completely replace shop theme assets with local theme assets"
     method_option :quiet, :type => :boolean, :default => false
     def replace(*keys)
-	    puts @config
 	    say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
-	    answer = ask("Continue? (Y/N): ");
-	    if answer == "Y"
+	    if ask("Continue? (Y/N): ") == "Y"
 		    remote_assets = keys.empty? ? ShopifyParty.asset_list : keys
 	      remote_assets.each do |asset|
 	        delete_asset(asset, options['quiet'])
