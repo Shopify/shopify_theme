@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "shopify_theme"
   s.add_dependency("thor", [">= 0.14.4"])
-  s.add_dependency("httparty")
+  s.add_dependency("httparty", ["= 0.7.8"])
   s.add_dependency("json")
   s.add_dependency("fssm")
 
