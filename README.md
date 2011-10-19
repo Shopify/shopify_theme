@@ -30,6 +30,12 @@ Remove a theme file
 theme remove assets/layout.liquid
 ````
 
+Completely replace shop theme assets with the local assets
+
+````
+theme replace
+````
+
 Watch the theme directory and upload any files as they change
 
 ````
