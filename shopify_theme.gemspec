@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency("httparty", ["= 0.7.8"])
   s.add_dependency("json")
   s.add_dependency("fssm")
+  s.add_dependency("sass")
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
