@@ -5,6 +5,7 @@ require 'base64'
 require 'fileutils'
 require 'json'
 require 'fssm'
+require 'sass'
 
 module ShopifyTheme
   class Cli < Thor
@@ -17,7 +18,7 @@ module ShopifyTheme
       map shortcut => command.to_sym
     end
 
-    desc "configure API_KEY PASSWORD STORE", "generate a config file for the store to connect to"
+    desc "configure API_KEY PASSWORD STORE_URL", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil)
       config = {:api_key => api_key, :password => password, :store => store}
       create_file('config.yml', config.to_yaml)
@@ -77,7 +78,12 @@ module ShopifyTheme
     def watch
       FSSM.monitor '.' do |m|
         m.update do |base, relative|
-          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+	        $update_ignore ||= []
+	        if !$update_ignore.include?(relative)
+	          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+	        else
+	          $update_ignore.delete(relative)
+	        end
         end
         m.create do |base, relative|
           send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
@@ -111,6 +117,8 @@ module ShopifyTheme
 
     def send_asset(asset, quiet=false)
       data = {:key => asset}
+      compile_asset(asset, quiet)
+	    
       if (content = File.read(asset)).is_binary_data? || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
         data.merge!(:attachment => Base64.encode64(content))
       else
@@ -123,8 +131,19 @@ module ShopifyTheme
         say("Error: Could not upload #{asset}", :red)
       end
     end
-    
+
+		def compile_asset(asset, quiet=false)
+	    if File.extname(asset) =~ /\.s[ca]ss$/
+				sass_engine = Sass::Engine.for_file(asset,{})
+				asset.gsub!(/\.s[ac]ss$/, '.css')
+				$update_ignore.push(asset)
+				File.open(asset, 'w') {|f| f.write(sass_engine.render)}
+		    say("Rendered SASS to #{asset}", :magenta) unless quiet
+		  end
+		end
+
     def delete_asset(key, quiet=false)
+			return if File.extname(key) =~ /\.s[ca]ss$/
 			if ShopifyParty.delete_asset(key).success?
         say("Removed: #{key}", :green) unless quiet
       else
