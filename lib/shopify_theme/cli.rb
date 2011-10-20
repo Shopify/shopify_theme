@@ -7,6 +7,8 @@ require 'json'
 require 'fssm'
 require 'sass'
 
+$update_ignore ||= []
+
 module ShopifyTheme
   class Cli < Thor
     include Thor::Actions
@@ -78,7 +80,6 @@ module ShopifyTheme
     def watch
       FSSM.monitor '.' do |m|
         m.update do |base, relative|
-	        $update_ignore ||= []
 	        if !$update_ignore.include?(relative)
 	          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
 	        else
