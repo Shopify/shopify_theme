@@ -138,10 +138,10 @@ module ShopifyTheme
           notify "#{asset}", :title => 'Uploaded Asset', :icon => ICON unless quiet
           say("Uploaded: #{asset}", :green) unless quiet      
         else        
-          errors = response.parsed_response["errors"]
+          errors = response.parsed_response["errors"] if response.parsed_response
           errors = errors.collect{|(key, value)| "#{value.join(', ')}"} if errors
           notify "#{asset} \n #{errors}", :title => 'Upload Error', :icon => ICON unless quiet
-          say("Upload error: #{asset} - #{errors}", :red)      
+          say("Upload error: #{asset} - #{errors}\n", :red)      
         end
       end   
     end
@@ -168,11 +168,21 @@ module ShopifyTheme
 
     def delete_asset(key, quiet=false)
 			return if key =~ SASS_EXTENSION
-			if ShopifyParty.delete_asset(key).success?
+			#if ShopifyParty.delete_asset(key).success?
+      #  say("Removed: #{key}", :green) unless quiet
+      #else
+      #  say("Error: Could not remove #{key}", :red)
+      #end
+      response = ShopifyParty.delete_asset(key)      
+      if response.success?
         say("Removed: #{key}", :green) unless quiet
-      else
-        say("Error: Could not remove #{key}", :red)
-      end
+        notify "#{key}", :title => 'Removed Asset', :icon => ICON unless quiet     
+      else        
+        errors = response.parsed_response["errors"] if response.parsed_response
+        errors = errors.collect{|(key, value)| "#{value.join(', ')}"} if errors
+        notify "#{key} \n #{errors}", :title => 'Remove Error', :icon => ICON unless quiet
+        say("Error: Could not remove #{key} - #{errors}\n", :red)      
+      end      
     end    
   end
 end
