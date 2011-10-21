@@ -132,13 +132,17 @@ module ShopifyTheme
 	      else
 	        data.merge!(:value => content)
 	      end
-	
-	      if ShopifyParty.send_asset(data).success?
-	        say("Uploaded: #{asset}", :green) unless quiet
-	       	notify "#{asset}", :title => 'Uploaded Asset', :icon => ICON unless quiet
-	      else
-	        say("Error: Could not upload #{asset}", :red)
-	      end
+
+        response = ShopifyParty.send_asset(data)      
+        if response.success?
+          notify "#{asset}", :title => 'Uploaded Asset', :icon => ICON unless quiet
+          say("Uploaded: #{asset}", :green) unless quiet      
+        else        
+          errors = response.parsed_response["errors"]
+          errors = errors.collect{|(key, value)| "#{value.join(', ')}"} if errors
+          notify "#{asset} \n #{errors}", :title => 'Upload Error', :icon => ICON unless quiet
+          say("Upload error: #{asset} - #{errors}", :red)      
+        end
       end   
     end
 
@@ -154,7 +158,7 @@ module ShopifyTheme
 					say("Rendered SASS: #{original_asset} => #{asset}", :magenta) unless quiet
 					true
 				rescue Sass::SyntaxError => e
-					notify "#{e.sass_filename}:#{e.sass_line} - \n #{e.message}", :title => 'Syntax Error', :icon => ICON unless quiet
+					notify "#{e.sass_filename}:#{e.sass_line} \n #{e.message}", :title => 'Syntax Error', :icon => ICON unless quiet
 					say("#{e.sass_filename}:#{e.sass_line} - #{e.message}", :red) unless quiet
 					false
 				end
