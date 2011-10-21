@@ -16,7 +16,8 @@ module ShopifyTheme
 		include Growl
 		
     BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff swf)
-    ASSET_EXTENSION = /\.s[ca]ss?$/
+    SASS_EXTENSION = /\.s[ca]ss?$/
+    LIQUID_EXTENSION = /\.liquid?$/
     IGNORE = %w(config.yml)
     ICON = File.dirname(__FILE__) + '/images/shopify.png'
 		
@@ -142,11 +143,11 @@ module ShopifyTheme
     end
 
 		def compile_asset(asset, quiet=false)
-	    if asset =~ ASSET_EXTENSION
+	    if asset =~ SASS_EXTENSION
 				begin
 					original_asset = asset
 					sass_engine = Sass::Engine.for_file(asset,{})
-					asset.gsub!(ASSET_EXTENSION, '.css')
+					asset.gsub!(SASS_EXTENSION, '.css')
 					$update_ignore.push(asset)
 					File.open(asset, 'w') {|f| f.write(sass_engine.render)}
 					notify "#{original_asset} => #{asset}", :title => 'Rendered SASS', :icon => ICON unless quiet
@@ -162,7 +163,7 @@ module ShopifyTheme
 		end
 
     def delete_asset(key, quiet=false)
-			return if key =~ ASSET_EXTENSION
+			return if key =~ SASS_EXTENSION
 			if ShopifyParty.delete_asset(key).success?
         say("Removed: #{key}", :green) unless quiet
       else
