@@ -121,19 +121,23 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      if ShopifyTheme.send_asset(data).success?
+      if (response = ShopifyTheme.send_asset(data)).success?
         say("Uploaded: #{asset}", :green) unless quiet
       else
-        say("Error: Could not upload #{asset} to #{ShopifyTheme.config[:store]}", :red)
+        say("Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
       end
     end
 
     def delete_asset(key, quiet=false)
-			if ShopifyTheme.delete_asset(key).success?
+      if (response = ShopifyTheme.delete_asset(key)).success?
         say("Removed: #{key}", :green) unless quiet
       else
-        say("Error: Could not remove #{key} from #{ShopifyTheme.config[:store]}", :red)
+        say("Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
       end
+    end
+
+    def errors_from_response(response)
+      response.parsed_response ? response.parsed_response["errors"].values.join(", ") : ""
     end
   end
 end
