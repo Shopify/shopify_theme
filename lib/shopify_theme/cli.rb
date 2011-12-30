@@ -44,7 +44,7 @@ module ShopifyTheme
       end
       say("Done.", :green) unless options['quiet']
     end
-    
+
     desc "replace FILE", "completely replace shop theme assets with local theme assets"
     method_option :quiet, :type => :boolean, :default => false
     def replace(*keys)
@@ -84,7 +84,7 @@ module ShopifyTheme
         end
         if !options['keep_files']
 	        m.delete do |base, relative|
-						delete_asset(relative, options['quiet'])					
+						delete_asset(relative, options['quiet'])
 		      end
 	      end
       end
@@ -127,13 +127,13 @@ module ShopifyTheme
         say("Error: Could not upload #{asset} to #{ShopifyTheme.config[:store]}", :red)
       end
     end
-    
+
     def delete_asset(key, quiet=false)
 			if ShopifyTheme.delete_asset(key).success?
         say("Removed: #{key}", :green) unless quiet
       else
         say("Error: Could not remove #{key} from #{ShopifyTheme.config[:store]}", :red)
       end
-    end    
+    end
   end
 end
