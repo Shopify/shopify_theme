@@ -19,7 +19,7 @@ module ShopifyTheme
 
     desc "configure API_KEY PASSWORD STORE", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil)
-      config = {:api_key => api_key, :password => password, :store => store, :ignore_files => []}
+      config = {:api_key => api_key, :password => password, :store => store, :ignore_files => ["README"]}
       create_file('config.yml', config.to_yaml)
     end
 
@@ -84,7 +84,7 @@ module ShopifyTheme
         end
         if !options['keep_files']
 	        m.delete do |base, relative|
-						delete_asset(relative, options['quiet'])
+						delete_asset(relative, options['quiet']) if local_assets_list.include?(relative)
 		      end
 	      end
       end
