@@ -2,15 +2,19 @@ require 'httparty'
 module ShopifyTheme
   include HTTParty
 
+  NOOPParser = Proc.new {|data, format| {} }
+
   def self.asset_list
-    response = shopify.get("/admin/assets.json")
+    # HTTParty parser chokes on assest listing, have it noop
+    # and then use a rel JSON parser.
+    response = shopify.get("/admin/assets.json", :parser => NOOPParser)
     assets = JSON.parse(response.body)["assets"].collect {|a| a['key'] }
     # Remove any .css files if a .css.liquid file exists
     assets.reject{|a| assets.include?("#{a}.liquid") }
   end
 
   def self.get_asset(asset)
-    response = shopify.get("/admin/assets.json", :query =>{:asset => {:key => asset}})
+    response = shopify.get("/admin/assets.json", :query =>{:asset => {:key => asset}}, :parser => NOOPParser)
     # HTTParty json parsing is broken?
     JSON.parse(response.body)["asset"]
   end
