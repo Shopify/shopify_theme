@@ -35,6 +35,14 @@ module ShopifyTheme
     @ignore_files ||= (config[:ignore_files] || []).compact.collect { |r| Regexp.new(r) }
   end
 
+  def self.is_binary_data?(string)
+    if string.respond_to?(:encoding)
+      string.encoding == "US-ASCII"
+    else
+      ( string.count( "^ -~", "^\r\n" ).fdiv(string.size) > 0.3 || string.index( "\x00" ) ) unless string.empty?
+    end
+  end
+
   private
   def self.shopify
     basic_auth config[:api_key], config[:password]

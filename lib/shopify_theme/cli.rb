@@ -115,7 +115,8 @@ module ShopifyTheme
 
     def send_asset(asset, quiet=false)
       data = {:key => asset}
-      if (content = File.read(asset)).is_binary_data? || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
+      content = File.read(asset)
+      if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
         data.merge!(:attachment => Base64.encode64(content))
       else
         data.merge!(:value => content)
