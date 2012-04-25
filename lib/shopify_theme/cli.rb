@@ -19,7 +19,7 @@ module ShopifyTheme
 
     desc "configure API_KEY PASSWORD STORE", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil)
-      config = {:api_key => api_key, :password => password, :store => store, :ignore_files => ["README"]}
+      config = {:api_key => api_key, :password => password, :store => store, :theme_id => nil, :ignore_files => ["README"]}
       create_file('config.yml', config.to_yaml)
     end
 
