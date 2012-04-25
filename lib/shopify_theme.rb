@@ -7,28 +7,32 @@ module ShopifyTheme
   def self.asset_list
     # HTTParty parser chokes on assest listing, have it noop
     # and then use a rel JSON parser.
-    response = shopify.get("/admin/assets.json", :parser => NOOPParser)
+    response = shopify.get(path, :parser => NOOPParser)
     assets = JSON.parse(response.body)["assets"].collect {|a| a['key'] }
     # Remove any .css files if a .css.liquid file exists
     assets.reject{|a| assets.include?("#{a}.liquid") }
   end
 
   def self.get_asset(asset)
-    response = shopify.get("/admin/assets.json", :query =>{:asset => {:key => asset}}, :parser => NOOPParser)
+    response = shopify.get(path, :query =>{:asset => {:key => asset}}, :parser => NOOPParser)
     # HTTParty json parsing is broken?
     JSON.parse(response.body)["asset"]
   end
 
   def self.send_asset(data)
-    shopify.put("/admin/assets.json", :body =>{:asset => data})
+    shopify.put(path, :body =>{:asset => data})
   end
 
   def self.delete_asset(asset)
-    shopify.delete("/admin/assets.json", :body =>{:asset => {:key => asset}})
+    shopify.delete(path, :body =>{:asset => {:key => asset}})
   end
 
   def self.config
     @config ||= YAML.load(File.read('config.yml'))
+  end
+
+  def self.path
+    @path ||= config[:theme_id] ? "/admin/themes/#{config[:theme_id]}/assets.json" : "/admin/assets.json" 
   end
 
   def self.ignore_files
