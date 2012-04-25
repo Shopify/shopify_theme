@@ -6,7 +6,7 @@ gem install shopify_theme
 
 # Usage
 
-Generate the config file
+Generate the config file. Go get a valid api_key and password for your store head to https://<your store>.myshopify.com/admin/api and generate a private application. 
 
 ````
 theme configure api_key password store_url
