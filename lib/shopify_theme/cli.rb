@@ -4,7 +4,7 @@ require 'abbrev'
 require 'base64'
 require 'fileutils'
 require 'json'
-require 'fssm'
+require 'listen'
 
 module ShopifyTheme
   class Cli < Thor
@@ -17,9 +17,9 @@ module ShopifyTheme
       map shortcut => command.to_sym
     end
 
-    desc "configure API_KEY PASSWORD STORE", "generate a config file for the store to connect to"
-    def configure(api_key=nil, password=nil, store=nil)
-      config = {:api_key => api_key, :password => password, :store => store, :theme_id => nil, :ignore_files => ["README"]}
+    desc "configure API_KEY PASSWORD STORE THEME_ID", "generate a config file for the store to connect to"
+    def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
+      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :ignore_files => ["README"]}
       create_file('config.yml', config.to_yaml)
     end
 
@@ -48,25 +48,25 @@ module ShopifyTheme
     desc "replace FILE", "completely replace shop theme assets with local theme assets"
     method_option :quiet, :type => :boolean, :default => false
     def replace(*keys)
-	    say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
-	    if ask("Continue? (Y/N): ") == "Y"
-		    remote_assets = keys.empty? ? ShopifyTheme.asset_list : keys
-	      remote_assets.each do |asset|
-	        delete_asset(asset, options['quiet'])
-	      end
-	      local_assets = keys.empty? ? local_assets_list : keys
-	      local_assets.each do |asset|
-	        send_asset(asset, options['quiet'])
-	      end
-	      say("Done.", :green) unless options['quiet']
-		  end
+      say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
+      if ask("Continue? (Y/N): ") == "Y"
+        remote_assets = keys.empty? ? ShopifyTheme.asset_list : keys
+        remote_assets.each do |asset|
+          delete_asset(asset, options['quiet'])
+        end
+        local_assets = keys.empty? ? local_assets_list : keys
+        local_assets.each do |asset|
+          send_asset(asset, options['quiet'])
+        end
+        say("Done.", :green) unless options['quiet']
+      end
     end
 
     desc "remove FILE", "remove theme asset"
     method_option :quiet, :type => :boolean, :default => false
     def remove(*keys)
       keys.each do |key|
-				delete_asset(key, options['quiet'])
+        delete_asset(key, options['quiet'])
       end
       say("Done.", :green) unless options['quiet']
     end
@@ -75,18 +75,19 @@ module ShopifyTheme
     method_option :quiet, :type => :boolean, :default => false
     method_option :keep_files, :type => :boolean, :default => false
     def watch
-      FSSM.monitor '.' do |m|
-        m.update do |base, relative|
-          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+      puts "Watching current folder:"
+      Listen.to('',:relative_paths => true) do |modified, added, removed|
+        modified.each do |filePath|
+          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
-        m.create do |base, relative|
-          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+        added.each do |filePath|
+          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
         if !options['keep_files']
-	        m.delete do |base, relative|
-						delete_asset(relative, options['quiet']) if local_assets_list.include?(relative)
-		      end
-	      end
+          removed.each do |filePath|
+            delete_asset(filePath, options['quiet']) if local_assets_list.include?(relative)
+          end
+        end
       end
     end
 
