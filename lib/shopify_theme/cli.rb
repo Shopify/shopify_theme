@@ -4,7 +4,7 @@ require 'abbrev'
 require 'base64'
 require 'fileutils'
 require 'json'
-require 'fssm'
+require 'listen'
 
 module ShopifyTheme
   class Cli < Thor
@@ -75,21 +75,22 @@ module ShopifyTheme
     method_option :quiet, :type => :boolean, :default => false
     method_option :keep_files, :type => :boolean, :default => false
     def watch
-      FSSM.monitor '.' do |m|
-        m.update do |base, relative|
-          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+      puts "Watching current folder:"
+      Listen.to('',:relative_paths => true) do |modified, added, removed|
+        modified.each do |filePath|
+          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
-        m.create do |base, relative|
-          send_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+        added.each do |filePath|
+          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
         if !options['keep_files']
-	        m.delete do |base, relative|
-						delete_asset(relative, options['quiet']) if local_assets_list.include?(relative)
-		      end
-	      end
+	        removed.each do |filePath|
+	          delete_asset(relative, options['quiet']) if local_assets_list.include?(relative)
+	        end
+        end
       end
     end
-
+    
     private
 
     def local_assets_list
