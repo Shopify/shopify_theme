@@ -5,6 +5,7 @@ require 'base64'
 require 'fileutils'
 require 'json'
 require 'listen'
+require 'terminal-notifier'
 
 module ShopifyTheme
   class Cli < Thor
@@ -21,6 +22,7 @@ module ShopifyTheme
     def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
       config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :ignore_files => ["README"]}
       create_file('config.yml', config.to_yaml)
+      TerminalNotifier.notify("Config file created", :title => "Shopify Theme")
     end
 
     desc "download FILE", "download the shops current theme assets"
@@ -33,6 +35,7 @@ module ShopifyTheme
         say("Downloaded: #{asset}", :green) unless options['quiet']
       end
       say("Done.", :green) unless options['quiet']
+      TerminalNotifier.notify("Finished downloading theme.", :title => "Shopify Theme")
     end
 
     desc "upload FILE", "upload all theme assets to shop"
@@ -43,6 +46,7 @@ module ShopifyTheme
         send_asset(asset, options['quiet'])
       end
       say("Done.", :green) unless options['quiet']
+      TerminalNotifier.notify("Finished uploading all theme assets", :title => "Shopify Theme")
     end
 
     desc "replace FILE", "completely replace shop theme assets with local theme assets"
@@ -59,7 +63,8 @@ module ShopifyTheme
 	        send_asset(asset, options['quiet'])
 	      end
 	      say("Done.", :green) unless options['quiet']
-		  end
+	            TerminalNotifier.notify("Finished replacing all theme assets with local theme assets", :title => "Shopify Theme")
+	      end
     end
 
     desc "remove FILE", "remove theme asset"
@@ -69,6 +74,7 @@ module ShopifyTheme
 				delete_asset(key, options['quiet'])
       end
       say("Done.", :green) unless options['quiet']
+	      TerminalNotifier.notify("Removed theme asset", :title => "Shopify Theme")
     end
 
     desc "watch", "upload and delete individual theme assets as they change, use the --keep_files flag to disable remote file deletion"
@@ -76,6 +82,7 @@ module ShopifyTheme
     method_option :keep_files, :type => :boolean, :default => false
     def watch
       puts "Watching current folder:"
+      TerminalNotifier.notify("Started watching theme folder", :title => "Shopify Theme")
       Listen.to('',:relative_paths => true) do |modified, added, removed|
         modified.each do |filePath|
           send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
@@ -122,19 +129,23 @@ module ShopifyTheme
       else
         data.merge!(:value => content)
       end
-
+	
       if (response = ShopifyTheme.send_asset(data)).success?
         say("Uploaded: #{asset}", :green) unless quiet
+		TerminalNotifier.notify("#{asset} uploaded", :title => "Shopify Theme")
       else
         say("Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
+		TerminalNotifier.notify("Error: Could not upload #{asset}. #{errors_from_response(response)}", :title => "Shopify Theme", :subtitle => 'Error')
       end
     end
 
     def delete_asset(key, quiet=false)
       if (response = ShopifyTheme.delete_asset(key)).success?
         say("Removed: #{key}", :green) unless quiet
+        TerminalNotifier.notify("Removed: #{key}", :title => "Shopify Theme")
       else
         say("Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
+		TerminalNotifier.notify("Error: Could not remove #{key}. #{errors_from_response(response)}", :title => "Shopify Theme",:subtitle => 'Error')
       end
     end
 
