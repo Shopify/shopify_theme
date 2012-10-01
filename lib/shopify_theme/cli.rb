@@ -63,7 +63,7 @@ module ShopifyTheme
 	        send_asset(asset, options['quiet'])
 	      end
 	      say("Done.", :green) unless options['quiet']
-	            TerminalNotifier.notify("Finished replacing all theme assets with local theme assets", :title => "Shopify Theme")
+	      TerminalNotifier.notify("Finished replacing all theme assets with local theme assets", :title => "Shopify Theme")
 	      end
     end
 
