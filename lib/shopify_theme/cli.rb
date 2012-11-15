@@ -140,7 +140,9 @@ module ShopifyTheme
     end
 
     def errors_from_response(response)
-      response.parsed_response ? response.parsed_response["errors"].values.join(", ") : ""
+      if response.parsed_response
+        response.parsed_response["errors"] ? response.parsed_response["errors"].values.join(", ") : ""
+      end
     end
   end
 end
