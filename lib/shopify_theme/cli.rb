@@ -127,10 +127,10 @@ module ShopifyTheme
 
       if (response = ShopifyTheme.send_asset(data)).success?
         say("Uploaded: #{asset}", :green) unless quiet
-        run("terminal-notifier -message 'Uploaded: #{asset}' -title 'Shopify Theme'", :verbose => false) if notify
+        run("terminal-notifier -message 'Uploaded: #{asset}' -title 'Shopify Theme' > /dev/null 2>&1", :verbose => false) if notify
       else
         say("Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
-        run("terminal-notifier -message 'Error: Could not upload #{asset}. #{errors_from_response(response)}' -title 'Shopify Theme Error'", :verbose => false) if notify
+        run("terminal-notifier -message 'Error: Could not upload #{asset}. #{errors_from_response(response)}' -title 'Shopify Theme Error' > /dev/null 2>&1", :verbose => false) if notify
       end
     end
 
