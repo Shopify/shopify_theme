@@ -47,6 +47,10 @@ module ShopifyTheme
     end
   end
 
+  def use_terminal_notifier
+    @use_terminal_notifier ||= config[:use_terminal_notifier] 
+  end
+
   private
   def self.shopify
     basic_auth config[:api_key], config[:password]

@@ -20,7 +20,7 @@ module ShopifyTheme
 
     desc "configure API_KEY PASSWORD STORE THEME_ID", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
-      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :ignore_files => ["README"]}
+      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :ignore_files => ["README"], :use_terminal_notifier => false}
       create_file('config.yml', config.to_yaml)
     end
 
@@ -75,15 +75,14 @@ module ShopifyTheme
     desc "watch", "upload and delete individual theme assets as they change, use the --keep_files flag to disable remote file deletion"
     method_option :quiet, :type => :boolean, :default => false
     method_option :keep_files, :type => :boolean, :default => false
-    method_option :notify, :type => :boolean, :default => true
     def watch
       puts "Watching current folder:"
       Listen.to('',:relative_paths => true) do |modified, added, removed|
         modified.each do |filePath|
-          send_asset(filePath, options['quiet'], options['notify']) if local_assets_list.include?(filePath)
+          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
         added.each do |filePath|
-          send_asset(filePath, options['quiet'], options['notify']) if local_assets_list.include?(filePath)
+          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
         if !options['keep_files']
           removed.each do |filePath|
@@ -116,7 +115,7 @@ module ShopifyTheme
       File.open(key, "w") {|f| f.write content} if content
     end
 
-    def send_asset(asset, quiet=false, notify=true)
+    def send_asset(asset, quiet=false)
       data = {:key => asset}
       content = File.read(asset)
       if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
@@ -127,10 +126,10 @@ module ShopifyTheme
 
       if (response = ShopifyTheme.send_asset(data)).success?
         say("Uploaded: #{asset}", :green) unless quiet
-        run("terminal-notifier -message 'Uploaded: #{asset}' -title 'Shopify Theme' > /dev/null 2>&1", :verbose => false) if notify
+        run("terminal-notifier -message 'Uploaded: #{asset}' -title 'Shopify Theme' > /dev/null 2>&1", :verbose => false) if ShopifyTheme.use_terminal_notifier
       else
         say("Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
-        run("terminal-notifier -message 'Error: Could not upload #{asset}. #{errors_from_response(response)}' -title 'Shopify Theme Error' > /dev/null 2>&1", :verbose => false) if notify
+        run("terminal-notifier -message 'Error: Could not upload #{asset}. #{errors_from_response(response)}' -title 'Shopify Theme Error' > /dev/null 2>&1", :verbose => false)  if ShopifyTheme.use_terminal_notifier
       end
     end
 
