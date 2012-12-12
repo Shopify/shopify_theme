@@ -126,8 +126,10 @@ module ShopifyTheme
 
       if (response = ShopifyTheme.send_asset(data)).success?
         say("Uploaded: #{asset}", :green) unless quiet
+        run("terminal-notifier -message '#{asset}' -title 'Shopify Theme'")
       else
         say("Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
+        run("terminal-notifier -message 'Error: Could not upload #{asset}. #{errors_from_response(response)}' -title 'Shopify Theme'")
       end
     end
 
