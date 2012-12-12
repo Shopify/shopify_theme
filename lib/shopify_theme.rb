@@ -47,8 +47,8 @@ module ShopifyTheme
     end
   end
 
-  def use_terminal_notifier
-    @use_terminal_notifier ||= config[:use_terminal_notifier] 
+  def self.use_terminal_notifier
+    @use_terminal_notifier ||= (config[:use_terminal_notifier] == true)
   end
 
   private
