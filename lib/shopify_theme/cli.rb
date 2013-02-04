@@ -77,6 +77,13 @@ module ShopifyTheme
     method_option :keep_files, :type => :boolean, :default => false
     def watch
       puts "Watching current folder:"
+      
+      Signal.trap( :INT ) do
+        puts 'No longer watching current folder'
+        Thread.exit
+        Process.exit
+      end
+      
       Listen.to('',:relative_paths => true) do |modified, added, removed|
         modified.each do |filePath|
           send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
