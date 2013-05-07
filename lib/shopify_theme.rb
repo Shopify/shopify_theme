@@ -50,7 +50,7 @@ module ShopifyTheme
   private
   def self.shopify
     basic_auth config[:api_key], config[:password]
-    base_uri "http://#{config[:store]}"
+    base_uri "https://#{config[:store]}"
     ShopifyTheme
   end
 end
