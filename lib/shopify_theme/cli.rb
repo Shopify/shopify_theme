@@ -1,6 +1,6 @@
 require 'thor'
 require 'yaml'
-YAML::ENGINE.yamler = 'syck'
+YAML::ENGINE.yamler = 'syck' if defined? Syck
 require 'abbrev'
 require 'base64'
 require 'fileutils'
