@@ -11,7 +11,7 @@ module ShopifyTheme
   class Cli < Thor
     include Thor::Actions
 
-    BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff swf)
+    BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff swf ico)
     IGNORE = %w(config.yml)
 
     tasks.keys.abbrev.each do |shortcut, command|
