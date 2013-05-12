@@ -51,7 +51,9 @@ module ShopifyTheme
     def replace(*keys)
       say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
       if ask("Continue? (Y/N): ") == "Y"
-        remote_assets = keys.empty? ? ShopifyTheme.asset_list : keys
+        # only delete files on remote that are not present locally
+        # files present on remote and present locally get overridden anyway
+        remote_assets = keys.empty? ? (ShopifyTheme.asset_list - local_assets_list) : keys
         remote_assets.each do |asset|
           delete_asset(asset, options['quiet'])
         end
@@ -140,7 +142,9 @@ module ShopifyTheme
     end
 
     def errors_from_response(response)
-      response.parsed_response ? response.parsed_response["errors"].values.join(", ") : ""
+      if response.parsed_response
+        response.parsed_response["errors"] ? response.parsed_response["errors"].values.join(", ") : ""
+      end
     end
   end
 end
