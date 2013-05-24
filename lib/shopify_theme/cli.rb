@@ -119,7 +119,7 @@ module ShopifyTheme
     end
 
     def send_asset(asset, quiet=false)
-      time = Time.new
+      time = Time.now
       data = {:key => asset}
       content = File.read(asset)
       if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
@@ -136,7 +136,7 @@ module ShopifyTheme
     end
 
     def delete_asset(key, quiet=false)
-      time = Time.new
+      time = Time.now
       if (response = ShopifyTheme.delete_asset(key)).success?
         say("[" + time.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
       else
