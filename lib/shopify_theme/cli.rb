@@ -13,6 +13,7 @@ module ShopifyTheme
 
     BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff swf ico)
     IGNORE = %w(config.yml)
+    TIMEFORMAT = "%H:%M:%S"
 
     tasks.keys.abbrev.each do |shortcut, command|
       map shortcut => command.to_sym
@@ -118,6 +119,7 @@ module ShopifyTheme
     end
 
     def send_asset(asset, quiet=false)
+      time = Time.now
       data = {:key => asset}
       content = File.read(asset)
       if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
@@ -127,17 +129,18 @@ module ShopifyTheme
       end
 
       if (response = ShopifyTheme.send_asset(data)).success?
-        say("Uploaded: #{asset}", :green) unless quiet
+        say("[" + time.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
       else
-        say("Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
+        say("[" + time.strftime(TIMEFORMAT) + "] Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
       end
     end
 
     def delete_asset(key, quiet=false)
+      time = Time.now
       if (response = ShopifyTheme.delete_asset(key)).success?
-        say("Removed: #{key}", :green) unless quiet
+        say("[" + time.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
       else
-        say("Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
+        say("[" + time.strftime(TIMEFORMAT) + "] Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
       end
     end
 
