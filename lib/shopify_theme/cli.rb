@@ -110,12 +110,14 @@ module ShopifyTheme
       if asset['value']
         # For CRLF line endings
         content = asset['value'].gsub("\r", "")
+        format = "w"
       elsif asset['attachment']
         content = Base64.decode64(asset['attachment'])
+        format = "w+b"
       end
 
       FileUtils.mkdir_p(File.dirname(key))
-      File.open(key, "w") {|f| f.write content} if content
+      File.open(key, format) {|f| f.write content} if content
     end
 
     def send_asset(asset, quiet=false)
@@ -123,6 +125,7 @@ module ShopifyTheme
       data = {:key => asset}
       content = File.read(asset)
       if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
+        content = open(asset, "rb") {|io| io.read }
         data.merge!(:attachment => Base64.encode64(content))
       else
         data.merge!(:value => content)
