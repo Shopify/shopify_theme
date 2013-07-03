@@ -45,3 +45,9 @@ Watch the theme directory and upload any files as they change
 ````
 theme watch
 ````
+
+Open the store in the default browser
+
+````
+theme open
+````
