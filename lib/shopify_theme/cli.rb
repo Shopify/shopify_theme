@@ -125,7 +125,7 @@ module ShopifyTheme
       data = {:key => asset}
       content = File.read(asset)
       if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
-        content = open(asset, "rb") {|io| io.read }
+        content = IO.read asset
         data.merge!(:attachment => Base64.encode64(content))
       else
         data.merge!(:value => content)
