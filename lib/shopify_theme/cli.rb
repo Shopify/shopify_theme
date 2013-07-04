@@ -6,6 +6,7 @@ require 'base64'
 require 'fileutils'
 require 'json'
 require 'listen'
+require 'launchy'
 
 module ShopifyTheme
   class Cli < Thor
@@ -35,6 +36,15 @@ module ShopifyTheme
         say("Downloaded: #{asset}", :green) unless options['quiet']
       end
       say("Done.", :green) unless options['quiet']
+    end
+
+    desc "open", "open the store in your browser"
+    def open(*keys)
+      config = YAML.load_file 'config.yml'
+      url = config[:store]
+      if Launchy.open url
+        say("Done.", :green)
+      end
     end
 
     desc "upload FILE", "upload all theme assets to shop"
