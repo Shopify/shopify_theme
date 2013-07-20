@@ -20,6 +20,15 @@ module ShopifyTheme
       map shortcut => command.to_sym
     end
 
+    desc "check", "check configuration"
+    def check
+      if ShopifyTheme.check_config
+        say("Configuration [OK]", :green)
+      else
+        say("Configuration [FAIL]", :red)
+      end
+    end
+
     desc "configure API_KEY PASSWORD STORE THEME_ID", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
       config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :ignore_files => ["README"]}
