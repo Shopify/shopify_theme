@@ -103,6 +103,9 @@ module ShopifyTheme
           end
         end
       end
+
+    rescue Interrupt
+      puts "exiting..."
     end
 
     private
