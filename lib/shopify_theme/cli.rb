@@ -137,7 +137,7 @@ module ShopifyTheme
       time = Time.now
       data = {:key => asset}
       content = File.read(asset)
-      if ShopifyTheme.is_binary_data?(content) || BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.',''))
+      if BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.','')) || ShopifyTheme.is_binary_data?(content)
         content = IO.read asset
         data.merge!(:attachment => Base64.encode64(content))
       else
