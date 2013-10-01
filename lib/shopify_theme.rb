@@ -32,7 +32,7 @@ module ShopifyTheme
   end
 
   def self.path
-    @path ||= config[:theme_id] ? "/admin/themes/#{config[:theme_id]}/assets.json" : "/admin/assets.json" 
+    @path ||= config[:theme_id] ? "/admin/themes/#{config[:theme_id]}/assets.json" : "/admin/assets.json"
   end
 
   def self.ignore_files
@@ -45,6 +45,10 @@ module ShopifyTheme
     else
       ( string.count( "^ -~", "^\r\n" ).fdiv(string.size) > 0.3 || string.index( "\x00" ) ) unless string.empty?
     end
+  end
+
+  def self.check_config
+    shopify.get(path).code == 200
   end
 
   private
