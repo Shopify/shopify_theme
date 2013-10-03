@@ -108,7 +108,7 @@ module ShopifyTheme
         end
         if !options['keep_files']
           removed.each do |filePath|
-            delete_asset(filePath, options['quiet']) if local_assets_list.include?(relative)
+            delete_asset(filePath, options['quiet']) if !local_assets_list.include?(filePath)
           end
         end
       end
