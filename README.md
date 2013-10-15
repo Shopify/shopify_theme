@@ -16,7 +16,7 @@ Generate the config file. Go get a valid api_key and password for your store hea
 theme configure api_key password store_url
 ````
 
-Example (notice no http or https on store):
+Example of config.yml. Notice store has no http or https declaration.
 
 ````
 ---
