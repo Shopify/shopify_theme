@@ -16,6 +16,18 @@ Generate the config file. Go get a valid api_key and password for your store hea
 theme configure api_key password store_url
 ````
 
+Example (notice no http or https on store):
+
+````
+---
+:api_key: 7a8da86d3dd730b67a357dedabaac5d6
+:password: 552338ce0d3aba7fc501dcf99bc57a81
+:store: little-plastics.myshopify.com
+:theme_id:
+:ignore_files:
+- README
+````
+
 Download all the theme files
 
 ````
