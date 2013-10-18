@@ -15,9 +15,9 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "shopify_theme"
   s.add_development_dependency 'rake'
   s.add_dependency("thor", [">= 0.14.4"])
-  s.add_dependency("httparty", [">= 0.8.0"])
+  s.add_dependency("httparty", "~> 0.11")
   s.add_dependency("json")
-  s.add_dependency("listen", [">= 1.0.3"])
+  s.add_dependency("listen", "~>1.0")
   s.add_dependency("launchy")
 
   s.files         = `git ls-files`.split("\n")
