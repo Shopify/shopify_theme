@@ -28,7 +28,13 @@ module ShopifyTheme
   end
 
   def self.config
-    @config ||= YAML.load(File.read('config.yml'))
+    if File.exist? 'config.yml'
+      @config ||= YAML.load(File.read('config.yml'))
+      puts ":ignore_files: is deprecated for a white list, use :whitelist_files: instead" if @config[:ignore_files]
+    else
+      puts "config.yml does not exist!"
+      {}
+    end
   end
 
   def self.path
@@ -36,7 +42,11 @@ module ShopifyTheme
   end
 
   def self.ignore_files
-    @ignore_files ||= (config[:ignore_files] || []).compact.collect { |r| Regexp.new(r) }
+    @ignore_files ||= (config[:ignore_files] || []).compact.map { |r| Regexp.new(r) }
+  end
+
+  def self.whitelist_files
+    @whitelist_files ||= (config[:whitelist_files] || []).compact
   end
 
   def self.is_binary_data?(string)
