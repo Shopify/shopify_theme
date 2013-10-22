@@ -16,7 +16,9 @@ Generate the config file. Go get a valid api_key and password for your store hea
 theme configure api_key password store_url
 ````
 
-Example of config.yml. Notice store has no http or https declaration.
+Example of config.yml. Notice store has no http or https declaration. You can
+use `:whitelist_files:` to specify files for upload. The `assets/`, `config/`,
+`layout/`, `snippets/` and `templates/` directories are included by default.
 
 ````
 ---
@@ -24,8 +26,7 @@ Example of config.yml. Notice store has no http or https declaration.
 :password: 552338ce0d3aba7fc501dcf99bc57a81
 :store: little-plastics.myshopify.com
 :theme_id:
-:ignore_files:
-- README
+:whitelist_files:
 ````
 
 Download all the theme files
