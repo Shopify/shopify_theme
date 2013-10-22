@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_dependency("thor", [">= 0.14.4"])
   s.add_dependency("httparty", "~> 0.11")
-  s.add_dependency("json")
+  s.add_dependency("json", "~> 1.5.4")
   s.add_dependency("listen", "~>1.0")
   s.add_dependency("launchy")
 
