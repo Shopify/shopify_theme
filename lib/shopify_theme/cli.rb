@@ -14,6 +14,7 @@ module ShopifyTheme
 
     BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff otf swf ico)
     IGNORE = %w(config.yml)
+    DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/)
     TIMEFORMAT = "%H:%M:%S"
 
     tasks.keys.abbrev.each do |shortcut, command|
@@ -31,7 +32,7 @@ module ShopifyTheme
 
     desc "configure API_KEY PASSWORD STORE THEME_ID", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
-      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :ignore_files => ["README"]}
+      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id}
       create_file('config.yml', config.to_yaml)
     end
 
@@ -120,11 +121,14 @@ module ShopifyTheme
     private
 
     def local_assets_list
-      Dir.glob(File.join("**", "*")).reject do |p|
-        File.directory?(p) || IGNORE.include?(p) || ShopifyTheme.ignore_files.any? do |i|
-          i =~ p
-        end
+      local_files.reject do |p|
+        @permitted_files ||= (DEFAULT_WHITELIST | ShopifyTheme.whitelist_files).map{|pattern| Regexp.new(pattern)}
+        @permitted_files.none? { |regex| regex =~ p }
       end
+    end
+
+    def local_files
+      Dir.glob(File.join('**', '*'))
     end
 
     def download_asset(key)
