@@ -28,9 +28,10 @@ module ShopifyTheme
   end
 
   def self.config
-    if File.exist? 'config.yml'
-      @config ||= YAML.load(File.read('config.yml'))
-      puts ":ignore_files: is deprecated for a white list, use :whitelist_files: instead" if @config[:ignore_files]
+    @config ||= if File.exist? 'config.yml'
+      config = YAML.load(File.read('config.yml'))
+      puts ":ignore_files: is deprecated for a white list, use :whitelist_files: instead" if config[:ignore_files]
+      config
     else
       puts "config.yml does not exist!"
       {}
