@@ -7,25 +7,25 @@ module ShopifyTheme
       reporter = MiniTest::Mock.new
       reporter.expect(:error, nil, [String])
       reporter.expect(:warn, nil, [':ignore_files: is deprecated. Use :whitelist_files: instead'])
-      Configuration.new(':ignore_files: README.md', reporter)
+      Configuration.new({ignore_files: ['README.md']}, reporter)
       reporter.verify
     end
 
-    it "should gracefully handle when an empty configuration file is passed in" do
+    it "should gracefully handle when an empty configuration is passed in" do
       reporter = MiniTest::Mock.new
       reporter.expect(:error, nil, ['An empty configuration file was provided. Communication with Shopify is not possible!'])
-      Configuration.new('', reporter)
+      Configuration.new({}, reporter)
       reporter.verify
     end
 
-    it "should raise a warning when a configuration file was missing the required keys" do
-      CONFIGURATION = <<-YAML
-      :api_key: abracadabra
-      :store: little-plastics.myshopify.com
-      YAML
+    it "should raise a warning when a configuration is missing the required keys" do
+      configuration = {
+        api_key: 'abracadabra',
+        store: 'little-plastics.myshopify.com'
+      }
       reporter = MiniTest::Mock.new
       reporter.expect(:error, nil, ['Configuration is missing key(s): password'])
-      Configuration.new(CONFIGURATION, reporter)
+      Configuration.new(configuration, reporter)
       reporter.verify
     end
 
@@ -36,41 +36,34 @@ module ShopifyTheme
     end
 
     it "should generate the theme path based on the value of the theme_id in the provided configuration" do
-      configuration = Configuration.new(':theme_id: 1234')
+      configuration = Configuration.new(theme_id: 1234)
       assert_equal '/admin/themes/1234/assets.json', configuration.theme_path
       assert_equal '/admin/themes/1234/assets.json', configuration.path
 
-      configuration = Configuration.new(':theme_id: ')
+      configuration = Configuration.new(theme_id: nil)
       assert_equal '/admin/assets.json', configuration.theme_path
       assert_equal '/admin/assets.json', configuration.path
     end
 
     it "should be able to provide information about what the file whitelist is" do
-      whitelist = <<-LIST
-      :whitelist_files:
-        - important_file.txt
-        - other_file.txt
-      LIST
+      whitelist = {whitelist_files: %w(important_file.txt other_file.txt)}
       configuration = Configuration.new(whitelist)
       assert_equal ['important_file.txt', 'other_file.txt'], configuration.whitelist_files
     end
 
     it "should be able to handle when the whitelist_files are missing" do
-      configuration = Configuration.new(':key: value')
+      configuration = Configuration.new({})
       assert_equal [], configuration.whitelist_files
     end
 
     it "should be able to provide information about what the file blacklist is" do
-      blacklist = <<-LIST
-      :blacklist_files:
-        - README.md
-      LIST
+      blacklist = {blacklist_files: %w(README.md)}
       configuration = Configuration.new(blacklist)
       assert_equal ['README.md'], configuration.blacklist_files
     end
 
     it "should be able to handle when the blacklist_files are missing" do
-      configuration = Configuration.new(':key: value')
+      configuration = Configuration.new({})
       assert_equal [], configuration.blacklist_files
     end
 

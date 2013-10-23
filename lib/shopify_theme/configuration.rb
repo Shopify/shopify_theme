@@ -6,9 +6,9 @@ module ShopifyTheme
 
     class MissingConfiguration < StandardError; end
 
-    def initialize(configuration_yml, reporter=nil)
-      raise MissingConfiguration.new("Configuration cannot be nil") unless configuration_yml
-      @config = configuration_yml.length > 0 ? YAML.load(configuration_yml) : {}
+    def initialize(configuration, reporter=nil)
+      raise MissingConfiguration.new("Configuration cannot be nil") unless configuration
+      @config = configuration
       @reporter = reporter
       verify if reporter
     end
