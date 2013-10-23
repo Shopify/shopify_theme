@@ -67,5 +67,25 @@ module ShopifyTheme
       assert_equal [], configuration.blacklist_files
     end
 
+    it "should be able to provide the api_key" do
+      configuration = Configuration.new(api_key: 'token')
+      assert_equal 'token', configuration.api_key
+    end
+
+    it "should be able to provide the password" do
+      configuration = Configuration.new(password: 'secrets')
+      assert_equal 'secrets', configuration.password
+    end
+
+    it "should be able to calculate the shop_uri based on the shop name" do
+      configuration = Configuration.new(shop: 'funky.myshopify.com')
+      assert_equal 'https://funky.myshopify.com', configuration.shop_uri
+    end
+
+    it "should be able to expand the shop name into the full myshopify name" do
+      configuration = Configuration.new(shop: 'funky')
+      assert_equal 'https://funky.myshopify.com', configuration.shop_uri
+    end
+
   end
 end

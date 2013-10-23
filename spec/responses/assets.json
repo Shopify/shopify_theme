@@ -1,0 +1,22 @@
+{
+  "assets": [
+    {
+      "key": "assets/apple-touch-icon-114x114.png",
+      "public_url": "http://cdn.shopify.com/s/files/1/0064/2402/t/9/assets/apple-touch-icon-114x114.png?2541",
+      "created_at": "2013-09-09T14:38:38-04:00",
+      "updated_at": "2013-09-09T14:38:38-04:00",
+      "content_type": "image/png",
+      "size": 3925,
+      "theme_id": 4840249
+    },
+    {
+      "key": "assets/apple-touch-icon-72x72.png",
+      "public_url": "http://cdn.shopify.com/s/files/1/0064/2402/t/9/assets/apple-touch-icon-72x72.png?2541",
+      "created_at": "2013-09-09T14:38:38-04:00",
+      "updated_at": "2013-09-09T14:38:38-04:00",
+      "content_type": "image/png",
+      "size": 3478,
+      "theme_id": 4840249
+    }
+  ]
+}

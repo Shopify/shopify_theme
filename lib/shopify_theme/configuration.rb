@@ -30,6 +30,20 @@ module ShopifyTheme
       @blacklist_files ||= read_array_attr(:blacklist_files)
     end
 
+    def api_key
+      config[:api_key]
+    end
+
+    def password
+      config[:password]
+    end
+
+    def shop_uri
+      shop = config[:shop]
+      shop = shop.include?('myshopify.com') ? shop : "#{shop}.myshopify.com"
+      "https://#{shop}"
+    end
+
     private
     def reporter
       @reporter
