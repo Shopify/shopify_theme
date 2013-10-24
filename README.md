@@ -27,6 +27,8 @@ use `:whitelist_files:` to specify files for upload. The `assets/`, `config/`,
 :store: little-plastics.myshopify.com
 :theme_id:
 :whitelist_files:
+- directoryToUpload/
+- importantFile.txt
 ````
 
 Download all the theme files
