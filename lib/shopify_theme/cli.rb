@@ -140,6 +140,10 @@ module ShopifyTheme
       elsif asset['attachment']
         content = Base64.decode64(asset['attachment'])
         format = "w+b"
+      else
+        response = asset['response']
+        handle_api_limit(key) if response.code == 429 || response.code >= 500
+        return
       end
 
       FileUtils.mkdir_p(File.dirname(key))
@@ -171,6 +175,12 @@ module ShopifyTheme
       else
         say("[" + time.strftime(TIMEFORMAT) + "] Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
       end
+    end
+
+    def handle_api_limit(key)
+      say("Over API Limit! Naptime for 5 minutes", :red)
+      sleep 5 * 60
+      download_asset(key)
     end
 
     def errors_from_response(response)

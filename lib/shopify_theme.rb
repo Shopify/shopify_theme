@@ -16,7 +16,9 @@ module ShopifyTheme
   def self.get_asset(asset)
     response = shopify.get(path, :query =>{:asset => {:key => asset}}, :parser => NOOPParser)
     # HTTParty json parsing is broken?
-    JSON.parse(response.body)["asset"]
+    asset = response.code == 200 ? JSON.parse(response.body)["asset"] : {}
+    asset['response'] = response
+    asset
   end
 
   def self.send_asset(data)
