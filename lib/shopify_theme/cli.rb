@@ -132,6 +132,7 @@ module ShopifyTheme
     end
 
     def download_asset(key)
+      notify_and_sleep("Approaching limit of API permits. Naptime until more permits become available!") if ShopifyTheme.needs_sleep?
       asset = ShopifyTheme.get_asset(key)
       if asset['value']
         # For CRLF line endings
@@ -140,10 +141,6 @@ module ShopifyTheme
       elsif asset['attachment']
         content = Base64.decode64(asset['attachment'])
         format = "w+b"
-      else
-        response = asset['response']
-        handle_api_limit(key) if response.code == 429 || response.code >= 500
-        return
       end
 
       FileUtils.mkdir_p(File.dirname(key))
@@ -177,10 +174,9 @@ module ShopifyTheme
       end
     end
 
-    def handle_api_limit(key)
-      say("Over API Limit! Naptime for 5 minutes", :red)
-      sleep 5 * 60
-      download_asset(key)
+    def notify_and_sleep(message)
+      say(message, :red)
+      ShopifyTheme.sleep
     end
 
     def errors_from_response(response)

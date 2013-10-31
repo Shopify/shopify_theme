@@ -3,11 +3,44 @@ module ShopifyTheme
   include HTTParty
 
   NOOPParser = Proc.new {|data, format| {} }
+  TIMER_RESET = 5 * 60 + 5
+  PERMIT_LOWER_LIMIT = 10
+
+  def self.manage_timer(response)
+    @@current_api_call_count, @@total_api_calls = response.headers['x-shopify-shop-api-call-limit'].split('/')
+    @@current_timer = Time.now if @current_timer.nil?
+  end
+
+  def self.critical_permits?
+    @@total_api_calls.to_i - @@current_api_call_count.to_i < PERMIT_LOWER_LIMIT
+  end
+
+  def self.passed_api_refresh?
+    delta_seconds > TIMER_RESET
+  end
+
+  def self.delta_seconds
+    Time.now.to_i - @@current_timer.to_i
+  end
+
+  def self.needs_sleep?
+    critical_permits? && !passed_api_refresh?
+  end
+
+  def self.sleep
+    if needs_sleep?
+      Kernel.sleep(TIMER_RESET - delta_seconds)
+      @current_timer = nil
+    end
+  end
+
 
   def self.asset_list
     # HTTParty parser chokes on assest listing, have it noop
     # and then use a rel JSON parser.
     response = shopify.get(path, :parser => NOOPParser)
+    manage_timer(response)
+
     assets = JSON.parse(response.body)["assets"].collect {|a| a['key'] }
     # Remove any .css files if a .css.liquid file exists
     assets.reject{|a| assets.include?("#{a}.liquid") }
@@ -15,6 +48,8 @@ module ShopifyTheme
 
   def self.get_asset(asset)
     response = shopify.get(path, :query =>{:asset => {:key => asset}}, :parser => NOOPParser)
+    manage_timer(response)
+
     # HTTParty json parsing is broken?
     asset = response.code == 200 ? JSON.parse(response.body)["asset"] : {}
     asset['response'] = response
@@ -22,11 +57,15 @@ module ShopifyTheme
   end
 
   def self.send_asset(data)
-    shopify.put(path, :body =>{:asset => data})
+    response = shopify.put(path, :body =>{:asset => data})
+    manage_timer(response)
+    response
   end
 
   def self.delete_asset(asset)
-    shopify.delete(path, :body =>{:asset => {:key => asset}})
+    response = shopify.delete(path, :body =>{:asset => {:key => asset}})
+    manage_timer(response)
+    response
   end
 
   def self.config
