@@ -6,6 +6,10 @@ module ShopifyTheme
   TIMER_RESET = 5 * 60 + 5
   PERMIT_LOWER_LIMIT = 10
 
+  def self.test?
+    ENV['test']
+  end
+
   def self.manage_timer(response)
     @@current_api_call_count, @@total_api_calls = response.headers['x-shopify-shop-api-call-limit'].split('/')
     @@current_timer = Time.now if @current_timer.nil?
@@ -71,10 +75,10 @@ module ShopifyTheme
   def self.config
     @config ||= if File.exist? 'config.yml'
       config = YAML.load(File.read('config.yml'))
-      puts ":ignore_files: is deprecated for a white list, use :whitelist_files: instead" if config[:ignore_files]
+      puts ":ignore_files: is deprecated for a white list, use :whitelist_files: instead" if config[:ignore_files] && !test?
       config
     else
-      puts "config.yml does not exist!"
+      puts "config.yml does not exist!" unless test?
       {}
     end
   end
