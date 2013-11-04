@@ -132,6 +132,7 @@ module ShopifyTheme
     end
 
     def download_asset(key)
+      notify_and_sleep("Approaching limit of API permits. Naptime until more permits become available!") if ShopifyTheme.needs_sleep?
       asset = ShopifyTheme.get_asset(key)
       if asset['value']
         # For CRLF line endings
@@ -171,6 +172,11 @@ module ShopifyTheme
       else
         say("[" + time.strftime(TIMEFORMAT) + "] Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
       end
+    end
+
+    def notify_and_sleep(message)
+      say(message, :red)
+      ShopifyTheme.sleep
     end
 
     def errors_from_response(response)
