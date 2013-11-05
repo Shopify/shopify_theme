@@ -1,17 +1,15 @@
 require 'spec_helper'
 require 'shopify_theme/synchronizer'
+require 'shopify_theme/storage/string_adapter'
 
 module ShopifyTheme
   describe "Synchronizer" do
     attr_reader :client, :synchronizer, :configuration
     before do
+      string_adapter = ShopifyTheme::Storage::StringAdapter.new
       @client = Minitest::Mock.new
       @configuration = Minitest::Mock.new
-      @synchronizer = ShopifyTheme::Synchronizer.new(@client, @configuration, filesystem: Tempfile)
-    end
-
-    after do
-      @synchronizer.files.each(&:unlink)
+      @synchronizer = ShopifyTheme::Synchronizer.new(@client, @configuration, storage_adapter: string_adapter)
     end
 
     it "should be possible to pass in a directory"
@@ -34,10 +32,10 @@ module ShopifyTheme
 
     it "should be able to download a file and save it" do
       client.expect :get_asset, {key: 'asset/thing.js', value: '1234'}, ['assets/thing.js']
-      synchronizer.download_and_save('asset/thing.js')
+      synchronizer.download_and_save('assets/thing.js')
       client.verify
-      assert_equal 1, client.files.length
-      assert_equal '1234', client.files.first.rewind.read
+      assert_equal 1, synchronizer.local_assets_list.length
+      assert_equal '1234', synchronizer.local_asset_contents('asset/thing.js')
     end
 
     it "should be able to download and save multiple files"

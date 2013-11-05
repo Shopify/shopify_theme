@@ -87,5 +87,17 @@ module ShopifyTheme
       assert_equal 'https://funky.myshopify.com', configuration.shop_uri
     end
 
+    it "should provide the directory loaded from the configuration" do
+      configuration = Configuration.new(directory: '/tmp/doodle')
+      assert_equal '/tmp/doodle', configuration.directory
+    end
+
+    it "should use the current directory as the theme folder if no directory was specified" do
+      Dir.chdir("/var/log")
+      configuration = Configuration.new({})
+      # Fucking Mac OS
+      assert_equal "/private/var/log", configuration.directory
+    end
+
   end
 end

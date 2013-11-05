@@ -1,9 +1,11 @@
+require 'base64'
 module ShopifyTheme
   module Storage
     class StorageAdapter
 
-      def process(key, data)
+      def process(data)
         format = "w"
+        key = data['key']
         content = if data['value']
           data['value'].gsub("\r", "")
         elsif data['attachment']
@@ -13,7 +15,7 @@ module ShopifyTheme
           nil
         end
 
-        store(key, content, format)
+        store(key, content, format) if content
       end
 
       def store(key, content, format)

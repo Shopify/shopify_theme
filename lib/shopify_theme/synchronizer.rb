@@ -10,8 +10,8 @@ module ShopifyTheme
     def initialize(client, configuration, options = {})
       @client = client
       @configuration = configuration
-      @reporter = options.fetch(:reporter, ShopifyTheme::Reporters::NilReporter.new)
-      @storage = options.fetch(:storage_adapter, ShopifyTheme::Storage::FileAdapter.new)
+      @reporter = options[:reporter] || default_reporter
+      @storage = options[:storage_adapter] || default_adapter
       @file_mapping = {}
     end
 
@@ -28,9 +28,8 @@ module ShopifyTheme
 
     def download_and_save(*args)
       return if args.empty?
-      args.each do |key|
-        data = download(key)
-        storage.process(key, data)
+      download(*args).each do |data|
+        storage.process(data)
       end
     end
 
@@ -53,6 +52,14 @@ module ShopifyTheme
 
     def storage
       @storage
+    end
+
+    def default_reporter
+      ShopifyTheme::Reporters::NilReporter.new
+    end
+
+    def default_adapter
+      ShopifyTheme::Storage::FileAdapter.new(configuration.directory)
     end
   end
 end

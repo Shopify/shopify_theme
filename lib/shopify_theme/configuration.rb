@@ -44,6 +44,10 @@ module ShopifyTheme
       "https://#{shop}"
     end
 
+    def directory
+      config[:directory] || Dir.pwd
+    end
+
     private
     def reporter
       @reporter
