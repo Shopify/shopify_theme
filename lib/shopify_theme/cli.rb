@@ -148,6 +148,7 @@ module ShopifyTheme
     end
 
     def send_asset(asset, quiet=false)
+      return if File.directory?(asset)
       time = Time.now
       data = {:key => asset}
       content = File.read(asset)
