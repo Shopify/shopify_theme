@@ -1,3 +1,6 @@
+# v0.0.12
+
+* Fixes issue where app tried uploading directories
 
 # v0.0.11
 

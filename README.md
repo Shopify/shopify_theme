@@ -66,3 +66,19 @@ Open the store in the default browser
 ````
 theme open
 ````
+
+# Common Problems
+
+### During the installation of the gem or when trying to use the gem I am encountering the following error
+
+`Unable to activate httparty-0.12.0, because json-1.5.4 conflicts with json (~> 1.8) (Gem::LoadError)
+    from /Users/Luke/.rvm/rubies/ruby-1.9.3-p374/lib/ruby/site_ruby/1.9.1/rubygems/specification.rb:747:in `activate'`
+
+Your globally installed JSON gem is a newer version than what is required for `shopify_theme`. You can get around this
+problem by creating a Gemfile in your theme folder as follows:
+
+```ruby
+source 'https://rubygems.org'
+
+gem 'shopify_theme'
+```
