@@ -128,7 +128,9 @@ module ShopifyTheme
     end
 
     def local_files
-      Dir.glob(File.join('**', '*'))
+      Dir.glob(File.join('**', '*')).reject do |f|
+        File.directory?(f)
+      end
     end
 
     def download_asset(key)
