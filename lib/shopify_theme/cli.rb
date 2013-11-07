@@ -128,7 +128,9 @@ module ShopifyTheme
     end
 
     def local_files
-      Dir.glob(File.join('**', '*'))
+      Dir.glob(File.join('**', '*')).reject do |f|
+        File.directory?(f)
+      end
     end
 
     def download_asset(key)
@@ -148,7 +150,6 @@ module ShopifyTheme
     end
 
     def send_asset(asset, quiet=false)
-      return if File.directory?(asset)
       time = Time.now
       data = {:key => asset}
       content = File.read(asset)
