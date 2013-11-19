@@ -100,20 +100,24 @@ module ShopifyTheme
     method_option :keep_files, :type => :boolean, :default => false
     def watch
       puts "Watching current folder: #{Dir.pwd}"
-      Listen.to!(Dir.pwd, :relative_paths => true) do |modified, added, removed|
+      listener = Listen.to(Dir.pwd) do |modified, added, removed|
         modified.each do |filePath|
+          filePath.slice!(Dir.pwd + "/")
           send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
         added.each do |filePath|
+          filePath.slice!(Dir.pwd + "/")
           send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
         end
-        if !options['keep_files']
+        unless options['keep_files']
           removed.each do |filePath|
-            delete_asset(filePath, options['quiet']) if local_assets_list.include?(relative)
+            filePath.slice!(Dir.pwd + "/")
+            delete_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
           end
         end
       end
-
+      listener.start
+      sleep
     rescue Interrupt
       puts "exiting..."
     end
