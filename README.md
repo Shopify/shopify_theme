@@ -83,6 +83,8 @@ source 'https://rubygems.org'
 gem 'shopify_theme'
 ```
 
+Write `bundle install` and then `bundle exex` to allow the newly created Gemfile to sort out the JSON discrepancy.
+
 ### When trying to run `theme watch` on Windows the application crashes with a gross stack trace
 
 The gem doesn't install one of the dependencies you need in order to use this gem correctly on Windows. You
