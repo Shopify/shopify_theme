@@ -109,7 +109,7 @@ module ShopifyTheme
         end
         if !options['keep_files']
           removed.each do |filePath|
-            delete_asset(filePath, options['quiet']) if local_assets_list.include?(relative)
+            delete_asset(filePath, options['quiet']) if !local_assets_list.include?(filePath)
           end
         end
       end
@@ -154,7 +154,7 @@ module ShopifyTheme
       data = {:key => asset}
       content = File.read(asset)
       if BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.','')) || ShopifyTheme.is_binary_data?(content)
-        content = IO.read asset
+        content = File.open(asset, "rb") { |io| io.read }
         data.merge!(:attachment => Base64.encode64(content))
       else
         data.merge!(:value => content)
