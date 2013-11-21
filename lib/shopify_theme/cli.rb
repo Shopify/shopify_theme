@@ -119,7 +119,7 @@ module ShopifyTheme
       listener.start
       sleep
     rescue Interrupt
-      puts "exiting..."
+      puts "exiting...."
     end
 
     private
