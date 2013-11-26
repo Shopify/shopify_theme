@@ -5,6 +5,8 @@ Ruby 1.9
 # Installation
 
 ````
+# The app relies on having the JSON 1.5.4 gem installed
+gem install json -v 1.5.4
 gem install shopify_theme [optional_theme_id]
 ````
 
