@@ -6,6 +6,10 @@ module ShopifyTheme
   TIMER_RESET = 5 * 60 + 5
   PERMIT_LOWER_LIMIT = 10
 
+  @@total_api_calls = nil
+  @@current_api_call_count = nil
+  @@current_timer = nil
+
   def self.test?
     ENV['test']
   end
