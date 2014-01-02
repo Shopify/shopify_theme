@@ -2,7 +2,7 @@ require 'httparty'
 module ShopifyTheme
   include HTTParty
   @@current_api_call_count = 0
-  @@total_api_calls = 500
+  @@total_api_calls = 40
 
   NOOPParser = Proc.new {|data, format| {} }
   TIMER_RESET = 5 * 60 + 5
