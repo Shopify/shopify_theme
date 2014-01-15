@@ -52,7 +52,8 @@ module ShopifyTheme
     def open(*keys)
       config = YAML.load_file 'config.yml'
       url = config[:store]
-      if Launchy.open url
+      theme_id = config[:theme_id]
+      if Launchy.open "#{url}?preview_theme_id=#{theme_id}"
         say("Done.", :green)
       end
     end
