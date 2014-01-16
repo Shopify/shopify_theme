@@ -50,10 +50,7 @@ module ShopifyTheme
 
     desc "open", "open the store in your browser"
     def open(*keys)
-      config = YAML.load_file 'config.yml'
-      url = config[:store]
-      theme_id = config[:theme_id]
-      if Launchy.open "#{url}?preview_theme_id=#{theme_id}"
+      if Launchy.open shop_theme_url
         say("Done.", :green)
       end
     end
@@ -133,6 +130,18 @@ module ShopifyTheme
         require "#{lib.downcase}/version"
         puts "#{lib}: v" +  Kernel.const_get("#{lib}::VERSION")
       end
+    end
+
+    protected
+
+    def config
+      @config ||= YAML.load_file 'config.yml'
+    end
+
+    def shop_theme_url
+      url = config[:store]
+      url += "?preview_theme_id=#{config[:theme_id]}" if config[:theme_id] && config[:theme_id].to_i > 0
+      url
     end
 
     private
