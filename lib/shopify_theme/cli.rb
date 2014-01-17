@@ -5,7 +5,7 @@ require 'abbrev'
 require 'base64'
 require 'fileutils'
 require 'json'
-require 'listen'
+require 'filewatcher'
 require 'launchy'
 
 module ShopifyTheme
@@ -98,26 +98,17 @@ module ShopifyTheme
     method_option :keep_files, :type => :boolean, :default => false
     def watch
       puts "Watching current folder: #{Dir.pwd}"
-      listener = Listen.to(Dir.pwd) do |modified, added, removed|
-        modified.each do |filePath|
-          filePath.slice!(Dir.pwd + "/")
-          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
-        end
-        added.each do |filePath|
-          filePath.slice!(Dir.pwd + "/")
-          send_asset(filePath, options['quiet']) if local_assets_list.include?(filePath)
-        end
-        unless options['keep_files']
-          removed.each do |filePath|
-            filePath.slice!(Dir.pwd + "/")
-            delete_asset(filePath, options['quiet']) if !local_assets_list.include?(filePath)
+      watcher do |filename, event|
+        filename = filename.gsub("#{Dir.pwd}/", '')
+        if local_assets_list.include?(filename)
+          action = case event
+          when :changed, :new then :send_asset
+          when :delete then :delete_asset
+          else raise NotImplementedError, "Unknown event -- #{event}"
           end
+          send(action, filename, options['quiet'])
         end
       end
-      listener.start
-      sleep
-    rescue Interrupt
-      puts "exiting...."
     end
 
     desc "systeminfo", "print out system information and actively loaded libraries for aiding in submitting bug reports"
@@ -145,6 +136,12 @@ module ShopifyTheme
     end
 
     private
+
+    def watcher
+      FileWatcher.new(Dir.pwd).watch() do |filename, event|
+        yield(filename, event)
+      end
+    end
 
     def local_assets_list
       local_files.reject do |p|
