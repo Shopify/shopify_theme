@@ -1,3 +1,9 @@
+# Edit your Shopify theme locally
+
+The Shopify theme gem is a command line tool that lets you make live changes to your published theme.
+
+It will watch your local folders for any changes in your theme (including adding and removing files) and will update your .myshopify.com store to the latest changes. 
+
 # Requirements
 
 Ruby 1.9
