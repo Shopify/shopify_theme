@@ -6,6 +6,8 @@ It will watch your local folders for any changes in your theme (including adding
 
 ![Shopify theme gem](https://s3-us-west-2.amazonaws.com/droplr.storage/files/acc_111843/2Ja0?AWSAccessKeyId=AKIAJSVQN3Z4K7MT5U2A&Expires=1390409437&Signature=jPv7QgphYTehRRa5JNTEA8as1Ss%3D&response-content-disposition=inline%3B%20filename%3DScreen%20Shot%202014-01-22%20at%2010.49.04%20AM.png%3B)
 
+Since you can only make live changes to a published theme sign up for a [Shopify Partner account](https://app.shopify.com/services/partners/signup) and create a development shop to make a 'sandbox' shop you can fool around with before pushing your changes live. 
+
 # Requirements
 
 This gem works with OS X or Windows with Ruby 1.9. 
