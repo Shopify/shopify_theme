@@ -8,9 +8,13 @@ It will watch your local folders for any changes in your theme (including adding
 
 # Requirements
 
-Ruby 1.9
+This gem works with OS X or Windows with Ruby 1.9. 
+
+First time installing Ruby on windows? Try [Rubyinstaller](http://http://rubyinstaller.org/). 
 
 # Installation
+
+To install the shopify_theme gem use 'gem install' (you might have use 'sudo gem install')
 
 ```
 gem install shopify_theme [optional_theme_id]
