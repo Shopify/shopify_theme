@@ -25,7 +25,7 @@ gem install shopify_theme [optional_theme_id]
 to update to the latest version
 
 ```
-gem update shopify_Theme
+gem update shopify_theme
 ```
 
 # Usage
