@@ -43,7 +43,7 @@ module ShopifyTheme
 
       assets.each do |asset|
         download_asset(asset)
-        say("Downloaded: #{asset}", :green) unless options['quiet']
+        say("#{ShopifyTheme.api_usage} Downloaded: #{asset}", :green) unless options['quiet']
       end
       say("Done.", :green) unless options['quiet']
     end
