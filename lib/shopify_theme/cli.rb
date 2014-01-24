@@ -157,6 +157,7 @@ module ShopifyTheme
     end
 
     def download_asset(key)
+      return unless valid?(key)
       notify_and_sleep("Approaching limit of API permits. Naptime until more permits become available!") if ShopifyTheme.needs_sleep?
       asset = ShopifyTheme.get_asset(key)
       if asset['value']
@@ -173,6 +174,7 @@ module ShopifyTheme
     end
 
     def send_asset(asset, quiet=false)
+      return unless valid?(asset)
       time = Time.now
       data = {:key => asset}
       content = File.read(asset)
@@ -183,19 +185,21 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      if (response = ShopifyTheme.send_asset(data)).success?
+      response = ShopifyTheme.send_asset(data)
+      if response.success?
         say("[" + time.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
       else
-        say("[" + time.strftime(TIMEFORMAT) + "] Error: Could not upload #{asset}. #{errors_from_response(response)}", :red)
+        report_error(time, "Could not upload #{asset}", response)
       end
     end
 
     def delete_asset(key, quiet=false)
+      return unless valid?(key)
       time = Time.now
       if (response = ShopifyTheme.delete_asset(key)).success?
         say("[" + time.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
       else
-        say("[" + time.strftime(TIMEFORMAT) + "] Error: Could not remove #{key}. #{errors_from_response(response)}", :red)
+        report_error(time, "Could not remove #{key}", response)
       end
     end
 
@@ -204,19 +208,33 @@ module ShopifyTheme
       ShopifyTheme.sleep
     end
 
+    def valid?(key)
+      return true if DEFAULT_WHITELIST.include?(key.split('/').first + "/")
+      say("'#{key}' is not in a valid file for theme uploads", :yellow)
+      say("Files need to be in one of the following subdirectories: #{DEFAULT_WHITELIST.join(' ')}", :yellow)
+      false
+    end
+
+    def report_error(time, message, response)
+      say("[#{time.strftime(TIMEFORMAT)}] Error: #{message}", :red)
+      say("Error Details: #{errors_from_response(response)}", :yellow)
+    end
+
     def errors_from_response(response)
-      return unless response.parsed_response
+      object = {status: response.headers['status'], request_id: response.headers['x-request-id']}
 
-      errors = response.parsed_response["errors"]
+      errors = response.parsed_response ? response.parsed_response["errors"] : response.body
 
-      case errors
+      object[:errors] = case errors
       when NilClass
         ''
       when String
-        errors
+        errors.strip
       else
         errors.values.join(", ")
       end
+      object.delete(:errors) if object[:errors].length <= 0
+      object
     end
   end
 end

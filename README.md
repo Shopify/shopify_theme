@@ -1,12 +1,15 @@
 # Edit your Shopify theme locally
 
-The Shopify theme gem is a command line tool that lets you make live changes to your published theme. If the command line is scary check out the [Desktop Theme Editor app](http://apps.shopify.com/desktop-theme-editor).
+The Shopify theme gem is a command line tool that lets you make live changes themes on your Shopify store. If the command line is scary check out the [Desktop Theme Editor app](http://apps.shopify.com/desktop-theme-editor).
 
 It will watch your local folders for any changes in your theme (including adding and removing files) and will update your .myshopify.com store to the latest changes. 
 
 ![Shopify theme gem](https://dl.dropboxusercontent.com/u/669627/terminalreadme.png)
 
-Since you can only make live changes to a published theme sign up for a [Shopify Partner account](https://app.shopify.com/services/partners/signup) and create a development shop to make a 'sandbox' shop you can fool around with before pushing your changes live. 
+You do not need to make changes to your default theme. You can leverage the theme preview feature of Shopify
+that allows you to view what an unpublished theme looks like on your Shopify store. This means you don't need to
+sign up for extra accounts and keep your shop up to date. You will however have a blue bar that shows up that you can
+remove via the web inspector in Chrome or Safari.
 
 # Requirements
 
@@ -89,15 +92,21 @@ theme open
 
 # Common Problems
 
-### When trying to run `theme watch` on Windows the application crashes with a gross stack trace
+## How do I edit a theme that isn't my shops main theme?
 
-The gem doesn't install one of the dependencies you need in order to use this gem correctly on Windows. You
-can get around this by either executing `gem install wdm` or by creating a Gemfile in your theme project such
-as the following:
+This can be done by setting the `theme_id` field in `configuration.yml` which was created when you
+ran `theme configure`. Your file should look like the following:
 
-```ruby
-source "http://rubygems.org" # I could not validate the rubygems SSL certificate on Windows
-
-gem "wdm"
-gem "shopify_theme"
+```yaml
+:api_key: 7a8da86d3dd730b67a357dedabaac5d6
+:password: 552338ce0d3aba7fc501dcf99bc57a81
+:store: little-plastics.myshopify.com
+:theme_id: 0987654321
 ```
+
+## Where can I find my Theme Id?
+
+Currently the best way to find the id of the theme you want to edit is to go to the theme in your
+shops admin and grab it from the url.
+
+![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
