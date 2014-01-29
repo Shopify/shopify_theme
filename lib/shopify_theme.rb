@@ -42,7 +42,7 @@ module ShopifyTheme
   end
 
   def self.api_usage
-    "[#{@@current_api_call_count || "??"}/#{@@total_api_calls || "??"}]"
+    "[API Limit: #{@@current_api_call_count || "??"}/#{@@total_api_calls || "??"}]"
   end
 
 
