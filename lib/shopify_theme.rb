@@ -5,14 +5,15 @@ module ShopifyTheme
   @@total_api_calls = 40
 
   NOOPParser = Proc.new {|data, format| {} }
-  TIMER_RESET = 5 * 60 + 5
-  PERMIT_LOWER_LIMIT = 10
+  TIMER_RESET = 10
+  PERMIT_LOWER_LIMIT = 3
 
   def self.test?
     ENV['test']
   end
 
   def self.manage_timer(response)
+    return unless response.headers['x-shopify-shop-api-call-limit']
     @@current_api_call_count, @@total_api_calls = response.headers['x-shopify-shop-api-call-limit'].split('/')
     @@current_timer = Time.now if @current_timer.nil?
   end
@@ -38,6 +39,10 @@ module ShopifyTheme
       Kernel.sleep(TIMER_RESET - delta_seconds)
       @current_timer = nil
     end
+  end
+
+  def self.api_usage
+    "[API Limit: #{@@current_api_call_count || "??"}/#{@@total_api_calls || "??"}]"
   end
 
 
