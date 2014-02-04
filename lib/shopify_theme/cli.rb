@@ -38,8 +38,13 @@ module ShopifyTheme
 
     desc "download FILE", "download the shops current theme assets"
     method_option :quiet, :type => :boolean, :default => false
+    method_option :exclude
     def download(*keys)
       assets = keys.empty? ? ShopifyTheme.asset_list : keys
+
+      if options['exclude']
+        assets = assets.delete_if { |asset| asset =~ Regexp.new(options['exclude']) }
+      end
 
       assets.each do |asset|
         download_asset(asset)
