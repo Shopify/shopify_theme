@@ -94,10 +94,11 @@ theme open
 
 ## How do I edit a theme that isn't my shops main theme?
 
-This can be done by setting the `theme_id` field in `configuration.yml` which was created when you
+This can be done by setting the `theme_id` field in `config.yml` which was created when you
 ran `theme configure`. Your file should look like the following:
 
 ```yaml
+---
 :api_key: 7a8da86d3dd730b67a357dedabaac5d6
 :password: 552338ce0d3aba7fc501dcf99bc57a81
 :store: little-plastics.myshopify.com
