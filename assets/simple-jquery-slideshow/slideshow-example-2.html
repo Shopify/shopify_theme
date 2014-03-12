@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type"/>
+
+<title>Simple jQuery Slideshow from JonRaasch.com</title>
+
+<script type="text/javascript" src="jquery-1.2.6.min.js"></script>
+
+<script type="text/javascript">
+
+/*** 
+    Simple jQuery Slideshow Script
+    Released by Jon Raasch (jonraasch.com) under FreeBSD license: free to use or modify, not responsible for anything, etc.  Please link out to me if you like it :)
+***/
+
+function slideSwitch() {
+    var $active = $('#slideshow DIV.active');
+
+    if ( $active.length == 0 ) $active = $('#slideshow DIV:last');
+
+    // use this to pull the divs in the order they appear in the markup
+    var $next =  $active.next().length ? $active.next()
+        : $('#slideshow DIV:first');
+
+    // uncomment below to pull the divs randomly
+    // var $sibs  = $active.siblings();
+    // var rndNum = Math.floor(Math.random() * $sibs.length );
+    // var $next  = $( $sibs[ rndNum ] );
+
+
+    $active.addClass('last-active');
+
+    $next.css({opacity: 0.0})
+        .addClass('active')
+        .animate({opacity: 1.0}, 1000, function() {
+            $active.removeClass('active last-active');
+        });
+}
+
+$(function() {
+    setInterval( "slideSwitch()", 5000 );
+});
+
+</script>
+
+<style type="text/css">
+
+/*** set the width and height to match your images **/
+
+#slideshow {
+    position:relative;
+    height:400px;
+}
+
+#slideshow DIV {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:8;
+    opacity:0.0;
+    height: 400px;
+    background-color: #FFF;
+}
+
+#slideshow DIV.active {
+    z-index:10;
+    opacity:1.0;
+}
+
+#slideshow DIV.last-active {
+    z-index:9;
+}
+
+#slideshow DIV IMG {
+    height: 350px;
+    display: block;
+    border: 0;
+    margin-bottom: 10px;
+}
+
+</style>
+
+</head>
+
+<body style="font-family: Arial, Sans-serif, sans;">
+
+<!-- this will work with any number of images -->
+<!-- set the active class on whichever image you want to show up as the default 
+(otherwise this will be the last image) -->
+
+<h1>Simple jQuery Slideshow</h1>
+<h2>By <a href="http://jonraasch.com/blog/">Jon Raasch</a></h2>
+
+<div id="slideshow">
+    <div class="active">
+        <a href="http://jonraasch.com/blog/"><img src="image1.jpg" alt="Slideshow Image 1" /></a>
+        Caption for image 1
+    </div>
+    
+    <div>
+        <a href="http://jonraasch.com/blog/"><img src="image2.jpg" alt="Slideshow Image 2" /></a>
+        This will work with any markup
+    </div>
+    
+    <div>
+        <a href="http://jonraasch.com/blog/"><img src="image3.jpg" alt="Slideshow Image 3" /></a>
+        Swap this out for anything, links, paragraphs, whatever
+    </div>
+    
+    <div>
+        <a href="http://jonraasch.com/blog/"><img src="image4.jpg" alt="Slideshow Image 4" /></a>
+        Just make sure to set a background color if you use text
+    </div>
+    
+</div>
+
+<p>For more info visit <a href="http://jonraasch.com/blog/a-simple-jquery-slideshow">http://jonraasch.com/blog/a-simple-jquery-slideshow</a></p>
+
+<p>If you like this script, please <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=4URDTZYUNPV3J&lc=US&item_name=Jon%20Raasch&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">make a donation</a>
+</p>
+
+</body>
+</html>
