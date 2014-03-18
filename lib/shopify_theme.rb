@@ -83,7 +83,8 @@ module ShopifyTheme
   def self.upload_timber(name)
     response = shopify.post("/admin/themes.json", :body => {:theme => {:name => name, :src => TIMBER_THEME_ZIP, :role => 'unpublished'}})
     manage_timer(response)
-    JSON.parse(response.body)['theme']
+    theme = JSON.parse(response.body)['theme']
+    watch_until_processing_complete(theme)
   end
 
   def self.config
@@ -130,5 +131,16 @@ module ShopifyTheme
     basic_auth config[:api_key], config[:password]
     base_uri "https://#{config[:store]}"
     ShopifyTheme
+  end
+
+  def self.watch_until_processing_complete(theme)
+    count = 0
+    while true do
+      Kernel.sleep(count)
+      response = shopify.get("/admin/themes/#{theme['id']}.json")
+      theme = JSON.parse(response.body)['theme']
+      return theme if theme['previewable']
+      count += 5
+    end
   end
 end

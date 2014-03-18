@@ -48,7 +48,8 @@ module ShopifyTheme
       empty_directory(theme_name)
       
       say("Saving configuration to #{theme_name}", :green)
-      create_file("#{theme_name}/config.yml", ShopifyTheme.config.merge(theme_id: theme['id']).to_yaml)
+      ShopifyTheme.config.merge!(theme_id: theme['id'])
+      create_file("#{theme_name}/config.yml", ShopifyTheme.config.to_yaml)
       
       say("Downloading #{theme_name} assets from Shopify")
       Dir.chdir(theme_name)
