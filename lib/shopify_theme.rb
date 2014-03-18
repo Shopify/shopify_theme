@@ -7,7 +7,8 @@ module ShopifyTheme
   NOOPParser = Proc.new {|data, format| {} }
   TIMER_RESET = 10
   PERMIT_LOWER_LIMIT = 3
-  TIMBER_THEME_ZIP = "https://github.com/Shopify/Timber/archive/master.zip"
+  TIMBER_ZIP = "https://github.com/Shopify/Timber/archive/%s.zip"
+  LAST_KNOWN_STABLE = "v1.1.0"
 
   def self.test?
     ENV['test']
@@ -80,11 +81,19 @@ module ShopifyTheme
     response
   end
 
-  def self.upload_timber(name)
-    response = shopify.post("/admin/themes.json", :body => {:theme => {:name => name, :src => TIMBER_THEME_ZIP, :role => 'unpublished'}})
+  def self.upload_timber(name, master)
+    source = TIMBER_ZIP % (master ? 'master' : LAST_KNOWN_STABLE)
+    puts master ? "Using latest build from shopify" : "Using last known stable build -- #{LAST_KNOWN_STABLE}"
+    response = shopify.post("/admin/themes.json", :body => {:theme => {:name => name, :src => source, :role => 'unpublished'}})
     manage_timer(response)
-    theme = JSON.parse(response.body)['theme']
-    watch_until_processing_complete(theme)
+    body = JSON.parse(response.body)
+    if theme = body['theme']
+      watch_until_processing_complete(theme)
+    else
+      puts "Could not download theme!"
+      puts body
+      exit 1
+    end
   end
 
   def self.config
