@@ -7,6 +7,7 @@ module ShopifyTheme
   NOOPParser = Proc.new {|data, format| {} }
   TIMER_RESET = 10
   PERMIT_LOWER_LIMIT = 3
+  TIMBER_THEME_ZIP = "https://github.com/Shopify/Timber/archive/master.zip"
 
   def self.test?
     ENV['test']
@@ -79,6 +80,12 @@ module ShopifyTheme
     response
   end
 
+  def self.upload_timber(name)
+    response = shopify.post("/admin/themes.json", :body => {:theme => {:name => name, :src => TIMBER_THEME_ZIP, :role => 'unpublished'}})
+    manage_timer(response)
+    JSON.parse(response.body)['theme']
+  end
+
   def self.config
     @config ||= if File.exist? 'config.yml'
       config = YAML.load(File.read('config.yml'))
@@ -88,6 +95,10 @@ module ShopifyTheme
       puts "config.yml does not exist!" unless test?
       {}
     end
+  end
+
+  def self.config=(config)
+    @config = config
   end
 
   def self.path
