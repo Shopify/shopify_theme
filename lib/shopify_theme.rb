@@ -7,6 +7,8 @@ module ShopifyTheme
   NOOPParser = Proc.new {|data, format| {} }
   TIMER_RESET = 10
   PERMIT_LOWER_LIMIT = 3
+  TIMBER_ZIP = "https://github.com/Shopify/Timber/archive/%s.zip"
+  LAST_KNOWN_STABLE = "v1.1.0"
 
   def self.test?
     ENV['test']
@@ -79,6 +81,21 @@ module ShopifyTheme
     response
   end
 
+  def self.upload_timber(name, master)
+    source = TIMBER_ZIP % (master ? 'master' : LAST_KNOWN_STABLE)
+    puts master ? "Using latest build from shopify" : "Using last known stable build -- #{LAST_KNOWN_STABLE}"
+    response = shopify.post("/admin/themes.json", :body => {:theme => {:name => name, :src => source, :role => 'unpublished'}})
+    manage_timer(response)
+    body = JSON.parse(response.body)
+    if theme = body['theme']
+      watch_until_processing_complete(theme)
+    else
+      puts "Could not download theme!"
+      puts body
+      exit 1
+    end
+  end
+
   def self.config
     @config ||= if File.exist? 'config.yml'
       config = YAML.load(File.read('config.yml'))
@@ -88,6 +105,10 @@ module ShopifyTheme
       puts "config.yml does not exist!" unless test?
       {}
     end
+  end
+
+  def self.config=(config)
+    @config = config
   end
 
   def self.path
@@ -119,5 +140,16 @@ module ShopifyTheme
     basic_auth config[:api_key], config[:password]
     base_uri "https://#{config[:store]}"
     ShopifyTheme
+  end
+
+  def self.watch_until_processing_complete(theme)
+    count = 0
+    while true do
+      Kernel.sleep(count)
+      response = shopify.get("/admin/themes/#{theme['id']}.json")
+      theme = JSON.parse(response.body)['theme']
+      return theme if theme['previewable']
+      count += 5
+    end
   end
 end

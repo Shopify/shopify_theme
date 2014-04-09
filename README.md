@@ -90,6 +90,16 @@ Open the store in the default browser
 theme open
 ```
 
+Bootstrap a new theme with [Timber](http://www.shopify.com/timber)
+
+```
+# use latest stable
+theme bootstrap api_key password shop_name theme_name
+
+# use latest build
+theme bootstrap api_key password shop_name theme_name master
+```
+
 # Common Problems
 
 ## How do I edit a theme that isn't my shops main theme?
