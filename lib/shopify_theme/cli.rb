@@ -172,7 +172,7 @@ module ShopifyTheme
     def local_assets_list
       local_files.reject do |p|
         @permitted_files ||= (DEFAULT_WHITELIST | ShopifyTheme.whitelist_files).map{|pattern| Regexp.new(pattern)}
-        @permitted_files.none? { |regex| regex =~ p }
+        @permitted_files.none? { |regex| regex =~ p } || ShopifyTheme.ignore_files.any? { |regex| regex =~ p }
       end
     end
 
