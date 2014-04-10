@@ -43,6 +43,9 @@ Example of config.yml. Notice store has no http or https declaration. You can
 use `:whitelist_files:` to specify files for upload. The `assets/`, `config/`,
 `layout/`, `snippets/` and `templates/` directories are included by default.
 
+You can also use `:ignore_files:` to exclude files from getting uploaded, for
+example your `config/settings.html` or other configuration driven items
+
 ```yaml
 ---
 :api_key: 7a8da86d3dd730b67a357dedabaac5d6
@@ -52,6 +55,8 @@ use `:whitelist_files:` to specify files for upload. The `assets/`, `config/`,
 :whitelist_files:
 - directoryToUpload/
 - importantFile.txt
+:ignore_files:
+- config/settings.html
 ```
 
 Download all the theme files
