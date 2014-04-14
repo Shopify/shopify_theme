@@ -134,7 +134,6 @@ module ShopifyTheme
                    raise NotImplementedError, "Unknown event -- #{event}"
                  end
         send(action, filename, options['quiet'])
-        end
       end
     end
 
