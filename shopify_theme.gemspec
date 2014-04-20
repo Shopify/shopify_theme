@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
 
   s.rubyforge_project = "shopify_theme"
-  s.add_dependency("thor", [">= 0.14.4"])
-  s.add_dependency("httparty", "~> 0.10.0")
-  s.add_dependency("json", "~> 1.5.4")
-  s.add_dependency("filewatcher")
-  s.add_dependency("launchy")
+  s.add_dependency('thor', '>= 0.14.4')
+  s.add_dependency('httparty', '~> 0.13.0')
+  s.add_dependency('json', '~> 1.8.0')
+  s.add_dependency('filewatcher')
+  s.add_dependency('launchy')
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest', '>= 5.0.0'
@@ -28,5 +28,5 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.require_paths = ['lib']
 end
