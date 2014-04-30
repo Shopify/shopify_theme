@@ -33,7 +33,7 @@ gem update shopify_theme
 
 # Usage
 
-Generate the config file. Go get a valid api_key and password for your store head to `https://[your store].myshopify.com/admin/apps/private` and generate a private application. Default it adds the main theme, if you want to edit one of your other themes, add the `theme_id`.
+Generate the config file. Go get a valid api_key and password for your store head to `https://[your store].myshopify.com/admin/apps/private` and generate a private application. By default it adds the main theme, if you want to edit one of your other themes, add the `theme_id`.
 
 ```
 theme configure api_key password store_url
