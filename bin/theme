@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# This allows shopify_them to run easily from a git checkout without install.
+# This allows shopify_theme to run easily from a git checkout without install.
 # Hat tip to chriseppstein of Compass fame for the code for this
 def fallback_load_path(path)
   retried = false
