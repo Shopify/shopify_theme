@@ -201,7 +201,6 @@ module ShopifyTheme
 
     def send_asset(asset, quiet=false)
       return unless valid?(asset)
-      time = Time.now
       data = {:key => asset}
       content = File.read(asset)
       if BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.','')) || ShopifyTheme.is_binary_data?(content)
@@ -211,28 +210,27 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      uploading_message = "[#{time.strftime(TIMEFORMAT)}] Uploading: #{asset}"
+      uploading_message = "[#{Time.now.strftime(TIMEFORMAT)}] Uploading: #{asset}"
       response = show_during(uploading_message, quiet) do
         ShopifyTheme.send_asset(data)
       end
       if response.success?
-        say("[" + time.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
+        say("[" + Time.now.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
       else
-        report_error(time, "Could not upload #{asset}", response)
+        report_error(Time.now, "Could not upload #{asset}", response)
       end
     end
 
     def delete_asset(key, quiet=false)
       return unless valid?(key)
-      time = Time.now
-      removing_message = "[#{time.strftime(TIMEFORMAT)}] Removing: #{key}"
+      removing_message = "[#{Time.now.strftime(TIMEFORMAT)}] Removing: #{key}"
       response = show_during(removing_message, quiet) do
         ShopifyTheme.delete_asset(key)
       end
       if response.success?
-        say("[" + time.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
+        say("[" + Time.now.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
       else
-        report_error(time, "Could not remove #{key}", response)
+        report_error(Time.now, "Could not remove #{key}", response)
       end
     end
 
