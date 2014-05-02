@@ -44,14 +44,14 @@ module ShopifyTheme
       theme_name ||= 'Timber'
       say("Registering #{theme_name} theme on #{store}", :green)
       theme = ShopifyTheme.upload_timber(theme_name, master || false)
-      
+
       say("Creating directory named #{theme_name}", :green)
       empty_directory(theme_name)
-      
+
       say("Saving configuration to #{theme_name}", :green)
       ShopifyTheme.config.merge!(theme_id: theme['id'])
       create_file("#{theme_name}/config.yml", ShopifyTheme.config.to_yaml)
-      
+
       say("Downloading #{theme_name} assets from Shopify")
       Dir.chdir(theme_name)
       download()
@@ -128,10 +128,10 @@ module ShopifyTheme
         filename = filename.gsub("#{Dir.pwd}/", '')
         if local_assets_list.include?(filename)
           action = case event
-          when :changed, :new then :send_asset
-          when :delete then :delete_asset
-          else raise NotImplementedError, "Unknown event -- #{event}"
-          end
+                   when :changed, :new then :send_asset
+                   when :delete then :delete_asset
+                   else raise NotImplementedError, "Unknown event -- #{event}"
+                   end
           send(action, filename, options['quiet'])
         end
       end
@@ -252,13 +252,13 @@ module ShopifyTheme
       errors = response.parsed_response ? response.parsed_response["errors"] : response.body
 
       object[:errors] = case errors
-      when NilClass
-        ''
-      when String
-        errors.strip
-      else
-        errors.values.join(", ")
-      end
+                        when NilClass
+                          ''
+                        when String
+                          errors.strip
+                        else
+                          errors.values.join(", ")
+                        end
       object.delete(:errors) if object[:errors].length <= 0
       object
     end
