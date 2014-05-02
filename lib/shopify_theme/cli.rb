@@ -211,7 +211,10 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      response = ShopifyTheme.send_asset(data)
+      uploading_message = "[#{time.strftime(TIMEFORMAT)}] Uploading: #{asset}"
+      response = show_during(uploading_message, quiet) do
+        ShopifyTheme.send_asset(data)
+      end
       if response.success?
         say("[" + time.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
       else
@@ -222,7 +225,11 @@ module ShopifyTheme
     def delete_asset(key, quiet=false)
       return unless valid?(key)
       time = Time.now
-      if (response = ShopifyTheme.delete_asset(key)).success?
+      removing_message = "[#{time.strftime(TIMEFORMAT)}] Removing: #{key}"
+      response = show_during(removing_message, quiet) do
+        ShopifyTheme.delete_asset(key)
+      end
+      if response.success?
         say("[" + time.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
       else
         report_error(time, "Could not remove #{key}", response)
@@ -261,6 +268,13 @@ module ShopifyTheme
                         end
       object.delete(:errors) if object[:errors].length <= 0
       object
+    end
+
+    def show_during(message = '', quiet = false, &block)
+      print message unless quiet
+      result = yield
+      print "\r#{' ' * message.length}\r" unless quiet
+      result
     end
   end
 end
