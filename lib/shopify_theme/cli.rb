@@ -44,14 +44,14 @@ module ShopifyTheme
       theme_name ||= 'Timber'
       say("Registering #{theme_name} theme on #{store}", :green)
       theme = ShopifyTheme.upload_timber(theme_name, master || false)
-      
+
       say("Creating directory named #{theme_name}", :green)
       empty_directory(theme_name)
-      
+
       say("Saving configuration to #{theme_name}", :green)
       ShopifyTheme.config.merge!(theme_id: theme['id'])
       create_file("#{theme_name}/config.yml", ShopifyTheme.config.to_yaml)
-      
+
       say("Downloading #{theme_name} assets from Shopify")
       Dir.chdir(theme_name)
       download()
@@ -128,10 +128,10 @@ module ShopifyTheme
         filename = filename.gsub("#{Dir.pwd}/", '')
         if local_assets_list.include?(filename)
           action = case event
-          when :changed, :new then :send_asset
-          when :delete then :delete_asset
-          else raise NotImplementedError, "Unknown event -- #{event}"
-          end
+                   when :changed, :new then :send_asset
+                   when :delete then :delete_asset
+                   else raise NotImplementedError, "Unknown event -- #{event}"
+                   end
           send(action, filename, options['quiet'])
         end
       end
@@ -201,7 +201,6 @@ module ShopifyTheme
 
     def send_asset(asset, quiet=false)
       return unless valid?(asset)
-      time = Time.now
       data = {:key => asset}
       content = File.read(asset)
       if BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.','')) || ShopifyTheme.is_binary_data?(content)
@@ -211,21 +210,25 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      response = ShopifyTheme.send_asset(data)
+      response = show_during("[#{timestamp}] Uploading: #{asset}", quiet) do
+        ShopifyTheme.send_asset(data)
+      end
       if response.success?
-        say("[" + time.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
+        say("[#{timestamp}]] Uploaded: #{asset}", :green) unless quiet
       else
-        report_error(time, "Could not upload #{asset}", response)
+        report_error(Time.now, "Could not upload #{asset}", response)
       end
     end
 
     def delete_asset(key, quiet=false)
       return unless valid?(key)
-      time = Time.now
-      if (response = ShopifyTheme.delete_asset(key)).success?
-        say("[" + time.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
+      response = show_during("[#{timestamp}] Removing: #{key}", quiet) do
+        ShopifyTheme.delete_asset(key)
+      end
+      if response.success?
+        say("[#{timestamp}] Removed: #{key}", :green) unless quiet
       else
-        report_error(time, "Could not remove #{key}", response)
+        report_error(Time.now, "Could not remove #{key}", response)
       end
     end
 
@@ -242,7 +245,7 @@ module ShopifyTheme
     end
 
     def report_error(time, message, response)
-      say("[#{time.strftime(TIMEFORMAT)}] Error: #{message}", :red)
+      say("[#{timestamp(time)}] Error: #{message}", :red)
       say("Error Details: #{errors_from_response(response)}", :yellow)
     end
 
@@ -252,15 +255,26 @@ module ShopifyTheme
       errors = response.parsed_response ? response.parsed_response["errors"] : response.body
 
       object[:errors] = case errors
-      when NilClass
-        ''
-      when String
-        errors.strip
-      else
-        errors.values.join(", ")
-      end
+                        when NilClass
+                          ''
+                        when String
+                          errors.strip
+                        else
+                          errors.values.join(", ")
+                        end
       object.delete(:errors) if object[:errors].length <= 0
       object
+    end
+
+    def show_during(message = '', quiet = false, &block)
+      print(message) unless quiet
+      result = yield
+      print("\r#{' ' * message.length}\r") unless quiet
+      result
+    end
+
+    def timestamp(time = Time.now)
+      time.strftime(TIMEFORMAT)
     end
   end
 end
