@@ -210,12 +210,11 @@ module ShopifyTheme
         data.merge!(:value => content)
       end
 
-      uploading_message = "[#{Time.now.strftime(TIMEFORMAT)}] Uploading: #{asset}"
-      response = show_during(uploading_message, quiet) do
+      response = show_during("[#{timestamp}] Uploading: #{asset}", quiet) do
         ShopifyTheme.send_asset(data)
       end
       if response.success?
-        say("[" + Time.now.strftime(TIMEFORMAT) + "] Uploaded: #{asset}", :green) unless quiet
+        say("[#{timestamp}]] Uploaded: #{asset}", :green) unless quiet
       else
         report_error(Time.now, "Could not upload #{asset}", response)
       end
@@ -223,12 +222,11 @@ module ShopifyTheme
 
     def delete_asset(key, quiet=false)
       return unless valid?(key)
-      removing_message = "[#{Time.now.strftime(TIMEFORMAT)}] Removing: #{key}"
-      response = show_during(removing_message, quiet) do
+      response = show_during("[#{timestamp}] Removing: #{key}", quiet) do
         ShopifyTheme.delete_asset(key)
       end
       if response.success?
-        say("[" + Time.now.strftime(TIMEFORMAT) + "] Removed: #{key}", :green) unless quiet
+        say("[#{timestamp}] Removed: #{key}", :green) unless quiet
       else
         report_error(Time.now, "Could not remove #{key}", response)
       end
@@ -247,7 +245,7 @@ module ShopifyTheme
     end
 
     def report_error(time, message, response)
-      say("[#{time.strftime(TIMEFORMAT)}] Error: #{message}", :red)
+      say("[#{timestamp(time)}] Error: #{message}", :red)
       say("Error Details: #{errors_from_response(response)}", :yellow)
     end
 
@@ -269,10 +267,14 @@ module ShopifyTheme
     end
 
     def show_during(message = '', quiet = false, &block)
-      print message unless quiet
+      print(message) unless quiet
       result = yield
-      print "\r#{' ' * message.length}\r" unless quiet
+      print("\r#{' ' * message.length}\r") unless quiet
       result
+    end
+
+    def timestamp(time = Time.now)
+      time.strftime(TIMEFORMAT)
     end
   end
 end
