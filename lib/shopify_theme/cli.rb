@@ -214,7 +214,7 @@ module ShopifyTheme
         ShopifyTheme.send_asset(data)
       end
       if response.success?
-        say("[#{timestamp}]] Uploaded: #{asset}", :green) unless quiet
+        say("[#{timestamp}] Uploaded: #{asset}", :green) unless quiet
       else
         report_error(Time.now, "Could not upload #{asset}", response)
       end
