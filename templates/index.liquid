@@ -1,0 +1,204 @@
+{% if settings.slide_1 != false or settings.slide_2 != false or settings.slide_3 != false or settings.slide_4 != false %}
+<!-- Begin slider -->
+<div class="span12">
+  <div class="flexslider-container">
+    <div class="flexslider">
+      <ul class="slides">
+        {% for i in (1..4) %}
+          {% capture show_slide %}slide_{{ i }}{% endcapture %}
+          {% capture image %}slideshow_{{ i }}.jpg{% endcapture %}
+          {% capture link %}slide_{{ i }}_link{% endcapture %}
+          {% capture alt %}slide_{{ i }}_alt{% endcapture %}
+          {% if settings[show_slide] %}
+          <li>
+            <a href="{{ settings[link] }}">
+              <img src="{{ image | asset_url }}" alt="{{ settings[alt] | escape }}" />
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <div class="flex-controls"></div>
+    </div>
+  </div>
+</div>
+<!-- End slider -->
+{% endif %}
+
+<!-- start featured product -->
+
+  <div class="clearfix helper-section">
+
+    {% if collections[settings.frontpage_collection].products.size == 0 %}
+    
+    {% if settings.enable_featuredproduct %}
+
+    <!-- if store has no products -->
+    <div class="note helper-note">
+      <h3>Add a product to the {{ collections[settings.frontpage_collection].title }} collection</h3> 
+      <p>It takes less than a minute to <a href="/admin/products">add your first product</a> to your store. Make sure you add it to the <strong>{{ collections[settings.frontpage_collection].title }}</strong> collection.</p>
+      <p class="p0">You can also pick which collection gets featured or show a slideshow banner instead of a featured product by editing your <a href="/admin/themes/current/settings">Theme Settings</a>.</p>
+    </div>
+
+    <div class="helper-content clearfix">
+      <div class="display-table featured-product span12 p30 border-bottom ">
+        <div class="p30">
+          <div class="display-table-cell">
+            <h2>Example Featured Product</h2>
+            <span class="price">
+              $0.00
+            </span>
+            <div class="featured-product-description">
+              <p>Your store is looking a little empty! This placeholder will appear until you add your first product. You can also replace this featured product area with a slideshow banner in your Theme Settings.</p>
+            </div>
+            <a class="btn" href="admin/products">View Product</a>
+          </div>
+          <div class="display-table-cell featured-product-image">
+            <div class="sample-product-wrapper">
+              <div class="sample-product" style="height:300px">This is where your product image will appear<br />when you add your first product.</div>
+            </div>
+          </div>
+        </div><!-- p30 -->
+      </div><!-- display table -->
+	</div><!-- helper-content -->
+    {% endif %}
+      
+    {% if collections[settings.frontpage_collection] != blank %}
+      <div class="product span4">
+        <div class="image">
+          <div class="sample-product-wrapper">
+            <div class="sample-product">Product image</div>
+          </div>
+        </div>
+        <div class="details">
+          <h4 class="title">Example Product title </h4>
+          <span class="price">
+            {{ '0.00' | money }}
+          </span>
+        </div>
+      </div>
+    
+      <div class="product span4 ">
+        <div class="image">
+          <div class="sample-product-wrapper">
+            <div class="sample-product">Product image</div>
+          </div>
+        </div>
+        <div class="details">
+          <h4 class="title">Example Product title </h4>
+          <span class="price">
+            {{ '0.00' | money }}
+          </span>
+        </div>
+      </div>
+      <div class="product span4">
+        <div class="image">
+          <div class="sample-product-wrapper">
+            <div class="sample-product">Product image</div>
+          </div>
+        </div>
+        <div class="details">
+          <h4 class="title">Example Product title </h4>
+          <span class="price">
+            {{ '0.00' | money }}
+          </span>
+        </div>
+      </div>
+      <div class="span12 border-bottom p30"></div>
+      {% endif %}
+
+    {% else %}
+
+    {% assign featuredproduct = collections[settings.frontpage_collection].products.first %}
+
+     {% if settings.enable_featuredproduct == true and featuredproduct.handle != blank  %}
+      <div class="display-table featured-product span12 p30 border-bottom">
+        <div class="p30">
+          <div class="display-table-cell">
+            <h2>{{ featuredproduct.title }}</h2>
+            <span class="price">
+              {% if featuredproduct.available %}
+              {% if featuredproduct.compare_at_price_max > product.price %}
+              <del>{{ featuredproduct.compare_at_price | money }}</del>
+              {% endif %}
+              {% if featuredproduct.price_varies %}
+              <small><em>from</em></small>
+              {% endif %}
+              {{ featuredproduct.price | money }}
+              {% else %}
+              {{ featuredproduct.price | money }} Sold Out
+              {% endif %}
+            </span>
+            <div class="featured-product-description">{{ featuredproduct.description}}</div>
+            <a class="btn" href="{{ featuredproduct.url }}">View product</a>
+          </div>
+          <div class="display-table-cell featured-product-image">
+            {% if featuredproduct.images.size > 0 %}
+            <a href="{{ featuredproduct.url }}">
+              <img alt="featured product" src="{{ featuredproduct.featured_image | product_img_url: 'grande' }}">
+            </a>
+            {% else %}
+            {% endif %}
+          </div>
+        </div><!-- p30 -->
+      </div><!-- displaytable -->
+    {% endif %}
+
+    {% assign products_section = false %}
+    {% if collections[settings.frontpage_collection].products.size > 1 and settings.enable_featuredproduct %}
+      {% assign products_section = true %}
+    {% elsif collections[settings.frontpage_collection].products.size > 0 and settings.enable_featuredproduct == false %}
+      {% assign products_section = true %}
+    {% endif %}
+
+    {% if products_section %}
+
+    <!-- start additional products -->
+
+      <div class="products">
+
+        {% if settings.enable_featuredproduct %}
+
+          {% for product in collections[settings.frontpage_collection].products offset:1 %}
+          {% include 'product-loop' with settings.frontpage_collection %}
+          {% endfor %}
+
+        {% else %}
+
+          {% for product in collections[settings.frontpage_collection].products %}
+          {% include 'product-loop' with settings.frontpage_collection %}
+          {% endfor %}
+
+        {% endif %}
+
+      </div>
+
+      <div class="span12 border-bottom p30"></div>
+
+    <!-- end additional products -->
+
+    {% endif %}
+    {% endif %}
+
+  </div><!-- helper-section -->
+<!-- end featured product -->
+
+<!-- start content page -->
+{% assign helper_welcome = false %}
+{% if pages[settings.homepage].content contains "where users go when first trying to determine a level of trust" %}{% assign helper_welcome = true %}{% endif %}
+<div class="span12 clearfix {% if helper_welcome %}helper-section{% endif %}">
+  {% if helper_welcome %}
+  <div class="note helper-note">
+    <h3>How to change this page</h3>
+    <p>You can change this area's text by editing the "About Us" page in your admin's <a href="/admin/pages">Pages section</a>.</p>
+    <p class="p0">You can also replace the "About Us" page with another page in your <a href="/admin/themes/current/settings">Theme Settings</a>.</p>
+  </div>
+  {% endif %}
+  <div class="p30 clearfix  {% if helper_welcome %}helper-content{% endif %}">
+    <div class="intro clearfix">
+      <h2>{{ pages[settings.homepage].title }}</h2>
+      {{ pages[settings.homepage].content }}
+    </div>
+  </div>
+</div>
+<!-- end content page -->

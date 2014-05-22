@@ -1,0 +1,28 @@
+<div class="span3 sidebar">
+  
+  <h3>Recent Articles</h3>
+  {% for article in blogs[blog.handle].articles limit:10 %}
+  <div class="article">
+    <p><a href="{{ article.url }}">{{ article.title }}</a> <em>Posted on {{ article.published_at | date: "%B %d, %Y" }}</em></p>
+  </div>
+  {% endfor %}
+  
+  {% if blog.all_tags.size > 0 %}
+  <div class="clearfix">
+
+    <h3>Tags</h3>
+    <ul class="tags">
+      <li{% unless current_tags %} class="active"{% endunless %}><a href="{{ shop.url}}/blogs/{{ blog.handle }}">All</a>
+      {% for tag in blog.all_tags %}
+      {% if current_tags contains tag %}
+      <li class="active">{{ tag | link_to_remove_tag: tag }}</li>
+      {% else %}
+      <li>{{ tag | link_to_tag: tag }}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+
+  </div>
+  {% endif %}
+  
+</div>

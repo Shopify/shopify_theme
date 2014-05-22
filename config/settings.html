@@ -1,0 +1,352 @@
+<fieldset>
+  <legend>Aesthetics</legend>
+  <table>
+    <tr>
+      <td colspan="2">
+        <h3>Logo, favicon, and cart settings</h3>
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="use_logo">Use a custom logo?</label></th>
+      <td>
+        <input type="checkbox" id="use_logo" name="use_logo" value="1" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="logo">Shop logo</label><small> (should be less than 700 pixels wide)</small></th>
+      <td>
+        <input type="file" id="logo" name="logo.png" data-max-width="996" data-max-height="600" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="logo">Upload a favicon<br /><small>Must be 16x16px</small></label></th>
+      <td>
+        <input type="file" id="logo" name="favicon.png" data-max-width="16" data-max-height="16" />
+      </td>
+    </tr>
+
+  </table>
+
+  <table>
+    <tr>
+      <td colspan="2">
+        <h3>Colors</h3>
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="shop_bg_color">Website background color</label></th>
+      <td><input id="shop_bg_color" name="shop_bg_color" class="color" value="#ffffff" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="toolbar_bg_color">Top toolbar background color</label></th>
+      <td><input id="toolbar_bg_color" name="toolbar_bg_color" class="color" value="#000000" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="toolbar_text_color">Top toolbar text color</label></th>
+      <td><input id="toolbar_text_color" name="toolbar_text_color" class="color" value="#bbbbbb" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="link_color">Link color</label></th>
+      <td><input id="link_color" name="link_color" class="color" value="#f45b4f" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="nav_link_color">Nav link color</label></th>
+      <td><input id="nav_link_color" name="nav_link_color" class="color" value="#888888" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="body_font_color">Text color</label></th>
+      <td>
+        <input id="body_font_color" name="body_font_color" class="color" value="#555555" />
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="header_color">Heading text color</label></th>
+      <td><input id="header_color" name="header_color" class="color" value="#333333" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="shop_btn_color">Button background color</label></th>
+      <td><input id="shop_btn_color" name="shop_btn_color" class="color" value="#f45b4f" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="border_color">General border color</label></th>
+      <td><input id="border_color" name="border_color" class="color" value="#dddddd" /></td>
+    </tr>
+
+    <tr>
+      <th><label for="icon_cart">Cart icon</label></th>
+      <td>
+        <input type="radio" name="icon_cart" value="none" /> None
+        <input type="radio" name="icon_cart" value="light" selected="selected" /> Light
+        <input type="radio" name="icon_cart" value="dark" /> Dark
+      </td>
+    </tr>   
+  </table>
+
+  <table>
+    <tr>
+      <td colspan="2">
+        <h3>Font options</h3>
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="base_font">Base Font</label></th>
+      <td>
+        <select name="base_font" id="google_font" class="font">
+          <optgroup label="Google Web Fonts">          
+            <option value='Google+Arvo'>Arvo</option>
+            <option value='Google+Asap'>Asap</option>
+            <option value='Google+Cabin'>Cabin</option>
+            <option value='Google+Copse'>Copse</option>
+            <option value='Google+Droid+Sans'>Droid Sans</option>
+            <option value='Google+Droid+Serif'>Droid Serif</option>
+            <option value='Google+Gentium+Book+Basic'>Gentium Book Basic</option>
+            <option value='Google+Josefin+Slab'>Josefin Slab</option>
+            <option value='Google+Josefin+Sans'>Josefin Sans</option>
+            <option value='Google+Kreon'>Kreon</option>
+            <option value='Google+Lato'>Lato</option>
+            <option value='Google+Merriweather'>Merriweather</option>
+            <option value='Google+Old+Standard+TT'>Old Standard TT</option>
+            <option value='Google+Open+Sans'>Open Sans</option>
+          </optgroup>
+        </select>
+      </td>
+    </tr>
+
+    <tr class="horizontal">
+      <th><label for="header_font">Heading Font</label></th>
+      <td>
+        <select name="header_font" id="google_header_font" class="font">
+          <optgroup label="Google Web Fonts">          
+            <option value='Google+Arvo'>Arvo</option>
+            <option value='Google+Asap'>Asap</option>
+            <option value='Google+Cabin'>Cabin</option>
+            <option value='Google+Copse'>Copse</option>
+            <option value='Google+Droid+Sans'>Droid Sans</option>
+            <option value='Google+Droid+Serif'>Droid Serif</option>
+            <option value='Google+Gentium+Book+Basic'>Gentium Book Basic</option>
+            <option value='Google+Josefin+Slab'>Josefin Slab</option>
+            <option value='Google+Josefin+Sans'>Josefin Sans</option>
+            <option value='Google+Kreon'>Kreon</option>
+            <option value='Google+Lato'>Lato</option>
+            <option value='Google+Merriweather'>Merriweather</option>
+            <option value='Google+Old+Standard+TT'>Old Standard TT</option>
+            <option value='Google+Open+Sans'>Open Sans</option>
+          </optgroup>
+        </select>
+      </td>
+    </tr>
+
+  </table>
+
+</fieldset>
+
+<fieldset>
+  <legend>Homepage</legend>
+  <table>
+    <tr>
+      <td colspan="2">
+        <h3>Homepage Content</h3>
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="homepage">Page to show on homepage</label><small>You can include a Page on the homepage</small></th>
+      <td><select class="page" name="homepage" id="homepage"  /></td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <h3>Additional featured products</h3>
+      </td>
+    </tr>
+    <tr>
+      <th><label for="enable_featuredproduct">Show single featured product banner</label><small>To hide featured product just uncheck</small></th>
+      <td><input type="checkbox" id="enable_featuredproduct" name="enable_featuredproduct" value="1" /></td>
+    </tr>
+    
+    <tr class="horizontal">
+      <th><label for="frontpage_collection">Featured products</label><small>Products in this collection will be on the homepage</small></th>
+      <td><select name="frontpage_collection" class="collection"  /></td>
+    </tr>
+    
+    <tr>
+      <td colspan="2">
+        <h3>Slideshow banner</h3>
+        For best results, upload images that are at least 966px wide. Try to keep your slideshow images the same size.
+      </td>
+    </tr>
+    
+    <tr>
+      <table class="standard-table">
+        <tr>
+          <td></td>
+          <td>Show?</td>
+          <td>Image</td>
+          <td>Links to</td>
+          <td>ALT text</td>
+        </tr>
+        <tr class="odd">
+          <td><label>Slide #1</label></td>
+          <td><input type="checkbox" id="slide_1" name="slide_1" value="1" /></td>
+          <td><input type="file" id="slide_1" name="slideshow_1.jpg" data-max-width="966" /></td>
+          <td><input type="text" id="slide_1_link" name="slide_1_link" value="/collections/all" /></td>
+          <td><input type="text" id="slide_1_alt" name="slide_1_alt" /></td>
+        </tr>
+        <tr class="even">
+          <td><label>Slide #2</label></td>
+          <td><input type="checkbox" id="slide_2" name="slide_2" value="1"/></td>
+          <td><input type="file" id="slide_2" name="slideshow_2.jpg" data-max-width="966" /></td>
+          <td><input type="text" id="slide_2_link" name="slide_2_link" value="/collections/all" /></td>
+          <td><input type="text" id="slide_2_alt" name="slide_2_alt" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label>Slide #3</label></td>
+          <td><input type="checkbox" id="slide_3" name="slide_3" value="1" /></td>
+          <td><input type="file" id="slide_3" name="slideshow_3.jpg" data-max-width="966" /></td>
+          <td><input type="text" id="slide_3_link" name="slide_3_link" /></td>
+          <td><input type="text" id="slide_3_alt" name="slide_3_alt" /></td>
+        </tr>
+        <tr class="even">
+          <td><label>Slide #4</label></td>
+          <td><input type="checkbox" id="slide_4" name="slide_4" value="1" /></td>
+          <td><input type="file" id="slide_4" name="slideshow_4.jpg" data-max-width="966" /></td>
+          <td><input type="text" id="slide_4_link" name="slide_4_link" /></td>
+          <td><input type="text" id="slide_4_alt" name="slide_4_alt" /></td>
+        </tr>
+      </table>
+    </tr>
+
+  </table>
+</fieldset>
+<fieldset>
+  <legend>Product Page</legend>
+  <table>
+    <tr class="horizontal">
+      <th><label for="enable_product_image_zoom">Enable image zoom feature?</label></th>
+      <td><input type="checkbox" id="enable_product_image_zoom" name="enable_product_image_zoom" value="1" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="display_quantity_dropdown">Display Quantity Box?</label></th>
+      <td>
+        <input type="checkbox" id="display_quantity_dropdown" name="display_quantity_dropdown" value="1" />
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="show_related_products">Display related products?</label></th>
+      <td><input type="checkbox" id="show_related_products" name="show_related_products" value="1" checked="checked" /></td>
+    </tr>
+  </table>
+</fieldset>
+<fieldset>
+  <legend>Collection Page</legend>
+  <table>
+    <tr class="horizontal">
+      <th><label for="collection_tags">Display browse by product tags?</label></th>
+      <td>
+        <input type="checkbox" id="collection_tags" name="collection_tags" value="1" checked="checked" />
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="collection_sort">Display sort by?</label></th>
+      <td>
+        <input type="checkbox" id="collection_sort" name="collection_sort" value="1" checked="checked" />
+      </td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="pagination_limit">Number of products to display</label></th>
+      <td>
+        <select name="pagination_limit" id="pagination_limit">
+          <option value="48">48</option>
+          <option value="36">36</option>
+          <option value="24" selected="selected">24</option>
+          <option value="12">12</option>
+          <option value="9">9</option>
+          <option value="8">8</option>
+          <option value="6">6</option>
+          <option value="4">4</option>
+          <option value="3">3</option>
+        </select>
+      </td>
+    </tr>
+
+  </table>
+</fieldset>
+<fieldset>
+  <legend>Footer</legend>
+  <table>
+    <tr class="horizontal">
+      <th><label for="footer_linklist_title">Footer link list heading</label></th>
+      <td><input type="text" id="footer_linklist_title" name="footer_linklist_title" value="Quick Links" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="footer_linklist">Footer link list to show</label></th>
+      <td><select name="footer_linklist" class="linklist" value="footer" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="footer_blog_post_header">Latest blog post header:</label></th>
+      <td><input type="text" id="footer_blog_post_header" name="footer_blog_post_header" value="Latest news" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="footer_blog_post">Blog to use for latest blog post:</label></th>
+      <td><select name="footer_blog_post" class="blog" value="" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="footer_display_newsletter">Show newsletter?</label></th>
+      <td><input type="checkbox" id="footer_display_newsletter" name="footer_display_newsletter" value="1" /></td>
+    </tr>
+    <tr class="horizontal">
+      <th><label for="mailing_list_form_action">Mailchimp form action URL</label></th>
+      <td><input type="text" id="mailing_list_form_action" name="mailing_list_form_action" value="" /></td>
+      <td><a href="http://support.shopify.com/customer/portal/articles/640278" target="_blank">Where do I find my Mailchimp form action URL?</a></td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <h3>Social Links</h3>
+      </td> 
+    </tr>
+
+    <tr class="horizontal">
+
+
+      <table>
+        <tr class="odd">
+          <td><label for="show_carousel_item_4">Twitter</label></td>
+          <td><input type="text" id="twitter_link" name="twitter_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="facebook_link">Facebook</label></td>
+          <td><input type="text" id="facebook_link" name="facebook_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="google_link">Google+ Link</label></td>
+          <td><input type="text" id="google_link" name="google_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="youtube_link">Youtube Link</label></td>
+          <td><input type="text" id="youtube_link" name="youtube_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="vimeo_link">Vimeo Link</label></td>
+          <td><input type="text" id="vimeo_link" name="vimeo_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="pinterest_link">Pinterest Link</label></td>
+          <td><input type="text" id="pinterest_link" name="pinterest_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="instagram_link">Instagram Link</label></td>
+          <td><input type="text" id="instagram_link" name="instagram_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="tumblr_link">Tumblr Link</label></td>
+          <td><input type="text" id="tumblr_link" name="tumblr_link" /></td>
+        </tr>
+        <tr class="odd">
+          <td><label for="atom_link">Blog feed</label></td>
+          <td><input type="text" id="atom_link" name="atom_link" /></td>
+        </tr>         
+      </table>
+    </tr>
+    
+  </table>
+</fieldset>

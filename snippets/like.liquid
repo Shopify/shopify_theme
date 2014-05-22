@@ -1,0 +1,20 @@
+<div id="social" class="clearfix">
+  <p class="share-this">Share this item:</p>
+  <div class="google-plus"><g:plusone size="medium" annotation="none"></g:plusone></div>
+  <div class="tweet-btn">
+    <a href="//twitter.com/share" class="twitter-share-button" data-url="{{ shop.url }}{{ product.url }}" data-count="none" {% if settings.twitter_account != "" %}data-via="{{ settings.twitter_account }}"{% endif %}>Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+  </div>
+  <div class="pinterest">
+    <a href="//pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&media={{ product.featured_image | product_img_url: 'large' }}" class="pin-it-button" count-layout="horizontal">Pin It</a>
+    <script src="//assets.pinterest.com/js/pinit.js"></script>
+  </div>
+  <div class="facebook-like"><iframe src="//www.facebook.com/plugins/like.php?href={{ shop.url }}{{ product.url }}&amp;send=false&amp;layout=button_count&amp;width=120&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:120px; height:21px;" allowTransparency="true"></iframe></div>
+</div>
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = '//apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>

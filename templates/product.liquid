@@ -1,0 +1,157 @@
+<div id="product" class="{{ product.handle }}" itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+  <meta itemprop="image" content="{{ product.featured_image.src | product_img_url: 'grande' }}" />
+  
+  <div class="row clearfix">
+    
+    <!-- Begin breadcrumb -->
+    <div class="span12">
+      <div class="breadcrumb clearfix">
+        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+          <a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url"><span itemprop="title">Home</span></a>
+        </span> 
+        <span class="arrow-space">&#62;</span>
+        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+          {% if collection %}
+            <a href="{{ collection.url }}" title="{{ collection.title | escape }}" itemprop="url"><span itemprop="title">{{ collection.title }}<span></a>
+          {% else %}
+            <a href="/collections/all" title="All Products" itemprop="url"><span itemprop="title">Products</span></a>
+          {% endif %}
+        </span>
+        <span class="arrow-space">&#62;</span>
+        <strong>{{ product.title }}</strong>
+      </div>
+    </div>
+    <!-- End breadcrumb -->
+
+    <!-- Begin product photos -->
+    <div class="span6">
+      
+      <!-- Begin featured image -->
+      <div class="image featured">
+        {% if settings.enable_product_image_zoom %}
+        <a href="{{ product.featured_image | product_img_url: 'master' }}" class="cloud-zoom" rel="position: 'inside', showTitle: 'false'" id="placeholder">
+          <img src="{{ product.featured_image | product_img_url: 'master' }}" alt="{{ product.featured_image.alt | escape }}" />
+        </a>
+        {% else %}
+        <a href="{{ product.featured_image | product_img_url: 'master' }}" class="zoom" id="placeholder">
+          <img src="{{ product.featured_image | product_img_url: 'master' }}" alt="{{ product.featured_image.alt | escape }}" />
+        </a>
+        {% endif %}
+      </div>
+      <!-- End product image -->
+      
+      {% if product.images.size > 1%}
+      <!-- Begin thumbnails -->
+      <div class="thumbs clearfix" style="margin-left:-15px;">
+        {% for image in product.images %}
+        {% if settings.enable_product_image_zoom %}
+        <div class="image span2{% cycle 'last-in-row': '', '', ' last-in-row' %}">
+          <a href="{{ image | product_img_url: 'master' }}" class="cloud-zoom-gallery" rel="useZoom: 'placeholder', smallImage: '{{ image | product_img_url: 'master' }}', tint: '#ffffff'" data-image-id="{{ image.id }}">
+            <img src="{{ image | product_img_url: 'medium' }}" alt="{{ image.alt | escape }}" />
+          </a>
+        </div>
+        {% else %}
+        <div class="image span2{% cycle 'last-in-row': '', '', ' last-in-row' %}">
+          <a href="{{ image | product_img_url: 'master' }}" data-original-image="{{ image | product_img_url: 'master' }}" data-image-id="{{ image.id }}">
+            <img src="{{ image | product_img_url: 'medium' }}" alt="{{ image.alt | escape }}" />
+          </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <!-- End thumbnails -->
+      <style>
+      .thumbs .image { margin: 15px 0 }
+      .thumbs .image { padding: 0 15px }
+      .thumbs .last-in-row { padding-right: 0 }
+      </style>
+      {% endif %}
+    </div>
+    <!-- End product photos -->
+    
+    <!-- Begin description -->
+    <div class="span6">
+      
+      <h1 class="title" itemprop="name">{{ product.title }}</h1>
+      
+      <div class="purchase" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+        {% if product.available %}
+        <link itemprop="availability" href="http://schema.org/InStock" />
+        {% else %}
+        <link itemprop="availability" href="http://schema.org/OutOfStock" />
+        {% endif %}
+
+        <h2 class="price" id="price-preview">
+          <span itemprop="price">{{ product.price_min | money }}</span>{% if product.price_min < product.compare_at_price_min %} <del>{{ product.compare_at_price_min | money }}</del>{% endif %}
+        </h2>
+      </div>
+      
+      {% assign hide_default_title = false %}
+      {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+        {% assign hide_default_title = true %}
+      {% endif %}
+            
+      <form id="add-item-form" action="/cart/add" method="post" class="variants clearfix">
+        
+        <!-- Begin product options -->
+        <div class="product-options">
+
+          <div class="select clearfix"{% if hide_default_title %} style="display:none"{% endif %}>
+            <select id="product-select" name="id" style="display:none">
+              {% for variant in product.variants %}
+              <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          {% if settings.display_quantity_dropdown %}
+          <div class="selector-wrapper">
+            <label>Quantity</label>
+            <input id="quantity" type="number" name="quantity" value="1" class="tc item-quantity" />
+          </div>
+          {% endif %}
+
+          <div class="purchase-section{% if product.variants.size > 1 %} multiple{% endif %}">
+            <div class="purchase">
+              {% unless product.available %}
+              <p>Sold Out</p>
+              {% else %}
+              <input type="submit" id="add-to-cart" class="btn addtocart" name="add" value="Add to cart" />
+              <div id="cart-animation" style="display:none">1</div>
+              {% endunless %}
+            </div>
+          </div>
+
+        </div>
+        <!-- End product options -->
+
+      </form>
+
+      <div class="description" itemprop="description">
+        {{ product.description }}
+      </div>
+
+      <!-- Begin social buttons -->
+      <div class="social">
+        {% include 'like' %}
+      </div>
+      <!-- End social buttons -->
+    </div>
+    <!-- End description -->
+
+  </div>
+
+  <!-- Begin related product -->
+  {% if settings.show_related_products %}
+    {% include 'related-products' %}
+  {% endif %}
+  
+</div> 
+
+<div style="display:none" id="preloading">
+{% for image in product.images offset: 1 %}
+{{ image | product_img_url: 'master' | img_tag }}
+{% endfor %}
+</div>

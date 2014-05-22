@@ -1,0 +1,36 @@
+<div id="blog">
+  
+  <div class="row title">
+    <div class="span12">
+      <h1>{{ blog.title }}</h1>
+    </div> 
+  </div> 
+    
+  <!-- Begin content -->
+  <div class="row">
+    
+    {% paginate blog.articles by 10 %}
+    
+    <div class="span9 articles">
+      {% for article in blog.articles %}
+      <div class="article clearfix">
+        <h1><a href="{{ article.url }}">{{ article.title }}</a> <span class="date" style="display: block;">{{ article.published_at | date: "%B %d %Y" }}{% if article.comments_enabled? %}, <span>{{ article.comments_count }} {{ article.comments_count | pluralize: "Comment", "Comments" }}</span>{% endif %}</span></h1>
+        {{ article.excerpt_or_content }}
+      </div>
+      {% unless forloop.last %}
+      <hr class="divider" />
+      {% endunless %}
+      {% endfor %}
+      {% include 'pagination' %}
+    </div>
+    
+    {% endpaginate %}
+    
+    <!-- Begin sidebar -->
+    {% include 'blog_sidebar' %}
+    <!-- End sidebar -->
+    
+  </div>
+  <!-- End content -->
+  
+</div>

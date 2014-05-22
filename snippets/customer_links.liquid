@@ -1,0 +1,13 @@
+{% if shop.customer_accounts_enabled %}
+  {% if customer  %}
+    <li class="toolbar-customer"><a href="/account">Your Account</a></li>
+  {% else %}
+    <li class="toolbar-customer">
+      {{ 'Log in' | customer_login_link }}
+      {% if shop.customer_accounts_optional %}
+      <span class="or">or</span>
+      {{ 'Create an account' | customer_register_link }}
+      {% endif %}
+    </li>
+  {% endif %}
+{% endif %}

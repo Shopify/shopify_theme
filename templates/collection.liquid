@@ -1,0 +1,138 @@
+<div id="collection">
+  
+  {% paginate collection.products by settings.pagination_limit %}
+  <!-- Begin collection info -->
+  <div class="row">
+    <div class="span12">
+      
+      <!-- Begin breadcrumb -->
+      <div class="breadcrumb clearfix">
+        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url"><span itemprop="title">Home</span></a></span> 
+        <span class="arrow-space">&#62;</span>
+        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ collection.url }}" title="{{ collection.title | escape }}" itemprop="url"><span itemprop="title">{{ collection.title }}</span></a></span>       
+        
+        {% if current_tags %}
+          {% for tag in current_tags %}
+            <span class="arrow-space">&#62;</span>
+            <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/collections/{% if collection.handle != blank %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handleize }}" title="{{ tag | escape }}" itemprop="url"><span itemprop="title">{{ tag }}</span></a></span>       
+          {% endfor %}
+        {% endif %}
+        
+        {% if paginate.pages != 0 %}      
+          <span class="arrow-space">&#62;</span> <strong>Page {{ paginate.current_page }} of {{ paginate.pages }}</strong>
+        {% endif %}
+      </div>
+      <!-- End breadcrumb -->
+
+      <!-- Begin sort collection -->
+      <div class="clearfix">
+        <h1 class="collection-title">{{ collection.title }}</h1>
+        {% if settings.collection_tags %}        
+          {% if collection.all_tags.size > 0 %}
+          <div class="browse-tags">
+          	<label>Browse:</label>
+          	<select id="collection_tags" class="coll-filter">
+          		<option value="">All items</option>
+          		{% for tag in collection.all_tags %}
+          			<option value="{{ tag | handle }}"{% if current_tags contains tag %} selected="selected"{% endif %}>{{ tag }}</option>
+          		{% endfor %}
+          	</select>        
+          </div>
+          {% endif %}        
+        {% endif %}
+        {% if settings.collection_sort and collection.products_count > 1 %}
+          <div class="browse-tags">
+            <label>Sort by:</label>
+          	<select class="sort-by">
+          	  <option value="manual">Featured</option>
+              <option value="price-ascending">Price: Low to High</option>
+              <option value="price-descending">Price: High to Low</option>
+              <option value="title-ascending">A-Z</option>
+              <option value="title-descending">Z-A</option>
+              <option value="created-ascending">Oldest to Newest</option>
+              <option value="created-descending">Newest to Oldest</option>
+              <option value="best-selling">Best Selling</option>
+          	</select>           
+          </div>        
+        {% endif %}
+      </div>
+      <!-- End sort collection -->
+      
+      <!-- Begin collection description -->
+      {% if collection.description != "" %}
+        {{ collection.description }}
+      {% endif %}
+      <!-- End collection description -->
+      
+    </div>
+  </div>
+  <!-- End collection info -->
+  
+  <!-- Begin no products -->
+  {% if collection.products.size == 0 %}
+  <div class="row">
+    <div class="span12 expanded-message">
+      <p>No products found</p>
+    </div>
+  </div>
+  {% endif %}
+  
+  <div class="row products">
+    {% for product in collection.products limit: settings.pagination_limit %}
+    {% include 'product-loop' with collection.handle %}
+    {% endfor %}
+  </div>
+  
+  {% include 'pagination' %}
+
+  {% endpaginate %}
+  <!-- End no products -->
+  
+</div>
+
+<script>
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+  var collFilters = jQuery('.coll-filter');
+  collFilters.change(function() {
+      var newTags = [];
+      var newURL = '';
+      collFilters.each(function() { 
+        if (jQuery(this).val()) {
+          newTags.push(jQuery(this).val());
+        }
+      });
+      {% if collection.handle %}
+      newURL = '/collections/' + '{{ collection.handle }}';
+      if (newTags.length) {
+        newURL += '/' + newTags.join('+');
+      }
+      var search = jQuery.param(Shopify.queryParams);
+      if (search.length) {
+        newURL += '?' + search;
+      }
+      location.href = newURL;    
+      {% else %}
+      if (newTags.length) {
+        Shopify.queryParams.constraint = newTags.join('+');        
+      }
+      else {
+        delete Shopify.queryParams.constraint;
+      }
+      location.search = jQuery.param(Shopify.queryParams);
+      {% endif %}      
+  });
+  jQuery('.sort-by')
+    .val('{{ collection.sort_by | default: collection.default_sort_by  }}')
+    .bind('change', function() {
+      Shopify.queryParams.sort_by = jQuery(this).val();
+      location.search = jQuery.param(Shopify.queryParams);
+    });
+</script>

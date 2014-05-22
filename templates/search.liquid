@@ -1,0 +1,79 @@
+<div id="search">
+  {% if search.performed %}
+  {% paginate search.results by settings.pagination_limit %}
+
+  {% if search.terms == "" %}
+  <div class="row">
+    <div class="span12 expanded-message">
+      <div class="search-field">
+        <form class="search" action="/search">
+          <input type="image" src="{{ 'icon-search.png' | asset_url }}" alt="Go" id="go">
+          <input type="text" name="q" class="search_box" placeholder="Search" value=""  />
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  
+  {% if search.results == empty %}
+  <div class="row">
+    <div class="span12 expanded-message">
+      <h2>No search results</h2>
+      <span class="subtext">Your search for <strong>"{{ search.terms }}"</strong> did not yield any results. Try searching for something else.</span>
+      <div class="search-field">
+        <form class="search" action="/search">
+          <input type="image" src="{{ 'icon-search.png' | asset_url }}" alt="Go" id="go">
+          <input type="text" name="q" class="search_box" placeholder="Search" value="{{ search.terms | escape }}"  />
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  
+  <div class="row">
+    <div class="span12">
+      <h1>Search Results</h1>
+    </div>
+  </div>
+  
+  <!-- Begin results -->
+  {% for item in search.results %}
+  <div class="row results">
+    <div class="span1">
+      <div class="thumbnail">
+        <a href="{{ item.url }}">{{ item.featured_image | product_img_url: 'small' | img_tag }}</a>
+      </div>
+    </div>
+    <div class="span11">
+      <div class="search-result">
+        <h3>{{ item.title | highlight: search.terms | link_to: item.url }}</h3>
+        {{ item.content | strip_html | truncatewords: 40 | highlight: search.terms }}
+      </div>
+    </div>
+    <hr class="divider" />
+  </div>
+  {% endfor %}
+  <!-- End results -->
+  
+  {% include 'pagination' %}
+
+  {% endif %}
+  {% endif %}
+
+  {% endpaginate %}
+  
+  {% else %}
+
+  <div class="row">
+    <div class="span12 expanded-message">
+      <div class="search-field">
+        <form class="search" action="/search">
+          <input type="image" src="{{ 'icon-search.png' | asset_url }}" alt="Go" id="go">
+          <input type="text" name="q" class="search_box" placeholder="Search" value="" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}	
+</div> <!-- /#search -->
