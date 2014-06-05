@@ -169,9 +169,13 @@ module ShopifyTheme
       end
     end
 
+    def whitelist
+      DEFAULT_WHITELIST | ShopifyTheme.whitelist_files
+    end
+
     def local_assets_list
       local_files.reject do |p|
-        @permitted_files ||= (DEFAULT_WHITELIST | ShopifyTheme.whitelist_files).map{|pattern| Regexp.new(pattern)}
+        @permitted_files ||= whitelist.map{|pattern| Regexp.new(pattern)}
         @permitted_files.none? { |regex| regex =~ p } || ShopifyTheme.ignore_files.any? { |regex| regex =~ p }
       end
     end
@@ -238,9 +242,9 @@ module ShopifyTheme
     end
 
     def valid?(key)
-      return true if DEFAULT_WHITELIST.include?(key.split('/').first + "/")
+      return true if whitelist.include?(key.split('/').first + "/")
       say("'#{key}' is not in a valid file for theme uploads", :yellow)
-      say("Files need to be in one of the following subdirectories: #{DEFAULT_WHITELIST.join(' ')}", :yellow)
+      say("Files need to be in one of the following subdirectories: #{whitelist.join(' ')}", :yellow)
       false
     end
 
