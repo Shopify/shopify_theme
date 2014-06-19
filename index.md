@@ -1,3 +1,7 @@
+---
+layout: index
+---
+
 # Edit your Shopify theme locally
 
 The Shopify theme gem is a command line tool that lets you make live changes to themes on your Shopify store. If the command line is scary, check out the [Desktop Theme Editor app](http://apps.shopify.com/desktop-theme-editor).
