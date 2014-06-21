@@ -116,7 +116,7 @@ certificates. This can be taken care of by [downloading a certificate file](http
 [setting a the SSL_CERT_PATH environment variable on your system](http://www.computerhope.com/issues/ch000549.htm).
 For more details check out the following [gist](https://gist.github.com/fnichol/867550).
 
-[See the following issue for more details[(https://github.com/Shopify/shopify_theme/issues/103)
+[See the following issue for more details](https://github.com/Shopify/shopify_theme/issues/103)
 
 ## How do I edit a theme that isn't my shops main theme?
 
