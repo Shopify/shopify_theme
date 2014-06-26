@@ -33,7 +33,7 @@ to update to the latest version
 
 Generate the config file. Go get a valid api_key and password for your store head to `https://[your store].myshopify.com/admin/apps/private` and generate a private application. By default it adds the main theme, if you want to edit one of your other themes, add the `theme_id`.
 
-		theme configure api_key password store_url
+	theme configure api_key password store_url
 
 Example of config.yml. Notice store has no http or https declaration. You can use `:whitelist_files:` to specify files for upload. The `assets/`, `config/`, `layout/`, `snippets/` and `templates/` directories are included by default.
 
