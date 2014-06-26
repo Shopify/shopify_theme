@@ -100,7 +100,7 @@ This can be done by setting the `theme_id` field in `config.yml` which was creat
 
 Currently the best way to find the id of the theme you want to edit is to go to the theme in your shops admin and grab it from the url.
 
-![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
+![themes/THEME_ID/settings](https://github.com/Shopify/shopify_theme/blob/master/doc/how_to_find_theme_id.png)
 
 ## License
 
