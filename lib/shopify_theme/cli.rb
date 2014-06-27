@@ -7,6 +7,7 @@ require 'fileutils'
 require 'json'
 require 'filewatcher'
 require 'launchy'
+require 'mimemagic'
 
 module ShopifyTheme
   class Cli < Thor
