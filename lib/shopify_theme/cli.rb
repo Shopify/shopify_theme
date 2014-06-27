@@ -12,7 +12,6 @@ module ShopifyTheme
   class Cli < Thor
     include Thor::Actions
 
-    BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff otf swf ico)
     IGNORE = %w(config.yml)
     DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/)
     TIMEFORMAT = "%H:%M:%S"
@@ -206,7 +205,7 @@ module ShopifyTheme
       return unless valid?(asset)
       data = {:key => asset}
       content = File.read(asset)
-      if BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.','')) || ShopifyTheme.is_binary_data?(content)
+      if binary_file?(asset) || ShopifyTheme.is_binary_data?(content)
         content = File.open(asset, "rb") { |io| io.read }
         data.merge!(:attachment => Base64.encode64(content))
       else
@@ -247,6 +246,11 @@ module ShopifyTheme
       false
     end
 
+    def binary_file?(path)
+      setupMimeMagic
+      !MimeMagic.by_path(path).text?
+    end
+
     def report_error(time, message, response)
       say("[#{timestamp(time)}] Error: #{message}", :red)
       say("Error Details: #{errors_from_response(response)}", :yellow)
@@ -278,6 +282,10 @@ module ShopifyTheme
 
     def timestamp(time = Time.now)
       time.strftime(TIMEFORMAT)
+    end
+
+    def setupMimeMagic
+      MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
     end
   end
 end
