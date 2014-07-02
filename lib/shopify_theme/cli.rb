@@ -9,6 +9,8 @@ require 'filewatcher'
 require 'launchy'
 require 'mimemagic'
 
+MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
+
 module ShopifyTheme
   class Cli < Thor
     include Thor::Actions
@@ -248,7 +250,6 @@ module ShopifyTheme
     end
 
     def binary_file?(path)
-      setupMimeMagic
       !MimeMagic.by_path(path).text?
     end
 
@@ -283,10 +284,6 @@ module ShopifyTheme
 
     def timestamp(time = Time.now)
       time.strftime(TIMEFORMAT)
-    end
-
-    def setupMimeMagic
-      MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
     end
   end
 end
