@@ -1,3 +1,7 @@
+# v0.0.19
+* Fixes issue with incorrectly detecting binary assets -- csaunders
+* Properly handle unknown event types -- 
+
 # v0.0.12
 
 * Fixes issue where app tried uploading directories

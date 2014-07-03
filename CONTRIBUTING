@@ -1,0 +1,6 @@
+- If the issue doesn't exist, open one to start a discussion
+- If the issue is fine (it probably is) start working on your patch
+- Create a Pull Request
+  - Be sure to update CHANGELOG.md to include the details of your fix
+- Go through code review
+- Get it merged
