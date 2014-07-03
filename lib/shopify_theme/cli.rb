@@ -7,12 +7,14 @@ require 'fileutils'
 require 'json'
 require 'filewatcher'
 require 'launchy'
+require 'mimemagic'
+
+MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
 
 module ShopifyTheme
   class Cli < Thor
     include Thor::Actions
 
-    BINARY_EXTENSIONS = %w(png gif jpg jpeg eot svg ttf woff otf swf ico)
     IGNORE = %w(config.yml)
     DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/)
     TIMEFORMAT = "%H:%M:%S"
@@ -206,7 +208,7 @@ module ShopifyTheme
       return unless valid?(asset)
       data = {:key => asset}
       content = File.read(asset)
-      if BINARY_EXTENSIONS.include?(File.extname(asset).gsub('.','')) || ShopifyTheme.is_binary_data?(content)
+      if binary_file?(asset) || ShopifyTheme.is_binary_data?(content)
         content = File.open(asset, "rb") { |io| io.read }
         data.merge!(:attachment => Base64.encode64(content))
       else
@@ -245,6 +247,10 @@ module ShopifyTheme
       say("'#{key}' is not in a valid file for theme uploads", :yellow)
       say("Files need to be in one of the following subdirectories: #{DEFAULT_WHITELIST.join(' ')}", :yellow)
       false
+    end
+
+    def binary_file?(path)
+      !MimeMagic.by_path(path).text?
     end
 
     def report_error(time, message, response)

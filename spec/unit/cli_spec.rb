@@ -18,6 +18,11 @@ module ShopifyTheme
         super
       end
 
+      desc "",""
+      def binary_file?(file)
+        super
+      end
+
       desc "", ""
       def local_files
         @local_files
@@ -55,6 +60,18 @@ module ShopifyTheme
 
       @cli.mock_config = {store: 'somethingfancy.myshopify.com', theme_id: ''}
       assert_equal "somethingfancy.myshopify.com", @cli.shop_theme_url
+    end
+
+    it "should report binary files as such" do
+      assert @cli.binary_file?('hello.pdf'), "PDFs are binary files"
+      assert @cli.binary_file?('hello.png'), "PNGs are binary files"
+    end
+
+    it "should not report text based files as binary" do
+      refute @cli.binary_file?('theme.liquid'), "liquid files are not binary"
+      refute @cli.binary_file?('style.sass.liquid'), "sass.liquid files are not binary"
+      refute @cli.binary_file?('style.css'), 'CSS files are not binary'
+      refute @cli.binary_file?('application.js'), 'Javascript files are not binary'
     end
   end
 end

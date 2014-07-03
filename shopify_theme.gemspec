@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency('thor', '>= 0.14.4')
   s.add_dependency('httparty', '~> 0.13.0')
   s.add_dependency('json', '~> 1.8.0')
+  s.add_dependency('mimemagic')
   s.add_dependency('filewatcher')
   s.add_dependency('launchy')
 
