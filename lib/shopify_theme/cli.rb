@@ -10,6 +10,8 @@ require 'launchy'
 require 'mimemagic'
 
 MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
+MimeMagic.add('application/vnd.ms-fontobject', extensions: %w(eot))
+MimeMagic.add('image/svg+xml', extensions: %w(svg svgz))
 
 module ShopifyTheme
   class Cli < Thor
@@ -250,7 +252,9 @@ module ShopifyTheme
     end
 
     def binary_file?(path)
-      !MimeMagic.by_path(path).text?
+      mime = MimeMagic.by_path(path)
+      say("'#{path}' is an unknown file-type, uploading asset as binary", :yellow) if mime.nil? && ENV['TEST'] != 'true'
+      mime.nil? || !mime.text?
     end
 
     def report_error(time, message, response)

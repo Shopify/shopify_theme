@@ -63,8 +63,14 @@ module ShopifyTheme
     end
 
     it "should report binary files as such" do
-      assert @cli.binary_file?('hello.pdf'), "PDFs are binary files"
-      assert @cli.binary_file?('hello.png'), "PNGs are binary files"
+      extensions = %w(png gif jpg jpeg eot svg ttf woff otf swf ico pdf)
+      extensions.each do |ext|
+        assert @cli.binary_file?("hello.#{ext}"), "#{ext.upcase}s are binary files"
+      end
+    end
+
+    it "should report unknown files as binary files" do
+      assert @cli.binary_file?('omg.wut'), "Unknown filetypes are assumed to be binary"
     end
 
     it "should not report text based files as binary" do
