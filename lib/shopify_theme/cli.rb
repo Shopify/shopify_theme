@@ -9,9 +9,21 @@ require 'filewatcher'
 require 'launchy'
 require 'mimemagic'
 
-MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
-
 module ShopifyTheme
+  EXTENSIONS = [
+    {mimetype: 'application/x-liquid', extensions: %w(liquid), parents: 'text/plain'},
+    {mimetype: 'application/json', extensions: %w(json), parents: 'text/plain'},
+    {mimetype: 'application/js', extensions: %w(map), parents: 'text/plain'},
+    {mimetype: 'application/vnd.ms-fontobject', extensions: %w(eot)},
+    {mimetype: 'image/svg+xml', extensions: %w(svg svgz)}
+  ]
+
+  def self.configureMimeMagic
+    ShopifyTheme::EXTENSIONS.each do |extension|
+      MimeMagic.add(extension.delete(:mimetype), extension)
+    end
+  end
+
   class Cli < Thor
     include Thor::Actions
 
@@ -250,7 +262,9 @@ module ShopifyTheme
     end
 
     def binary_file?(path)
-      !MimeMagic.by_path(path).text?
+      mime = MimeMagic.by_path(path)
+      say("'#{path}' is an unknown file-type, uploading asset as binary", :yellow) if mime.nil? && ENV['TEST'] != 'true'
+      mime.nil? || !mime.text?
     end
 
     def report_error(time, message, response)
@@ -287,3 +301,4 @@ module ShopifyTheme
     end
   end
 end
+ShopifyTheme.configureMimeMagic
