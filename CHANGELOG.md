@@ -1,4 +1,9 @@
+# v0.0.20
+
+* Fixes issue with unknown types raising exceptions -- csaunders
+
 # v0.0.19
+
 * Fixes issue with incorrectly detecting binary assets -- csaunders
 * Properly handle unknown event types -- 
 
