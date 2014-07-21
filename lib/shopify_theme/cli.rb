@@ -9,11 +9,21 @@ require 'filewatcher'
 require 'launchy'
 require 'mimemagic'
 
-MimeMagic.add('application/x-liquid', extensions: %w(liquid), parents: 'text/plain')
-MimeMagic.add('application/vnd.ms-fontobject', extensions: %w(eot))
-MimeMagic.add('image/svg+xml', extensions: %w(svg svgz))
-
 module ShopifyTheme
+  EXTENSIONS = [
+    {mimetype: 'application/x-liquid', extensions: %w(liquid), parents: 'text/plain'},
+    {mimetype: 'application/json', extensions: %w(json), parents: 'text/plain'},
+    {mimetype: 'application/js', extensions: %w(map), parents: 'text/plain'},
+    {mimetype: 'application/vnd.ms-fontobject', extensions: %w(eot)},
+    {mimetype: 'image/svg+xml', extensions: %w(svg svgz)}
+  ]
+
+  def self.configureMimeMagic
+    ShopifyTheme::EXTENSIONS.each do |extension|
+      MimeMagic.add(extension.delete(:mimetype), extension)
+    end
+  end
+
   class Cli < Thor
     include Thor::Actions
 
@@ -291,3 +301,4 @@ module ShopifyTheme
     end
   end
 end
+ShopifyTheme.configureMimeMagic

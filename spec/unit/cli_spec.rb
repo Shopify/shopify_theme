@@ -78,6 +78,8 @@ module ShopifyTheme
       refute @cli.binary_file?('style.sass.liquid'), "sass.liquid files are not binary"
       refute @cli.binary_file?('style.css'), 'CSS files are not binary'
       refute @cli.binary_file?('application.js'), 'Javascript files are not binary'
+      refute @cli.binary_file?('settings_data.json'), 'JSON files are not binary'
+      refute @cli.binary_file?('applicaton.js.map'), 'Javascript Map files are not binary'
     end
   end
 end
