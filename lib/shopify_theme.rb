@@ -1,5 +1,7 @@
 require 'httparty'
 module ShopifyTheme
+  class ResponseError < StandardError; end
+
   include HTTParty
   @@current_api_call_count = 0
   @@total_api_calls = 40
@@ -18,6 +20,12 @@ module ShopifyTheme
     return unless response.headers['x-shopify-shop-api-call-limit']
     @@current_api_call_count, @@total_api_calls = response.headers['x-shopify-shop-api-call-limit'].split('/')
     @@current_timer = Time.now if @current_timer.nil?
+  end
+
+  def self.raise_for_error(response)
+    if (code = response.code) > 399
+      raise ResponseError, "[HTTP #{code}] Invalid Request or Response\nResponse Body:\n#{response.body}"
+    end
   end
 
   def self.critical_permits?
@@ -47,12 +55,12 @@ module ShopifyTheme
     "[API Limit: #{@@current_api_call_count || "??"}/#{@@total_api_calls || "??"}]"
   end
 
-
   def self.asset_list
     # HTTParty parser chokes on assest listing, have it noop
     # and then use a rel JSON parser.
     response = shopify.get(path, :parser => NOOPParser)
     manage_timer(response)
+    raise_for_error(response)
 
     assets = JSON.parse(response.body)["assets"].collect {|a| a['key'] }
     # Remove any .css files if a .css.liquid file exists

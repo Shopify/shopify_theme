@@ -86,6 +86,8 @@ module ShopifyTheme
         say("#{ShopifyTheme.api_usage} Downloaded: #{asset}", :green) unless options['quiet']
       end
       say("Done.", :green) unless options['quiet']
+    rescue ShopifyTheme::ResponseError => e
+      say(e.message, :red)
     end
 
     desc "open", "open the store in your browser"
