@@ -43,7 +43,8 @@ theme configure api_key password store_url
 
 Example of config.yml. Notice store has no http or https declaration. You can
 use `:whitelist_files:` to specify files for upload. The `assets/`, `config/`,
-`layout/`, `snippets/` and `templates/` directories are included by default.
+`layout/`, `snippets/`, `templates/` and `locales/`directories are included by
+default.
 
 You can also use `:ignore_files:` to exclude files from getting uploaded, for
 example your `config/settings.html` or other configuration driven items
