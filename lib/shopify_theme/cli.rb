@@ -28,7 +28,7 @@ module ShopifyTheme
     include Thor::Actions
 
     IGNORE = %w(config.yml)
-    DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/)
+    DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/ locales/)
     TIMEFORMAT = "%H:%M:%S"
 
     tasks.keys.abbrev.each do |shortcut, command|

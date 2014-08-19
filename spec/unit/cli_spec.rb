@@ -35,9 +35,9 @@ module ShopifyTheme
     end
 
     it "should remove assets that are not a part of the white list" do
-      @cli.local_files = ['assets/image.png', 'config.yml', 'layout/theme.liquid']
+      @cli.local_files = ['assets/image.png', 'config.yml', 'layout/theme.liquid', 'locales/en.default.json']
       local_assets_list = @cli.send(:local_assets_list)
-      assert_equal 2, local_assets_list.length
+      assert_equal 3, local_assets_list.length
       assert_equal false, local_assets_list.include?('config.yml')
     end
 
