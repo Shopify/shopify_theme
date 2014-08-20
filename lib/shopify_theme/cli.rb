@@ -114,7 +114,7 @@ module ShopifyTheme
         # files present on remote and present locally get overridden anyway
         remote_assets = keys.empty? ? (ShopifyTheme.asset_list - local_assets_list) : keys
         remote_assets.each do |asset|
-          delete_asset(asset, options['quiet'])
+          delete_asset(asset, options['quiet']) unless ShopifyTheme.ignore_files.any? { |regex| regex =~ asset }
         end
         local_assets = keys.empty? ? local_assets_list : keys
         local_assets.each do |asset|
