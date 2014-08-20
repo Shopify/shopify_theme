@@ -1,3 +1,8 @@
+# v0.0.21
+
+* Adds Locale support
+* Running `theme replace` no longer deletes unwatched files if they are found on Shopify
+
 # v0.0.20
 
 * Fixes issue with unknown types raising exceptions -- csaunders
