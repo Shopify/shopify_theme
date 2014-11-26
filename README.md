@@ -114,7 +114,7 @@ theme bootstrap api_key password shop_name theme_name master
 
 If you are experiencing SSL validation errors, it is most likely because your installation does not have any valid
 certificates. This can be taken care of by [downloading a certificate file](http://curl.haxx.se/ca/cacert.pem) and
-[setting a the SSL_CERT_PATH environment variable on your system](http://www.computerhope.com/issues/ch000549.htm).
+[setting a the SSL_CERT_FILE environment variable on your system](http://www.computerhope.com/issues/ch000549.htm).
 For more details check out the following [gist](https://gist.github.com/fnichol/867550).
 
 [See the following issue for more details](https://github.com/Shopify/shopify_theme/issues/103)
