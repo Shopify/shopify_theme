@@ -26,7 +26,7 @@ Navigate to the directory where you theme files live, or where you'd like them t
 
 `theme configure api_key password store_name`
 
-In your directory you should see a file named config.yml with your credentials. If you want you may also edit the config.yml file and paste your API Key and Password in the appropriate area.
+In your directory you should see a file named config.yml with your credentials. If you want, you may also edit the config.yml file directly and paste your API Key and Password in the appropriate area.
 
 
 ### The config.yml File
@@ -66,11 +66,11 @@ The theme id of the theme that should be responding to commands. If no theme id 
 
 `whitelist_files`
 
-Specifies which files and directories should be responding to changes. If nothing is specified the  `assets/, config/, layout/, snippets/, templates/ and locales/` directories will be modified according to commands entered.
+Specifies which files and directories should be responding to changes. If nothing is specified, the  `assets/, config/, layout/, snippets/, templates/ and locales/` directories will be modified according to commands entered.
 
 `ignore_files`
 
-Specifies which files should be explicitly ignored and not affected by any commands entered
+Specifies which files should be explicitly ignored and not affected by any commands entered.
 
 
 ## Commands
@@ -85,7 +85,7 @@ Uploads a single file to your store. You can also upload directories by using th
 
 `theme remove path/to/file`
 
-Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command theme `remove assets/*` will remove all files in the assets directory.  
+Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command `theme remove assets/*` will remove all files in the assets directory.  
 
 `theme replace`
 
@@ -95,7 +95,7 @@ This command replaces all store files with local files; it ensures the store the
 
 `theme watch`
 
-Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CRTL + C.  
+Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch, press CRTL + C.  
 
 `theme open`
 
@@ -125,17 +125,17 @@ The name of the theme that will house the Timber framework files.
 
 `master`
 
-The last argument is the master flag. By specifying this flag the command will download the latest build of Timber rather than the latest stable release. 
+The last argument is the master flag. By specifying this flag, the command will download the latest build of Timber rather than the latest stable release. 
 
-It should be noted that this command does not create any files locally. After running this command, you will need to run theme download to download the newly created theme files in your Shopify store. You can then edit the files as usual.  
+It should be noted that this command does not create any files locally. After running this command, you will need to run `theme download` to download the newly created theme files in your Shopify store. You can then edit the files as usual.  
 
 
 ## Tips and Tricks
 ### Edit and Preview Inactive Themes
 In many cases you may want to work on a theme behind the scenes while your current theme is still active. To accomplish this there are two steps:
 
-* specifying the `theme_id` in your config.yml file. This tells Shopify theme that any changes or modifications should be directed to that particular theme. 
-* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
+1. specifying the `theme_id` in your config.yml file. This tells Shopify theme that any changes or modifications should be directed to that particular theme. 
+2. Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
 
 You can find your theme ID by looking at the URL:
 
@@ -145,7 +145,7 @@ You can find your theme ID by looking at the URL:
 ### SocketError or SSL Certificate Validation Error on Windows
 If you receive a SocketError or SSL certificate validation error when you try to run any theme command, your install may not have any valid SSL certificates.  
 
-In short, you can solve this problem by downloading this file and placing it in `C:\RailsInstaller\`. The file should retain the name cacert.pem. Once this is done run set `SSL_CERT_FILE=C:\RailsInstaller\cacert.pem`.  The Shopify theme commands should be working now. This technique will need to be repeated each time your computer boots up. For a more detailed and permanent solution check out these resources:
+In short, you can solve this problem by downloading [this file](http://curl.haxx.se/ca/cacert.pem) and placing it in `C:\RailsInstaller\`. The file should retain the name cacert.pem. Once this is done, run set `SSL_CERT_FILE=C:\RailsInstaller\cacert.pem`.  The Shopify theme commands should be working now. This technique will need to be repeated each time your computer boots up. For a more detailed and permanent solution check out these resources:
 
 * [setting a the SSL_CERT_FILE environment variable on your system](http://www.computerhope.com/issues/ch000549.htm)
 * [Download a cacert.pem file for RailsInstaller](https://gist.github.com/fnichol/867550)
