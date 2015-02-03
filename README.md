@@ -1,6 +1,6 @@
 
 # Edit Your Shopify Theme Locally
-
+[![Gem Version](https://badge.fury.io/rb/shopify_theme.svg)](http://badge.fury.io/rb/shopify_theme)
 ![Shopify theme gem](https://dl.dropboxusercontent.com/u/669627/terminalreadme.png)
 
 The Shopify theme gem is a command line tool that allows you to manage and edit theme files directly on your computer. This allows you to use your preferred code editing software opposed to the built in code editor available in the “Edit HTML/CSS” page of your store. Files can be manually or automatically uploaded, downloaded, and synced. Depending on how you develop themes and your personal preference, this can allow for a more enjoyable and streamlined workflow.  If the command line is scary for you, check out the [Desktop Theme Editor app](http://apps.shopify.com/desktop-theme-editor).
@@ -8,27 +8,28 @@ The Shopify theme gem is a command line tool that allows you to manage and edit 
 
 ## Requirements
 This gem works with OS X or Windows with Ruby 1.9.
-First time installing Ruby on windows? Try Rubyinstaller.
+
+First time installing Ruby on Windows? Try [Rubyinstaller](http://http://rubyinstaller.org/).
 
 
 ## Configuration
 ### Setting up Shopify Theme
 
-First, you will need to set up a new private app to generate an API key and password. Go to [your-store-url].com/admin/apps/private in your web browser.
+First, you will need to set up a new private app to generate an API key and password. Go to **your-store**.com/admin/apps/private in your web browser.
 
 Click on “Create a Private App” to generate the credentials for a new app. You will need the API key and the password of this newly generated app:
 
-![api-key-and-password](https://cloud.githubusercontent.com/assets/5488872/5901847/958068e4-a543-11e4-8eb4-8f139cc4384c.jpg)
+![api-key-and-password](doc/API-key-and-password.jpg)
 
-In the command line, go to the directory of your theme files, or the directly where you would like your theme files to be.
+Navigate to the directory where you theme files live, or where you'd like them to be and execute the following command:
 
-In the command line run: 
-`theme configure api_key password store` 
-This populates the config.yml file with your app credentials. You can also manually edit the config.yml file and paste the API key and password in the appropriate area.
+`theme configure api_key password store_name`
+
+In your directory you should see a file named config.yml with your credentials. If you want you may also edit the config.yml file and paste your API Key and Password in the appropriate area.
 
 
 ### The config.yml File
-The config.yml file contains the information needed for Shopify to authenticate requests and edit/update the theme files in the manner specified. Take a look at this sample config.yml file for reference:
+The config.yml file contains the information needed for Shopify to authenticate requests and edit/update the theme files in the manner specified. Here is an example of what the contents in a typical `config.yml` file would look like:
 
 ```yaml
 ---
@@ -68,24 +69,39 @@ Specifies which files should be explicitly ignored and not affected by any comma
 ## Commands
 
 `theme download`
+
 Downloads the theme files from your store to your computer. 
 
+
 `theme upload path/to/file`
+
 Uploads a single file to your store. You can also upload directories by using the wildcard character. The command `theme upload assets/*` will upload all files in the assets directory.
 
+
 `theme remove path/to/file`
+
 Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command theme `remove assets/*` will remove all files in the assets directory.  
 
+
 `theme replace`
-This command replaces all store files with local files; it ensures the store theme files mirrors the files locally. This command can be destructive so it should be used with caution. If you are familiar with FTP or SFTP to upload files to a server, this is similar but not exactly the same. In addition to transferring files, it will delete any theme files in your store that are not present locally.   
- 
+
+**This command can be destructive so it should be used with caution.**
+
+This command replaces all store files with local files; it ensures the store theme files mirrors the files locally.  If you are familiar with FTP or SFTP to upload files to a server, this is similar but not exactly the same. In addition to transferring files, it will delete any theme files in your store that are not present locally.
+
+
 `theme watch`
+
 Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CRTL + C.  
 
+
 `theme open`
+
 This command opens your store in the default browser specified on your computer.
 
+
 `theme bootstrap api_key password store theme_name [master]`
+
 This command is useful if you are starting a brand new theme. It automatically populates your store with a fresh copy of the [Shopify Timber framework](http://shopify.github.io/Timber/).  If you haven’t heard of Timber, it is a theme framework designed for specifically for Shopify themes, made by Shopify. If you enjoy using frameworks like [Bootstrap](http://getbootstrap.com/) or [Foundation](http://foundation.zurb.com/) for your projects, you’ll certainly find Timber useful. 
 
 The bootstrap command requires several parameters:
@@ -117,8 +133,7 @@ In many cases you may want to work on a theme behind the scenes while your curre
 
 You can find your theme ID by looking at the URL:
 
-![how_to_find_theme_id](https://cloud.githubusercontent.com/assets/5488872/5901814/56e81956-a543-11e4-8b20-277d46ebce0f.png)
-
+![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
 
 ## Common Problems
 ### SocketError or SSL Certificate Validation Error on Windows
