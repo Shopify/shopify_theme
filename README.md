@@ -26,7 +26,9 @@ Navigate to the directory where you theme files live, or where you'd like them t
 
 `theme configure api_key password store_name`
 
-In your directory you should see a file named config.yml with your credentials. If you want, you may also edit the config.yml file directly and paste your API Key and Password in the appropriate area.
+**Important:** enter the `store_name` with no `http://`.
+
+In your directory you should see a file named config.yml with your credentials. If you want you may also edit the config.yml file and paste your API Key and Password in the appropriate area.
 
 
 ### The config.yml File
@@ -77,7 +79,7 @@ Specifies which files should be explicitly ignored and not affected by any comma
 
 `theme download`
 
-Downloads the theme files from your store to your computer. 
+Downloads the theme files from your store to your computer.
 
 `theme upload path/to/file`
 
@@ -85,8 +87,7 @@ Uploads a single file to your store. You can also upload directories by using th
 
 `theme remove path/to/file`
 
-Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command `theme remove assets/*` will remove all files in the assets directory.  
-
+Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command theme `remove assets/*` will remove all files in the assets directory.  
 `theme replace`
 
 **This command can be destructive so it should be used with caution.**
@@ -95,15 +96,14 @@ This command replaces all store files with local files; it ensures the store the
 
 `theme watch`
 
-Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch, press CRTL + C.  
-
+Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CRTL + C.  
 `theme open`
 
 This command opens your store in the default browser specified on your computer.
 
 `theme bootstrap api_key password store theme_name [master]`
 
-This command is useful if you are starting a brand new theme. It automatically populates your store with a fresh copy of the [Shopify Timber framework](http://shopify.github.io/Timber/).  If you haven’t heard of Timber, it is a theme framework designed for specifically for Shopify themes, made by Shopify. If you enjoy using frameworks like [Bootstrap](http://getbootstrap.com/) or [Foundation](http://foundation.zurb.com/) for your projects, you’ll certainly find Timber useful. 
+This command is useful if you are starting a brand new theme. It automatically populates your store with a fresh copy of the [Shopify Timber framework](http://shopify.github.io/Timber/).  If you haven’t heard of Timber, it is a theme framework designed for specifically for Shopify themes, made by Shopify. If you enjoy using frameworks like [Bootstrap](http://getbootstrap.com/) or [Foundation](http://foundation.zurb.com/) for your projects, you’ll certainly find Timber useful.
 
 The bootstrap command requires several parameters:
 
@@ -117,33 +117,29 @@ The same password used in your config.yml file
 
 `store`
 
-The same store used in your config.yml file 
+The same store used in your config.yml file
 
 `theme_name`
 
-The name of the theme that will house the Timber framework files. 
+The name of the theme that will house the Timber framework files.
 
 `master`
 
-The last argument is the master flag. By specifying this flag, the command will download the latest build of Timber rather than the latest stable release. 
-
-It should be noted that this command does not create any files locally. After running this command, you will need to run `theme download` to download the newly created theme files in your Shopify store. You can then edit the files as usual.  
-
+The last argument is the master flag. By specifying this flag the command will download the latest build of Timber rather than the latest stable release. 
+It should be noted that this command does not create any files locally. After running this command, you will need to run theme download to download the newly created theme files in your Shopify store. You can then edit the files as usual.  
 
 ## Tips and Tricks
 ### Edit and Preview Inactive Themes
 In many cases you may want to work on a theme behind the scenes while your current theme is still active. To accomplish this there are two steps:
 
-1. specifying the `theme_id` in your config.yml file. This tells Shopify theme that any changes or modifications should be directed to that particular theme. 
-2. Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
-
+* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
 You can find your theme ID by looking at the URL:
 
 ![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
 
 ## Common Problems
 ### SocketError or SSL Certificate Validation Error on Windows
-If you receive a SocketError or SSL certificate validation error when you try to run any theme command, your install may not have any valid SSL certificates.  
+If you receive a SocketError or SSL certificate validation error when you try to run any theme command, your install may not have any valid SSL certificates.
 
 In short, you can solve this problem by downloading [this file](http://curl.haxx.se/ca/cacert.pem) and placing it in `C:\RailsInstaller\`. The file should retain the name cacert.pem. Once this is done, run set `SSL_CERT_FILE=C:\RailsInstaller\cacert.pem`.  The Shopify theme commands should be working now. This technique will need to be repeated each time your computer boots up. For a more detailed and permanent solution check out these resources:
 
@@ -154,7 +150,7 @@ In short, you can solve this problem by downloading [this file](http://curl.haxx
 
 ## Important Notes
 ### Prevent Resetting of Theme Settings
-In some cases you may want to add `config/settings_json.js` to the `ignore_files` list in your config.yml file. When you save your the theme settings for your store, Shopify stores the current values in this file. If you upload your local copy of config/settings_json.js your current settings may be reset to default values if it does not contain the current settings data. 
+In some cases you may want to add `config/settings_json.js` to the `ignore_files` list in your config.yml file. When you save your the theme settings for your store, Shopify stores the current values in this file. If you upload your local copy of config/settings_json.js your current settings may be reset to default values if it does not contain the current settings data.
 
 ### Sass Compilation
-There is no need to compile your .scss files locally when using Shopify theme.  They are automatically compiled upon upload and available as .css files on the web page, retaining the same filename. 
+There is no need to compile your .scss files locally when using Shopify theme.  They are automatically compiled upon upload and available as .css files on the web page, retaining the same filename.
