@@ -22,13 +22,13 @@ Click on “Create a Private App” to generate the credentials for a new app. Y
 
 ![api-key-and-password](doc/API-key-and-password.jpg)
 
-Navigate to the directory where you theme files live, or where you'd like them to be and execute the following command:
+Navigate to the directory where you theme files live, or where you'd like them to be, and execute the following command:
 
 `theme configure api_key password store_name`
 
 **Important:** enter the `store_name` with no `http://`.
 
-In your directory you should see a file named config.yml with your credentials. If you want you may also edit the config.yml file and paste your API Key and Password in the appropriate area.
+In your directory you should see a file named config.yml with your credentials. If you want, you may also edit the config.yml file directly and paste your API Key and Password in the appropriate area.
 
 
 ### The config.yml File
@@ -141,7 +141,7 @@ You can find your theme ID by looking at the URL:
 ### SocketError or SSL Certificate Validation Error on Windows
 If you receive a SocketError or SSL certificate validation error when you try to run any theme command, your install may not have any valid SSL certificates.
 
-In short, you can solve this problem by downloading [this file](http://curl.haxx.se/ca/cacert.pem) and placing it in `C:\RailsInstaller\`. The file should retain the name cacert.pem. Once this is done, run set `SSL_CERT_FILE=C:\RailsInstaller\cacert.pem`.  The Shopify theme commands should be working now. This technique will need to be repeated each time your computer boots up. For a more detailed and permanent solution check out these resources:
+In short, you can solve this problem by downloading [this file](http://curl.haxx.se/ca/cacert.pem) and placing it in `C:\RailsInstaller\`. The file should retain the name cacert.pem. Once this is done, run `set SSL_CERT_FILE=C:\RailsInstaller\cacert.pem`.  The Shopify theme commands should be working now. This technique will need to be repeated each time your computer boots up. For a more detailed and permanent solution check out these resources:
 
 * [setting a the SSL_CERT_FILE environment variable on your system](http://www.computerhope.com/issues/ch000549.htm)
 * [Download a cacert.pem file for RailsInstaller](https://gist.github.com/fnichol/867550)
