@@ -87,7 +87,7 @@ Uploads a single file to your store. You can also upload directories by using th
 
 `theme remove path/to/file`
 
-Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command theme `remove assets/*` will remove all files in the assets directory.  
+Remove a single file from your store. You can also remove directories by using the wildcard character, similar to the theme upload command. The command theme `remove assets/*` will remove all files in the assets directory.
 `theme replace`
 
 **This command can be destructive so it should be used with caution.**
@@ -96,43 +96,16 @@ This command replaces all store files with local files; it ensures the store the
 
 `theme watch`
 
-Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CRTL + C.  
+Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CRTL + C.
 `theme open`
 
 This command opens your store in the default browser specified on your computer.
-
-`theme bootstrap api_key password store theme_name [master]`
-
-This command is useful if you are starting a brand new theme. It automatically populates your store with a fresh copy of the [Shopify Timber framework](http://shopify.github.io/Timber/).  If you haven’t heard of Timber, it is a theme framework designed for specifically for Shopify themes, made by Shopify. If you enjoy using frameworks like [Bootstrap](http://getbootstrap.com/) or [Foundation](http://foundation.zurb.com/) for your projects, you’ll certainly find Timber useful.
-
-The bootstrap command requires several parameters:
-
-`api_key`
-
-The same API key used in your config.yml file
-
-`password`
-
-The same password used in your config.yml file
-
-`store`
-
-The same store used in your config.yml file
-
-`theme_name`
-
-The name of the theme that will house the Timber framework files.
-
-`master`
-
-The last argument is the master flag. By specifying this flag the command will download the latest build of Timber rather than the latest stable release. 
-It should be noted that this command does not create any files locally. After running this command, you will need to run theme download to download the newly created theme files in your Shopify store. You can then edit the files as usual.  
 
 ## Tips and Tricks
 ### Edit and Preview Inactive Themes
 In many cases you may want to work on a theme behind the scenes while your current theme is still active. To accomplish this there are two steps:
 
-* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
+* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme.
 You can find your theme ID by looking at the URL:
 
 ![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
