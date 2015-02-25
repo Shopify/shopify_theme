@@ -6,6 +6,7 @@ module ShopifyTheme
   ZIP_URL  = 'https://github.com/Shopify/Timber/archive/%s.zip'
 
   class Releases
+    class VersionError < StandardError; end
     Release = Struct.new(:version) do
       def zip_url
         ZIP_URL % version
@@ -27,8 +28,21 @@ module ShopifyTheme
       end
     end
 
+    def find(version)
+      release = all[version]
+      if release.nil?
+        error = [
+          "Invalid version '#{version}'.",
+          "Valid versions are:",
+        ].concat(all.keys.map{|v| "  #{v}"})
+        raise VersionError, error.join("\n")
+      end
+      release
+    end
+
     private
     def versioned_releases
+      fetch! unless @feed
       @versioned_releases ||= @feed.items.map { |item| Release.new(item.title.content) }
     end
 

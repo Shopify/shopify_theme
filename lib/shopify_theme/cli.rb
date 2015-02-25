@@ -50,14 +50,15 @@ module ShopifyTheme
       create_file('config.yml', config.to_yaml)
     end
 
-    desc "bootstrap API_KEY PASSWORD STORE THEME_NAME", "bootstrap with Timber to shop and configure local directory. Include master if you'd like to use the latest build for the theme"
+    desc "bootstrap API_KEY PASSWORD STORE THEME_NAME", "bootstrap with Timber to shop and configure local directory."
     method_option :master, :type => :boolean, :default => false
-    def bootstrap(api_key=nil, password=nil, store=nil, theme_name=nil, master=nil)
+    method_option :version, :type => :string, :default => "latest"
+    def bootstrap(api_key=nil, password=nil, store=nil, theme_name=nil)
       ShopifyTheme.config = {:api_key => api_key, :password => password, :store => store}
 
       theme_name ||= 'Timber'
       say("Registering #{theme_name} theme on #{store}", :green)
-      theme = ShopifyTheme.upload_timber(theme_name, master || false)
+      theme = ShopifyTheme.upload_timber(theme_name, options[:version])
 
       say("Creating directory named #{theme_name}", :green)
       empty_directory(theme_name)
@@ -69,6 +70,8 @@ module ShopifyTheme
       say("Downloading #{theme_name} assets from Shopify")
       Dir.chdir(theme_name)
       download()
+    rescue Releases::VersionError => e
+      say(e.message, :red)
     end
 
     desc "download FILE", "download the shops current theme assets"

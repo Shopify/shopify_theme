@@ -101,7 +101,7 @@ Once this command is entered, it continuously monitors files for changes. If a c
 
 This command opens your store in the default browser specified on your computer.
 
-`theme bootstrap api_key password store theme_name [master]`
+`theme bootstrap api_key password store theme_name --version=[version]`
 
 This command is useful if you are starting a brand new theme. It automatically populates your store with a fresh copy of the [Shopify Timber framework](http://shopify.github.io/Timber/).  If you haven’t heard of Timber, it is a theme framework designed for specifically for Shopify themes, made by Shopify. If you enjoy using frameworks like [Bootstrap](http://getbootstrap.com/) or [Foundation](http://foundation.zurb.com/) for your projects, you’ll certainly find Timber useful.
 
@@ -121,12 +121,16 @@ The same store used in your config.yml file
 
 `theme_name`
 
-The name of the theme that will house the Timber framework files.
+The name of the theme that will house the Timber framework files. A directory will be created with this name and all theme assets will be copied into it.
 
-`master`
+**Options**
 
-The last argument is the master flag. By specifying this flag the command will download the latest build of Timber rather than the latest stable release. 
-It should be noted that this command does not create any files locally. After running this command, you will need to run theme download to download the newly created theme files in your Shopify store. You can then edit the files as usual.  
+`--version=[latest]`
+
+This is the only option that you can provide. You can choose any [Timber release](https://github.com/Shopify/Timber/releases) by simply specifying it (i.e. `v2.0.2`). There are two special versions you can use, `master` and `latest`.
+
+- `master` will download the latest build on the Timber master branch.
+- `latest` will figure out what the most recent release is and use it.
 
 ## Tips and Tricks
 ### Edit and Preview Inactive Themes
