@@ -10,7 +10,7 @@ The Shopify theme gem is a command line tool that allows you to manage and edit 
 ## Requirements
 This gem works with OS X or Windows with Ruby 1.9.
 
-First time installing Ruby on Windows? Try [Rubyinstaller](http://http://rubyinstaller.org/).
+First time installing Ruby on Windows? Try [Rubyinstaller](http://rubyinstaller.org/).
 
 
 ## Configuration
