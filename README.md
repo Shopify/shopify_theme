@@ -24,9 +24,9 @@ Click on “Create a Private App” to generate the credentials for a new app. Y
 
 Navigate to the directory where you theme files live, or where you'd like them to be, and execute the following command:
 
-`theme configure api_key password store_name`
+`theme configure api_key password store_domain`
 
-**Important:** enter the `store_name` with no `http://`.
+**Important:** enter the `store_domain` with no `http://`.
 
 In your directory you should see a file named config.yml with your credentials. If you want, you may also edit the config.yml file directly and paste your API Key and Password in the appropriate area.
 
