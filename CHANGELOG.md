@@ -1,3 +1,12 @@
+# v0.0.23 (Unreleased)
+
+* Adds support for OAuth access token based authentication -- gavinballard
+
+# v0.0.22
+
+* Parsing of Timber release feed to always retrieve latest release
+* Minor documentation improvements
+
 # v0.0.21
 
 * Adds Locale support

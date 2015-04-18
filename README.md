@@ -74,6 +74,17 @@ Specifies which files and directories should be responding to changes. If nothin
 
 Specifies which files should be explicitly ignored and not affected by any commands entered.
 
+### Alternative OAuth configuration (for advanced users)
+As of v0.0.23, you can use a Shopify application's OAuth access token to authenticate with a store and manipulate theme files.
+
+Once your application has obtained an access token through Shopify's regular OAuth authentication flow, run the following command to configure the gem:
+
+`theme configure_oauth access_token store_domain`
+
+The gem can then be used in exactly the same way as if you were authenticating via a Private App.
+
+Note that the access token your Application has obtained ***must*** be valid for the `write_themes` scope in order to use the theme gem in this way.
+
 
 ## Commands
 

@@ -134,7 +134,7 @@ module ShopifyTheme
 
   private
   def self.shopify
-    basic_auth config[:api_key], config[:password]
+    headers 'X-Shopify-Access-Token' => config[:password] || config[:access_token]
     base_uri "https://#{config[:store]}"
     ShopifyTheme
   end

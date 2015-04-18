@@ -50,6 +50,12 @@ module ShopifyTheme
       create_file('config.yml', config.to_yaml)
     end
 
+    desc "configure_oauth ACCESS_TOKEN STORE THEME_ID", "generate a config file for the store to connect to using an OAuth access token"
+    def configure_oauth(access_token=nil, store=nil, theme_id=nil)
+      config = {:access_token => access_token, :store => store, :theme_id => theme_id}
+      create_file('config.yml', config.to_yaml)
+    end
+
     desc "bootstrap API_KEY PASSWORD STORE THEME_NAME", "bootstrap with Timber to shop and configure local directory."
     method_option :master, :type => :boolean, :default => false
     method_option :version, :type => :string, :default => "latest"
