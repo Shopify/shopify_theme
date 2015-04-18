@@ -50,9 +50,9 @@ module ShopifyTheme
       create_file('config.yml', config.to_yaml)
     end
 
-    desc "configure_oauth TOKEN STORE THEME_ID", "generate a config file for the store to connect to (OAuth)"
-    def configure_oauth(token=nil, store=nil, theme_id=nil)
-      config = {:token => token, :store => store, :theme_id => theme_id}
+    desc "configure_oauth ACCESS_TOKEN STORE THEME_ID", "generate a config file for the store to connect to using an OAuth access token"
+    def configure_oauth(access_token=nil, store=nil, theme_id=nil)
+      config = {:access_token => access_token, :store => store, :theme_id => theme_id}
       create_file('config.yml', config.to_yaml)
     end
 
