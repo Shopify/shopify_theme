@@ -150,10 +150,9 @@ module ShopifyTheme
       watcher do |filename, event|
         filename = filename.gsub("#{Dir.pwd}/", '')
 
-        next unless local_assets_list.include?(filename)
-        action = if [:changed, :new].include?(event)
+        action = if [:changed, :new].include?(event) && local_assets_list.include?(filename)
           :send_asset
-        elsif event == :delete
+        elsif event == :delete && !options['keep_files']
           :delete_asset
         else
           raise NotImplementedError, "Unknown event -- #{event} -- #{filename}"
