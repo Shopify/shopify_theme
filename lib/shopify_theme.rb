@@ -132,6 +132,10 @@ module ShopifyTheme
     shopify.get(path).code == 200
   end
 
+  def self.get_index
+    shopify.get(path)
+  end
+
   private
   def self.shopify
     basic_auth config[:api_key], config[:password]
