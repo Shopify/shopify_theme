@@ -36,18 +36,30 @@ module ShopifyTheme
     end
 
     desc "check", "check configuration"
-    def check
-      if ShopifyTheme.check_config
-        say("Configuration [OK]", :green)
+    def check(exit_on_failure=false)
+      result = APIChecker.new(ShopifyTheme).test_connectivity
+
+      if result.api_down?
+        say("Cannot connect to Shopify. API appears to be down", :red)
+        say("Visit http://status.shopify.com for more details", :yello)
+      elsif result.invalid_config?
+        say("Cannot connect to Shopify. Configuration is invalid.", :red)
+        say("Verify that your API key, password and domain are correct.", :yellow)
+        say("Visit https://github.com/shopify/shopify_theme#configuration for more details", :yellow)
+        say("If your shop domain is correct, the following URL should take you to the Private Apps page for the shop:", :yellow)
+        say("  https://#{config[:store]}/admin/apps/private", :yellow)
       else
-        say("Configuration [FAIL]", :red)
+        say("Shopify API is accessible and configuration is valid", :green) unless exit_on_failure
       end
+
+      exit(1) if result.cannot_access_api? && exit_on_failure
     end
 
     desc "configure API_KEY PASSWORD STORE THEME_ID", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
       config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id}
       create_file('config.yml', config.to_yaml)
+      check(true)
     end
 
     desc "bootstrap API_KEY PASSWORD STORE THEME_NAME", "bootstrap with Timber to shop and configure local directory."
@@ -55,6 +67,7 @@ module ShopifyTheme
     method_option :version, :type => :string, :default => "latest"
     def bootstrap(api_key=nil, password=nil, store=nil, theme_name=nil)
       ShopifyTheme.config = {:api_key => api_key, :password => password, :store => store}
+      check(true)
 
       theme_name ||= 'Timber'
       say("Registering #{theme_name} theme on #{store}", :green)
@@ -78,6 +91,7 @@ module ShopifyTheme
     method_option :quiet, :type => :boolean, :default => false
     method_option :exclude
     def download(*keys)
+      check(true)
       assets = keys.empty? ? ShopifyTheme.asset_list : keys
 
       if options['exclude']
@@ -101,6 +115,7 @@ module ShopifyTheme
     desc "upload FILE", "upload all theme assets to shop"
     method_option :quiet, :type => :boolean, :default => false
     def upload(*keys)
+      check(true)
       assets = keys.empty? ? local_assets_list : keys
       assets.each do |asset|
         send_asset(asset, options['quiet'])
@@ -111,6 +126,7 @@ module ShopifyTheme
     desc "replace FILE", "completely replace shop theme assets with local theme assets"
     method_option :quiet, :type => :boolean, :default => false
     def replace(*keys)
+      check(true)
       say("Are you sure you want to completely replace your shop theme assets? This is not undoable.", :yellow)
       if ask("Continue? (Y/N): ") == "Y"
         # only delete files on remote that are not present locally
@@ -130,6 +146,7 @@ module ShopifyTheme
     desc "remove FILE", "remove theme asset"
     method_option :quiet, :type => :boolean, :default => false
     def remove(*keys)
+      check(true)
       keys.each do |key|
         delete_asset(key, options['quiet'])
       end
@@ -140,6 +157,7 @@ module ShopifyTheme
     method_option :quiet, :type => :boolean, :default => false
     method_option :keep_files, :type => :boolean, :default => false
     def watch
+      check(true)
       puts "Watching current folder: #{Dir.pwd}"
       watcher do |filename, event|
         filename = filename.gsub("#{Dir.pwd}/", '')

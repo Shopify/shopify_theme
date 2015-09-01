@@ -6,7 +6,13 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ''
-    headers: {}
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
   response:
     status:
       code: 503
@@ -15,7 +21,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 31 Aug 2015 21:50:21 GMT
+      - Tue, 01 Sep 2015 18:13:38 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -41,12 +47,12 @@ http_interactions:
       Www-Authenticate:
       - Basic Realm="Shopify API Authentication"
       X-Xss-Protection:
-      - 1; mode=block; report=/xss-report/931bb379-6ae0-4af9-8cb5-6e70d3171d44?source%5Baction%5D=index&source%5Bcontroller%5D=admin%2Fassets&source%5Bsection%5D=admin
+      - 1; mode=block; report=/xss-report/b6204340-cb9f-4cb0-be81-e8b08ffe7efc?source%5Baction%5D=index&source%5Bcontroller%5D=admin%2Fassets&source%5Bsection%5D=admin
       X-Request-Id:
-      - 931bb379-6ae0-4af9-8cb5-6e70d3171d44
+      - b6204340-cb9f-4cb0-be81-e8b08ffe7efc
     body:
       encoding: UTF-8
-      string: ''
-    http_version:
-  recorded_at: Mon, 31 Aug 2015 21:50:22 GMT
+      string: 'UNAVAILABLE' 
+    http_version: 
+  recorded_at: Tue, 01 Sep 2015 18:13:38 GMT
 recorded_with: VCR 2.9.3
