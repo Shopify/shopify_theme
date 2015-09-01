@@ -132,6 +132,10 @@ module ShopifyTheme
     shopify.get(path).code == 200
   end
 
+  def self.get_index
+    shopify.get(path)
+  end
+
   private
   def self.shopify
     headers 'X-Shopify-Access-Token' => config[:password] || config[:access_token]
