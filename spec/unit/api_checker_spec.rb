@@ -4,8 +4,7 @@ require 'shopify_theme/api_checker'
 
 module ShopifyTheme
   describe "APIChecker" do
-    include WebMock::API
-    attr_reader :checker, :request_root
+    attr_reader :checker
 
     before do
       config = {

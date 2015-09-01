@@ -2,17 +2,13 @@
 http_interactions:
 - request:
     method: get
-    uri: https://abracadabra:alakazam@something.myshopify.com/admin/assets.json
+    uri: https://something.myshopify.com/admin/assets.json
     body:
       encoding: US-ASCII
       string: ''
     headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
+      X-Shopify-Access-Token:
+      - alakazam
   response:
     status:
       code: 401
@@ -21,7 +17,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 01 Sep 2015 18:13:38 GMT
+      - Tue, 01 Sep 2015 18:47:36 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -47,13 +43,13 @@ http_interactions:
       Www-Authenticate:
       - Basic Realm="Shopify API Authentication"
       X-Xss-Protection:
-      - 1; mode=block; report=/xss-report/e76acdf2-cfef-401d-a1ba-8dd6431390a7?source%5Baction%5D=index&source%5Bcontroller%5D=admin%2Fassets&source%5Bsection%5D=admin
+      - 1; mode=block; report=/xss-report/94fab138-9672-45ff-81b7-38f35ba81ed2?source%5Baction%5D=index&source%5Bcontroller%5D=admin%2Fassets&source%5Bsection%5D=admin
       X-Request-Id:
-      - e76acdf2-cfef-401d-a1ba-8dd6431390a7
+      - 94fab138-9672-45ff-81b7-38f35ba81ed2
     body:
       encoding: UTF-8
       string: '{"errors":"[API] Invalid API key or access token (unrecognized login
         or wrong password)"}'
     http_version: 
-  recorded_at: Tue, 01 Sep 2015 18:13:38 GMT
+  recorded_at: Tue, 01 Sep 2015 18:47:36 GMT
 recorded_with: VCR 2.9.3

@@ -2,26 +2,22 @@
 http_interactions:
 - request:
     method: get
-    uri: https://abracadabra:alakazam@something.myshopify.com/admin/assets.json
+    uri: https://something.myshopify.com/admin/assets.json
     body:
       encoding: US-ASCII
       string: ''
     headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
+      X-Shopify-Access-Token:
+      - alakazam
   response:
     status:
       code: 503
-      message: 'Unavailable'
+      message: Unavailable
     headers:
       Server:
       - nginx
       Date:
-      - Tue, 01 Sep 2015 18:13:38 GMT
+      - Tue, 01 Sep 2015 18:47:36 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -47,12 +43,13 @@ http_interactions:
       Www-Authenticate:
       - Basic Realm="Shopify API Authentication"
       X-Xss-Protection:
-      - 1; mode=block; report=/xss-report/b6204340-cb9f-4cb0-be81-e8b08ffe7efc?source%5Baction%5D=index&source%5Bcontroller%5D=admin%2Fassets&source%5Bsection%5D=admin
+      - 1; mode=block; report=/xss-report/6cb4f1eb-40ea-4f96-b36c-e7edc4cc6005?source%5Baction%5D=index&source%5Bcontroller%5D=admin%2Fassets&source%5Bsection%5D=admin
       X-Request-Id:
-      - b6204340-cb9f-4cb0-be81-e8b08ffe7efc
+      - 6cb4f1eb-40ea-4f96-b36c-e7edc4cc6005
     body:
       encoding: UTF-8
-      string: 'UNAVAILABLE' 
+      string: '{"errors":"[API] Invalid API key or access token (unrecognized login
+        or wrong password)"}'
     http_version: 
-  recorded_at: Tue, 01 Sep 2015 18:13:38 GMT
+  recorded_at: Tue, 01 Sep 2015 18:47:36 GMT
 recorded_with: VCR 2.9.3
