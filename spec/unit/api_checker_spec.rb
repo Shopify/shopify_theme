@@ -4,7 +4,7 @@ require 'shopify_theme/api_checker'
 
 module ShopifyTheme
   describe "APIChecker" do
-    attr_reader :checker, :request_root
+    attr_reader :checker
 
     before do
       config = {
@@ -14,7 +14,6 @@ module ShopifyTheme
       }
       ShopifyTheme.config = config
       @checker = APIChecker.new(ShopifyTheme)
-      @request_root = "https://#{config[:api_key]}:#{config[:password]}@#{config[:store]}"
     end
 
     after do
