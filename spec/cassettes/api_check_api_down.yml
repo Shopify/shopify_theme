@@ -16,7 +16,7 @@ http_interactions:
   response:
     status:
       code: 503
-      message: Unavailable
+      message: 'Unavailable'
     headers:
       Server:
       - nginx
