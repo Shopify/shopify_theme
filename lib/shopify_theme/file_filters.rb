@@ -1,3 +1,6 @@
+require 'shopify_theme/filters/blacklist'
+require 'shopify_theme/filters/whitelist'
+
 module ShopifyTheme
   class FileFilters
     def initialize(*filters)

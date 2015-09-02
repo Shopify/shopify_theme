@@ -8,6 +8,7 @@ require 'json'
 require 'filewatcher'
 require 'launchy'
 require 'mimemagic'
+require 'shopify_theme/file_filters'
 
 module ShopifyTheme
   EXTENSIONS = [
@@ -213,10 +214,10 @@ module ShopifyTheme
     end
 
     def local_assets_list
-      local_files.reject do |p|
-        @permitted_files ||= (DEFAULT_WHITELIST | ShopifyTheme.whitelist_files).map{|pattern| Regexp.new(pattern)}
-        @permitted_files.none? { |regex| regex =~ p } || ShopifyTheme.ignore_files.any? { |regex| regex =~ p }
-      end
+      FileFilters.new(
+        Filters::Whitelist.new(ShopifyTheme.whitelist_files),
+        Filters::Blacklist.new(ShopifyTheme.ignore_files)
+      ).select(local_files)
     end
 
     def local_files

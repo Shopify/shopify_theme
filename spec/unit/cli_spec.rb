@@ -41,6 +41,14 @@ module ShopifyTheme
       assert_equal false, local_assets_list.include?('config.yml')
     end
 
+    it 'should only use the whitelist entries for determining which files to upload (bug #156)' do
+      @cli.local_files = %w(assets/application.css.liquid assets/application.js assets/image.png assets/bunny.jpg layout/index.liquid snippets/preview.liquid)
+      ShopifyTheme.config = {whitelist_files: %w(assets/application.css.liquid assets/application.js layout/ snippets/)}
+      local_assets_list = @cli.send(:local_assets_list)
+      assert_equal 4, local_assets_list.length
+      assert_equal false, local_assets_list.include?('assets/image.png')
+    end
+
     it "should remove assets that are part of the ignore list" do
       ShopifyTheme.config = {ignore_files: ['config/settings.html']}
       @cli.local_files = ['assets/image.png', 'layout/theme.liquid', 'config/settings.html']
