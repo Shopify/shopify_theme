@@ -7,6 +7,8 @@ module ShopifyTheme
   NOOPParser = Proc.new {|data, format| {} }
   TIMER_RESET = 10
   PERMIT_LOWER_LIMIT = 3
+  MAX_TIMBER_RETRY = 5
+
 
   def self.test?
     ENV['test']
@@ -79,7 +81,7 @@ module ShopifyTheme
     response
   end
 
-  def self.upload_timber(name, version)
+  def self.upload_timber(name, version, retries=0)
     release = Releases.new.find(version)
     response = shopify.post("/admin/themes.json", :body => {:theme => {:name => name, :src => release.zip_url, :role => 'unpublished'}})
     manage_timer(response)
@@ -87,6 +89,8 @@ module ShopifyTheme
     if theme = body['theme']
       puts "Successfully created #{name} using Shopify Timber #{version}"
       watch_until_processing_complete(theme)
+    elsif retries < MAX_TIMBER_RETRY
+      upload_timber(name, version, retries + 1)
     else
       puts "Could not download theme!"
       puts body
