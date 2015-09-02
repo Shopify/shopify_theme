@@ -113,7 +113,7 @@ module ShopifyTheme
   end
 
   def self.ignore_files
-    (config[:ignore_files] || []).compact.map { |r| Regexp.new(r) }
+    (config[:ignore_files] || []).compact
   end
 
   def self.whitelist_files
