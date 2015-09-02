@@ -23,7 +23,7 @@ module ShopifyTheme
       end
 
       it "should return everything except for the items that matched the pattern" do
-        blacklist = Blacklist.new %w(config/* settings.html assets/* templates/* snippets/*)
+        blacklist = Blacklist.new(%w(config/* settings.html assets/* templates/* snippets/*))
         assert_equal %w(layout/thing1.html), blacklist.select(TEST_PATHS)
       end
 

@@ -22,11 +22,14 @@ module ShopifyTheme
     end
 
     it "initializing with a single filter" do
-      filters = FileFilters.new(IdentityFilter.new)
-      assert_equal [1, 2, 3, 4, 5], filters.select([1, 2, 3, 4, 5])
+      begin
+        FileFilters.new(IdentityFilter.new)
+      rescue Error => e
+        flunk("Initializing with a single filter should not fail. #{e}")
+      end
     end
 
-    it "initializing with a list of filters" do
+    it "should only select entries that were valid for all of the given filters" do
       filters = FileFilters.new(IdentityFilter.new, EvenFilter.new)
       assert_equal [2, 4], filters.select([1, 2, 3, 4, 5])
     end

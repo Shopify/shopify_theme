@@ -31,7 +31,7 @@ module ShopifyTheme
         assert_equal expected, whitelist.select(TEST_PATHS)
       end
 
-      it "should ignore the default whitelist if something was provided" do
+      it "should ignore the default 1+ whitelists were provided" do
         whitelist = Whitelist.new %w(settings.html config/item1.html config/item2.html config/item3.html layout/ templates/)
         expected = %w(settings.html config/item1.html config/item2.html config/item3.html layout/thing1.html templates/thing2.html)
         assert_equal expected, whitelist.select(TEST_PATHS)

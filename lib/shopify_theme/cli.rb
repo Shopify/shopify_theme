@@ -193,6 +193,13 @@ module ShopifyTheme
       end
     end
 
+    def local_assets_list
+      FileFilters.new(
+        Filters::Whitelist.new(ShopifyTheme.whitelist_files),
+        Filters::Blacklist.new(ShopifyTheme.ignore_files)
+      ).select(local_files)
+    end
+
     protected
 
     def config
@@ -211,13 +218,6 @@ module ShopifyTheme
       FileWatcher.new(Dir.pwd).watch() do |filename, event|
         yield(filename, event)
       end
-    end
-
-    def local_assets_list
-      FileFilters.new(
-        Filters::Whitelist.new(ShopifyTheme.whitelist_files),
-        Filters::Blacklist.new(ShopifyTheme.ignore_files)
-      ).select(local_files)
     end
 
     def local_files
