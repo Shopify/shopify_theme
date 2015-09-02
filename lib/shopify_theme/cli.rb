@@ -58,7 +58,7 @@ module ShopifyTheme
 
     desc "configure API_KEY PASSWORD STORE THEME_ID", "generate a config file for the store to connect to"
     def configure(api_key=nil, password=nil, store=nil, theme_id=nil)
-      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id}
+      config = {:api_key => api_key, :password => password, :store => store, :theme_id => theme_id, :whitelist_files => Filters::Whitelist::DEFAULT_WHITELIST}
       create_file('config.yml', config.to_yaml)
       check(true)
     end
@@ -73,7 +73,7 @@ module ShopifyTheme
     method_option :master, :type => :boolean, :default => false
     method_option :version, :type => :string, :default => "latest"
     def bootstrap(api_key=nil, password=nil, store=nil, theme_name=nil)
-      ShopifyTheme.config = {:api_key => api_key, :password => password, :store => store}
+      ShopifyTheme.config = {:api_key => api_key, :password => password, :store => store, :whitelist_files => Filters::Whitelist::DEFAULT_WHITELIST}
       check(true)
 
       theme_name ||= 'Timber'
@@ -215,7 +215,7 @@ module ShopifyTheme
 
     private
     def assets_for(keys=[], files=[])
-      filter = FileFilter.new(CommandInput.new(keys))
+      filter = FileFilters.new(Filters::CommandInput.new(keys))
       filter.select(files)
     end
 

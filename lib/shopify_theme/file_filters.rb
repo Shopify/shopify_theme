@@ -1,5 +1,6 @@
 require 'shopify_theme/filters/blacklist'
 require 'shopify_theme/filters/whitelist'
+require 'shopify_theme/filters/command_input'
 
 module ShopifyTheme
   class FileFilters
