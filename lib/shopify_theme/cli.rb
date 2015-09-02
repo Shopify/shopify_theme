@@ -99,7 +99,7 @@ module ShopifyTheme
     method_option :exclude
     def download(*keys)
       check(true)
-      assets = keys.empty? ? ShopifyTheme.asset_list : keys
+      assets = assets_for(keys, ShopifyTheme.asset_list)
 
       if options['exclude']
         assets = assets.delete_if { |asset| asset =~ Regexp.new(options['exclude']) }
@@ -123,6 +123,7 @@ module ShopifyTheme
     method_option :quiet, :type => :boolean, :default => false
     def upload(*keys)
       check(true)
+      assets = assets_for(keys, local_assets_list)
       assets = keys.empty? ? local_assets_list : keys
       assets.each do |asset|
         send_asset(asset, options['quiet'])
@@ -213,6 +214,10 @@ module ShopifyTheme
     end
 
     private
+    def assets_for(keys=[], files=[])
+      filter = FileFilter.new(CommandInput.new(keys))
+      filter.select(files)
+    end
 
     def watcher
       FileWatcher.new(Dir.pwd).watch() do |filename, event|
