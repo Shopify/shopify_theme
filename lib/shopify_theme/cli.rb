@@ -169,8 +169,10 @@ module ShopifyTheme
       puts "Watching current folder: #{Dir.pwd}"
       watcher do |filename, event|
         filename = filename.gsub("#{Dir.pwd}/", '')
-
-        action = if [:changed, :new].include?(event) && local_assets_list.include?(filename)
+        
+        next unless local_assets_list.include?(filename)
+        
+        action = if [:changed, :new].include?(event)
           :send_asset
         elsif event == :delete && !options['keep_files']
           :delete_asset
