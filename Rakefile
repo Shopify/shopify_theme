@@ -1,6 +1,7 @@
 require 'bundler'
 require 'bundler/gem_tasks'
 require 'rake/testtask'
+require 'shopify_theme'
 
 task :default => [:spec]
 
@@ -16,11 +17,10 @@ desc "Update the built-in CA root certificate file"
 task :update_cert_file do
   require 'net/http'
   require 'uri'
-  cert_uri = URI('http://curl.haxx.se/ca/cacert.pem')
+  cert_uri = URI(ShopifyTheme::REMOTE_CERT_FILE)
   response = Net::HTTP.get_response(cert_uri)
   if response.code == '200'
-    cert_path = File.expand_path('../lib/certs/cacert.pem', __FILE__)
-    File.open(cert_path, 'wb') { |cert_file| cert_file << response.body }
+    File.open(ShopifyTheme::CA_CERT_FILE, 'wb') { |cert_file| cert_file << response.body }
   else
     fail "Could not download certificate bundle from #{cert_uri}"
   end

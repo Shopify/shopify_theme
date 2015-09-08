@@ -5,7 +5,7 @@ require 'shopify_theme/filters/blacklist'
 module ShopifyTheme
   module Filters
     describe "Blacklist" do
-      TEST_PATHS = %w(
+      BLACKLIST_TEST_PATHS = %w(
           settings.html
           config/item1.html
           config/item2.html
@@ -19,12 +19,12 @@ module ShopifyTheme
 
       it "should return the entire list back if initialized with no patterns" do
         blacklist = Blacklist.new
-        assert_equal TEST_PATHS, blacklist.select(TEST_PATHS)
+        assert_equal BLACKLIST_TEST_PATHS, blacklist.select(BLACKLIST_TEST_PATHS)
       end
 
       it "should return everything except for the items that matched the pattern" do
         blacklist = Blacklist.new(%w(config/* settings.html assets/* templates/* snippets/*))
-        assert_equal %w(layout/thing1.html), blacklist.select(TEST_PATHS)
+        assert_equal %w(layout/thing1.html), blacklist.select(BLACKLIST_TEST_PATHS)
       end
 
     end
