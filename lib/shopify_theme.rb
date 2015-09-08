@@ -1,6 +1,7 @@
 require 'httparty'
 module ShopifyTheme
   include HTTParty
+  ssl_ca_file(File.dirname(__FILE__) + './certs/cacert.pem')
   @@current_api_call_count = 0
   @@total_api_calls = 40
 
