@@ -196,11 +196,13 @@ module ShopifyTheme
       end
     end
 
-    def local_assets_list
-      FileFilters.new(
-        Filters::Whitelist.new(ShopifyTheme.whitelist_files),
-        Filters::Blacklist.new(ShopifyTheme.ignore_files)
-      ).select(local_files)
+    no_commands do
+      def local_assets_list
+        FileFilters.new(
+          Filters::Whitelist.new(ShopifyTheme.whitelist_files),
+          Filters::Blacklist.new(ShopifyTheme.ignore_files)
+        ).select(local_files)
+      end
     end
 
     protected

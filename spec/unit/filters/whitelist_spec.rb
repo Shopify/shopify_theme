@@ -4,7 +4,7 @@ require 'shopify_theme/filters/whitelist'
 module ShopifyTheme
   module Filters
     describe "Whitelist" do
-      TEST_PATHS = %w(
+      WHITELIST_TEST_PATHS = %w(
           settings.html
           config/item1.html
           config/item2.html
@@ -28,13 +28,13 @@ module ShopifyTheme
           templates/thing2.html
           snippets/fancy.liquid
         )
-        assert_equal expected, whitelist.select(TEST_PATHS)
+        assert_equal expected, whitelist.select(WHITELIST_TEST_PATHS)
       end
 
       it "should ignore the default 1+ whitelists were provided" do
         whitelist = Whitelist.new %w(settings.html config/item1.html config/item2.html config/item3.html layout/ templates/)
         expected = %w(settings.html config/item1.html config/item2.html config/item3.html layout/thing1.html templates/thing2.html)
-        assert_equal expected, whitelist.select(TEST_PATHS)
+        assert_equal expected, whitelist.select(WHITELIST_TEST_PATHS)
       end
     end
   end
