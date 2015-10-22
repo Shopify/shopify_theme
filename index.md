@@ -23,7 +23,7 @@ First time installing Ruby on windows? Try [Rubyinstaller](http://http://rubyins
 
 To install the shopify_theme gem use 'gem install' (you might have use 'sudo gem install')
 
-	gem install shopify_theme [optional_theme_id]
+	gem install shopify_theme
 
 to update to the latest version
 
