@@ -12,6 +12,10 @@ This gem works with OS X or Windows with Ruby 1.9.
 
 First time installing Ruby on Windows? Try [Rubyinstaller](http://rubyinstaller.org/).
 
+## Installation
+To install this theme open a terminal window and enter the following command:
+
+`gem install shopify_theme`
 
 ## Configuration
 ### Setting up Shopify Theme
