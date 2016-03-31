@@ -1,5 +1,5 @@
 
-This project is not actively maintained. See https://github.com/Shopify/themekit__
+__This project is not actively maintained. See https://github.com/Shopify/themekit__
 
 # Edit Your Shopify Theme Locally
 [![Gem Version](https://badge.fury.io/rb/shopify_theme.svg)](http://badge.fury.io/rb/shopify_theme)
