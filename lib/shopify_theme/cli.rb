@@ -42,7 +42,7 @@ module ShopifyTheme
 
       if result.api_down?
         say("Cannot connect to Shopify. API appears to be down", :red)
-        say("Visit http://status.shopify.com for more details", :yello)
+        say("Visit http://status.shopify.com for more details", :yellow)
       elsif result.invalid_config?
         say("Cannot connect to Shopify. Configuration is invalid.", :red)
         say("Verify that your API key, password and domain are correct.", :yellow)
