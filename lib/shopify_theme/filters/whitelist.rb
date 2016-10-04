@@ -1,7 +1,7 @@
 module ShopifyTheme
   module Filters
     class Whitelist
-      DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/ locales/)
+      DEFAULT_WHITELIST = %w(layout/ assets/ config/ snippets/ templates/ locales/ sections/)
 
       attr_reader :patterns
 
