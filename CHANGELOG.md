@@ -1,4 +1,8 @@
-# v0.0.23 (Unreleased)
+# v0.0.26 (Unreleased)
+
+* Add conditional sleep to assets upload to avoid running into request limits errors
+
+# v0.0.23
 
 * Adds support for OAuth access token based authentication -- gavinballard
 
@@ -19,7 +23,7 @@
 # v0.0.19
 
 * Fixes issue with incorrectly detecting binary assets -- csaunders
-* Properly handle unknown event types -- 
+* Properly handle unknown event types --
 
 # v0.0.12
 
