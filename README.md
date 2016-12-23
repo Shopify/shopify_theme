@@ -1,4 +1,6 @@
 
+## This gem is no longer supported! Please use [Shopify Theme Kit](https://github.com/Shopify/themekit) instead.
+
 # Edit Your Shopify Theme Locally
 [![Gem Version](https://badge.fury.io/rb/shopify_theme.svg)](http://badge.fury.io/rb/shopify_theme)
 
@@ -147,7 +149,7 @@ This is the only option that you can provide. You can choose any [Timber release
 ### Edit and Preview Inactive Themes
 In many cases you may want to work on a theme behind the scenes while your current theme is still active. To accomplish this there are two steps:
 
-* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
+* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme.
 You can find your theme ID by looking at the URL:
 
 ![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
