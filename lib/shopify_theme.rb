@@ -1,6 +1,6 @@
 require 'httparty'
 module ShopifyTheme
-  REMOTE_CERT_FILE = 'http://curl.haxx.se/ca/cacert.pem'
+  REMOTE_CERT_FILE = 'https://curl.haxx.se/ca/cacert.pem'
   CA_CERT_FILE = File.expand_path(File.dirname(__FILE__) + '/certs/cacert.pem')
   include HTTParty
   ssl_ca_file CA_CERT_FILE
