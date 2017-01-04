@@ -14,6 +14,11 @@ This gem works with OS X or Windows with Ruby 1.9.
 
 First time installing Ruby on Windows? Try [Rubyinstaller](http://rubyinstaller.org/).
 
+##Installation
+Execute the following command:
+
+`gem install shopify_theme`
+
 
 ## Configuration
 ### Setting up Shopify Theme
@@ -46,7 +51,7 @@ The config.yml file contains the information needed for Shopify to authenticate 
 - directoryToUpload/
 - importantFile.txt
 :ignore_files:
-- config/settings.html
+- config/settings_json.js
 ```
 
 
@@ -109,7 +114,7 @@ This command replaces all store files with local files; it ensures the store the
 
 `theme watch`
 
-Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CRTL + C.  
+Once this command is entered, it continuously monitors files for changes. If a change is detected, it automatically uploads that file to your store. This is similar to [grunt watch](https://github.com/gruntjs/grunt-contrib-watch). To stop theme watch press CTRL + C.  
 `theme open`
 
 This command opens your store in the default browser specified on your computer.

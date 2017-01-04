@@ -1,3 +1,7 @@
+# v0.0.24 (Unreleased)
+
+* Update documentation with an extra step for installation, remove reference to deprecated settings file and fix typo
+
 # v0.0.23 (Unreleased)
 
 * Adds support for OAuth access token based authentication -- gavinballard
