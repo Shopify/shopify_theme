@@ -4,6 +4,10 @@
 # Edit Your Shopify Theme Locally
 [![Gem Version](https://badge.fury.io/rb/shopify_theme.svg)](http://badge.fury.io/rb/shopify_theme)
 
+## Important Note
+
+This Shopify Theme ruby gem is not being actively developed anymore. Please head over to [https://github.com/Shopify/themekit](https://github.com/Shopify/themekit) for the recommended and actively developed Shopify theme development tool.
+
 ![Shopify theme gem](https://dl.dropboxusercontent.com/u/669627/terminalreadme.png)
 
 The Shopify theme gem is a command line tool that allows you to manage and edit theme files directly on your computer. This allows you to use your preferred code editing software opposed to the built in code editor available in the “Edit HTML/CSS” page of your store. Files can be manually or automatically uploaded, downloaded, and synced. Depending on how you develop themes and your personal preference, this can allow for a more enjoyable and streamlined workflow.  If the command line is scary for you, check out the [Desktop Theme Editor app](http://apps.shopify.com/desktop-theme-editor).
