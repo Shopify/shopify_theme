@@ -1,3 +1,3 @@
 module ShopifyTheme
-  VERSION = "0.0.26"
+  VERSION = "0.0.25"
 end
