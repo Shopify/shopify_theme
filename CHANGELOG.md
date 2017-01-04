@@ -1,9 +1,4 @@
-# v0.0.26
-
-* Fixes failing tests
-* Final release, this gem is now deprecated -- jordanliddle 
-
-# v0.0.23
+# v0.0.23 (Unreleased)
 
 * Adds support for OAuth access token based authentication -- gavinballard
 
@@ -24,7 +19,7 @@
 # v0.0.19
 
 * Fixes issue with incorrectly detecting binary assets -- csaunders
-* Properly handle unknown event types --
+* Properly handle unknown event types -- 
 
 # v0.0.12
 
