@@ -1,3 +1,7 @@
+# v0.0.24 (Unreleased)
+
+* Documentation improvements (+ Linux, working on inactive themes) -- mikekuehn
+
 # v0.0.23 (Unreleased)
 
 * Adds support for OAuth access token based authentication -- gavinballard

@@ -8,7 +8,7 @@ The Shopify theme gem is a command line tool that allows you to manage and edit 
 
 
 ## Requirements
-This gem works with OS X or Windows with Ruby 1.9.
+This gem works with OS X, Windows, or Linux with Ruby 1.9.
 
 First time installing Ruby on Windows? Try [Rubyinstaller](http://rubyinstaller.org/).
 
@@ -145,12 +145,11 @@ This is the only option that you can provide. You can choose any [Timber release
 
 ## Tips and Tricks
 ### Edit and Preview Inactive Themes
-In many cases you may want to work on a theme behind the scenes while your current theme is still active. To accomplish this there are two steps:
+In many cases you may want to work on a theme behind the scenes while your current theme is still active. For instance, to safely modify your current theme, duplicate the theme and edit the duplicate.
 
-* Utilize the theme preview option in your Shopify store. This is a built in feature of Shopify outside the scope of Shopify theme. 
-You can find your theme ID by looking at the URL:
+To edit an inactive theme, you must enter its theme_id in config.yml. To find your theme ID, open the online HTML editor. The last (numerical) portion of the URL is the theme ID.
 
-![themes/THEME_ID/settings](doc/how_to_find_theme_id.png)
+To preview the theme you are editing, run `theme open`.
 
 ## Common Problems
 ### SocketError or SSL Certificate Validation Error on Windows
