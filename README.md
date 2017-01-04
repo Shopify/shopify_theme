@@ -14,6 +14,14 @@ This gem works with OS X or Windows with Ruby 1.9.
 
 First time installing Ruby on Windows? Try [Rubyinstaller](http://rubyinstaller.org/).
 
+## Installation
+To install the shopify_theme gem use ‘gem install’ (you might have use ‘sudo gem install’):
+
+`gem install shopify_theme`
+
+to update to the latest version
+
+`gem update shopify_theme`
 
 ## Configuration
 ### Setting up Shopify Theme
