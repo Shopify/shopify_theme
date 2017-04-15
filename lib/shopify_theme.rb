@@ -13,6 +13,10 @@ module ShopifyTheme
   MAX_TIMBER_RETRY = 5
 
 
+  @@total_api_calls = nil
+  @@current_api_call_count = nil
+  @@current_timer = nil
+
   def self.test?
     ENV['test']
   end
