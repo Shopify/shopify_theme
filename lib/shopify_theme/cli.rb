@@ -241,7 +241,11 @@ module ShopifyTheme
       asset = ShopifyTheme.get_asset(key)
       if asset['value']
         # For CRLF line endings
-        content = asset['value'].gsub("\r", "")
+        begin
+          content = asset['value'].gsub("\r", "")
+        rescue
+          content = asset['value']
+        end
         format = "w"
       elsif asset['attachment']
         content = Base64.decode64(asset['attachment'])
