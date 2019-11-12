@@ -73,6 +73,7 @@ module ShopifyTheme
   end
 
   def self.send_asset(data)
+    shopify.sleep
     response = shopify.put(path, :body =>{:asset => data})
     manage_timer(response)
     response
