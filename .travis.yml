@@ -1,4 +1,4 @@
-langauge: ruby
+language: ruby
 sudo: false
 rvm:
   - 2.0.0
